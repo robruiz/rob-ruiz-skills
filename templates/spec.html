@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SPEC TITLE — spec</title>
+<!--
+  SPEC TEMPLATE. Copy to specs/<slug>/spec.html.
+  Rule: this file is a rendered view of spec.md. If a fact is not in the md, it does not belong here.
+  Delete unused blocks. Keep the first viewport intact — triad, then 30-second read.
+  See the `spec-html` skill for the full protocol.
+-->
+<style>
+  :root {
+    --ink:#14171a; --dim:#5b646d; --faint:#8b949c; --line:#e2e5e8; --paper:#fcfcfb; --card:#fff;
+    --accent:#0f7b6c; --accent-soft:#e8f4f1; --warn:#8a5b00; --warn-soft:#fdf3e2; --stop:#a33; --stop-soft:#fdeceb;
+    --r:10px; --maxw:60rem;
+    --fd:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    --fm:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{font:16px/1.65 var(--fd);color:var(--ink);background:var(--paper);padding:40px 20px 80px}
+  .wrap{max-width:var(--maxw);margin:0 auto}
+  /* ---- header chrome ---- */
+  .bar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline;font-size:.78rem;color:var(--dim);border-bottom:1px solid var(--line);padding-bottom:14px}
+  .bar b{color:var(--ink)}
+  .chip{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:.08em .7em;font-size:.72rem;background:var(--card)}
+  .chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+  h1{font-size:1.9rem;letter-spacing:-.02em;line-height:1.2;margin:22px 0 6px}
+  .sub{color:var(--dim);margin-bottom:26px}
+  /* ---- triad: the first viewport ---- */
+  .triad{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:0 0 26px}
+  .triad div{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+  .triad h2{font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:6px}
+  .triad p{font-size:.94rem;line-height:1.5}
+  .readme{background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:6px;padding:14px 18px;margin-bottom:34px}
+  .readme h2{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:8px}
+  .readme ul{padding-left:1.1rem} .readme li{margin:.25rem 0}
+  /* ---- sections ---- */
+  section{margin:40px 0}
+  h2.sec{font-size:1.15rem;letter-spacing:-.01em;margin-bottom:4px}
+  .take{color:var(--dim);font-size:.9rem;margin-bottom:14px}
+  table{border-collapse:collapse;width:100%;font-size:.86rem;background:var(--card)}
+  th,td{text-align:left;padding:.5rem .65rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--faint)}
+  code{font-family:var(--fm);font-size:.85em;background:#f1f3f4;padding:.1em .35em;border-radius:4px}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:640px){.cards{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+  .card.chosen{border-left:3px solid var(--accent)} .card.rejected{border-left:3px solid var(--line);color:var(--dim)}
+  .card b{display:block;margin-bottom:4px}
+  .timeline{list-style:none;padding:0}
+  .timeline li{position:relative;padding:0 0 18px 28px;border-left:1px solid var(--line);margin-left:6px}
+  .timeline li:last-child{border-left-color:transparent}
+  .timeline li::before{content:"";position:absolute;left:-5px;top:.4em;width:9px;height:9px;border-radius:50%;background:var(--accent)}
+  .timeline b{display:block}
+  .callout{background:var(--warn-soft);border-left:3px solid var(--warn);border-radius:6px;padding:12px 16px;margin:12px 0;font-size:.9rem}
+  .callout.stop{background:var(--stop-soft);border-left-color:var(--stop)}
+  details{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:10px 14px;margin:10px 0}
+  summary{cursor:pointer;font-weight:600;font-size:.9rem}
+  figcaption{font-size:.78rem;color:var(--dim);margin-top:8px}
+  figure{margin:16px 0;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+  .cov{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+  /* checklist (open questions) */
+  .check{list-style:none;padding:0;background:var(--card);border:1px solid var(--line);border-radius:var(--r)}
+  .check li{display:flex;gap:10px;align-items:flex-start;padding:11px 14px;border-bottom:1px solid var(--line);font-size:.9rem}
+  .check li:last-child{border-bottom:0}
+  .check li::before{content:"";flex:0 0 15px;height:15px;margin-top:3px;border:1.5px solid var(--faint);border-radius:4px}
+  .check li.done::before{background:var(--accent);border-color:var(--accent);content:"✓";color:#fff;font-size:11px;line-height:13px;text-align:center}
+  .check .meta{color:var(--dim);font-size:.78rem;display:block;margin-top:2px}
+  .check .blocks{color:var(--stop);font-weight:600}
+  /* worked data example */
+  .data{background:#0f1416;color:#e6edf3;border-radius:var(--r);padding:14px 16px;font:13px/1.6 var(--fm);overflow-x:auto;margin:10px 0}
+  .data .lab{display:block;color:#7fd6c4;font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px;font-family:var(--fd)}
+  .data pre{margin:0;white-space:pre-wrap}
+  /* mockup embed */
+  .mockframe{border:1px dashed var(--faint);border-radius:var(--r);padding:12px;background:#fff;overflow:hidden}
+  .mockframe .region{border:1px solid var(--line);border-radius:6px;overflow:hidden;transform-origin:top left}
+  /* review scorecard */
+  .score{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:6px 0;margin:10px 0}
+  .score .row{display:grid;grid-template-columns:12rem 4rem 1fr;gap:10px;align-items:center;padding:7px 16px;font-size:.86rem;border-bottom:1px solid var(--line)}
+  .score .row:last-child{border-bottom:0}
+  .score .bar{height:7px;border-radius:99px;background:#eef1f2;overflow:hidden}
+  .score .bar i{display:block;height:100%;background:var(--accent)}
+  .score .total{font-weight:700}
+  .verdict{display:inline-block;border-radius:99px;padding:.15em .8em;font-size:.72rem;font-weight:700;letter-spacing:.06em}
+  .verdict.ship{background:var(--accent-soft);color:var(--accent)}
+  .verdict.revise{background:var(--warn-soft);color:var(--warn)}
+  .verdict.block{background:var(--stop-soft);color:var(--stop)}
+  footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);font-size:.78rem;color:var(--dim);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="bar">
+    <span><b>SPEC TITLE</b></span>
+    <span>v0.1</span><span>YYYY-MM-DD</span><span>Owner: Rob</span>
+    <span class="chip on">draft</span>
+    <span class="chip">depth: md_html</span>
+  </div>
+
+  <h1>SPEC TITLE</h1>
+  <p class="sub">One line telling the reader what this document is, and who it is for.</p>
+
+  <div class="triad">
+    <div><h2>What this solves</h2><p>1-2 sentences. The problem, in the reader's language.</p></div>
+    <div><h2>How it solves it</h2><p>1-2 sentences. The shape of the approach.</p></div>
+    <div><h2>How we prove it</h2><p>1-2 sentences. The seams and the check that proves it.</p></div>
+  </div>
+
+  <div class="readme">
+    <h2>30-second read</h2>
+    <ul>
+      <li>The one thing that changes for the user or the system.</li>
+      <li>The most important decision and why.</li>
+      <li>The risk the reader should know about.</li>
+    </ul>
+  </div>
+
+  <p class="cov"><span class="chip on">R1</span><span class="chip on">R2</span><span class="chip">R3 not covered</span></p>
+
+  <section>
+    <h2 class="sec">Shape of the change</h2>
+    <p class="take">Takeaway sentence first: what this diagram proves.</p>
+    <!-- Replace with the render packet's diagram. Label the boundary. -->
+    <figure>
+      <svg viewBox="0 0 720 150" width="100%" height="150" role="img" aria-label="Flow: request to result">
+        <defs><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+          <path d="M0 0 L8 4 L0 8z" fill="#5b646d"/></marker></defs>
+        <g fill="#fff" stroke="#c8ced3">
+          <rect x="10"  y="45" width="150" height="58" rx="8"/>
+          <rect x="285" y="45" width="150" height="58" rx="8"/>
+          <rect x="560" y="45" width="150" height="58" rx="8"/>
+        </g>
+        <g fill="#14171a" font-size="13" text-anchor="middle" font-family="system-ui">
+          <text x="85"  y="70">Input</text><text x="85"  y="88" font-size="11" fill="#5b646d">where it starts</text>
+          <text x="360" y="70">Processing</text><text x="360" y="88" font-size="11" fill="#5b646d">what changes</text>
+          <text x="635" y="70">Result</text><text x="635" y="88" font-size="11" fill="#5b646d">what the user sees</text>
+        </g>
+        <g stroke="#5b646d" stroke-width="1.6" marker-end="url(#a)">
+          <line x1="160" y1="74" x2="278" y2="74"/><line x1="435" y1="74" x2="553" y2="74"/>
+        </g>
+        <text x="360" y="132" fill="#8b949c" font-size="11" text-anchor="middle" font-family="system-ui">
+          Boundary: everything beyond the LLM service is out of scope for this change
+        </text>
+      </svg>
+      <figcaption>What this proves: one request path, one place state changes, one observable result.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2 class="sec">Decisions</h2>
+    <p class="take">Takeaway: the choice and the one reason that mattered.</p>
+    <div class="cards">
+      <div class="card chosen"><b>Chosen: X</b>Why it wins, grounded in code or a cited source.</div>
+      <div class="card rejected"><b>Rejected: Y</b>Why not — the honest cost.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">Sequence</h2>
+    <p class="take">Takeaway: the order that cannot be rearranged, and why.</p>
+    <ol class="timeline">
+      <li><b>Phase 1 — name</b>What is true when this phase ends.</li>
+      <li><b>Phase 2 — name</b>What is true when this phase ends.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2 class="sec">Requirements</h2>
+    <p class="take">Takeaway: how many promises, and whether any lack a check.</p>
+    <table>
+      <tr><th>ID</th><th>Promise</th><th>Proved by</th></tr>
+      <tr><td>R1</td><td>Observable outcome</td><td>test / command / walkthrough</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2 class="sec">Review scorecard</h2>
+    <p class="take">Takeaway: whether a fresh session can build from this, in one number.</p>
+    <div class="score">
+      <div class="row"><span>Context completeness</span><span>4/5</span><span class="bar"><i style="width:80%"></i></span></div>
+      <div class="row"><span>Requirement testability</span><span>5/5</span><span class="bar"><i style="width:100%"></i></span></div>
+      <div class="row"><span>Readiness</span><span>3/5</span><span class="bar"><i style="width:60%"></i></span></div>
+      <div class="row"><span class="total">Total</span><span class="total">22/30</span><span><span class="verdict revise">REVISE</span></span></div>
+    </div>
+    <p class="take">Reviewed by critic · YYYY-MM-DD · round 1</p>
+    <details><summary>Findings (F1-Fn)</summary><p>Each finding, its severity, and fixed / dismissed with reason.</p></details>
+  </section>
+
+  <section>
+    <h2 class="sec">Data examples</h2>
+    <p class="take">Takeaway: the one payload that makes the shape unambiguous.</p>
+    <div class="data"><span class="lab">Request</span><pre>{ "example": "actual values from the spec md" }</pre></div>
+    <div class="data"><span class="lab">Result</span><pre>{ "example": "actual values from the spec md" }</pre></div>
+    <figcaption>What this example proves: <span>one sentence.</span></figcaption>
+  </section>
+
+  <section>
+    <h2 class="sec">Mockup</h2>
+    <p class="take">Takeaway: what the mockup settles, and which requirements it demonstrates.</p>
+    <figure>
+      <div class="mockframe"><div class="region"><!-- inline the real mockup markup for the relevant region; crop, never invent --></div></div>
+      <figcaption>What this settles: <span>one sentence.</span> Demonstrates <code>R1</code> <code>R3</code>.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2 class="sec">Open questions</h2>
+    <p class="take">Takeaway: what is still unresolved, and whether it blocks.</p>
+    <ul class="check">
+      <li><span>Question text<span class="meta">proposed default: <b>value</b> · <span class="blocks">blocks</span></span></span></li>
+      <li class="done"><span>Resolved question<span class="meta">resolved: <b>answer, date</b></span></span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="sec">Out of scope</h2>
+    <p class="take">Takeaway: the refusals that protect this spec from growing.</p>
+    <ul><li><b>Thing not done</b> — why it was refused.</li></ul>
+  </section>
+
+  <section>
+    <h2 class="sec">Risks and open questions</h2>
+    <div class="callout stop"><b>Could not verify:</b> state it plainly rather than implying confidence.</div>
+    <details><summary>Detail the reader only needs on demand</summary><p>Dense material goes here, never above.</p></details>
+  </section>
+
+  <footer>
+    <span>Rendered view of <code>specs/&lt;slug&gt;/spec.md</code> — edit the md, not this file.</span>
+    <span>prev · next</span>
+  </footer>
+
+</div>
+</body>
+</html>

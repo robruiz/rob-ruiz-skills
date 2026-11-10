@@ -1,0 +1,27 @@
+[
+  {
+    "id": "F1",
+    "expect": "none",
+    "why": "quick fix, no design decision",
+    "request": "fix the typo in the footer copyright year"
+  },
+  {
+    "id": "F2",
+    "expect": "md",
+    "why": "small feature, one module, decisions fit in prose",
+    "request": "Add a dark mode toggle to the settings page. Persist it in localStorage and respect prefers-color-scheme on first load."
+  },
+  {
+    "id": "F3",
+    "expect": "md_html",
+    "why": "refactor across modules with migration and sequencing",
+    "request": "Refactor the agent runtime: split the monolithic chat handler into an intent router, a context builder, and a tool executor, with an event bus between them, a migration path for existing sessions, and end-to-end sequencing across the Tauri app, the local LLM service, and the design plugin."
+  },
+  {
+    "id": "F4",
+    "expect": "md_html",
+    "heuristicExpect": "md",
+    "why": "system spec with skill dependencies and feedback loops that must be seen",
+    "request": "Author a system spec for the spec pipeline: how routing, the authoring skills, intent triage, the requirements contract, the render handoff, templates, and the acceptance loop fit together. Needs flow charts of skill dependencies and of how artifacts inform skills and skills inform artifacts."
+  }
+]

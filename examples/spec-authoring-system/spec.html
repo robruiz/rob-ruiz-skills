@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spec Authoring System — spec</title>
+<style>
+  :root {
+    --ink:#14171a; --dim:#5b646d; --faint:#8b949c; --line:#e2e5e8; --paper:#fcfcfb; --card:#fff;
+    --accent:#0f7b6c; --accent-soft:#e8f4f1; --warn:#8a5b00; --warn-soft:#fdf3e2; --stop:#a33; --stop-soft:#fdeceb;
+    --r:10px; --maxw:60rem;
+    --fd:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+    --fm:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0}
+  body{font:16px/1.65 var(--fd);color:var(--ink);background:var(--paper);padding:40px 20px 80px}
+  .wrap{max-width:var(--maxw);margin:0 auto}
+  /* ---- header chrome ---- */
+  .bar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline;font-size:.78rem;color:var(--dim);border-bottom:1px solid var(--line);padding-bottom:14px}
+  .bar b{color:var(--ink)}
+  .chip{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:.08em .7em;font-size:.72rem;background:var(--card)}
+  .chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+  h1{font-size:1.9rem;letter-spacing:-.02em;line-height:1.2;margin:22px 0 6px}
+  .sub{color:var(--dim);margin-bottom:26px}
+  /* ---- triad: the first viewport ---- */
+  .triad{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin:0 0 26px}
+  .triad div{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
+  .triad h2{font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:6px}
+  .triad p{font-size:.94rem;line-height:1.5}
+  .readme{background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:6px;padding:14px 18px;margin-bottom:34px}
+  .readme h2{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:8px}
+  .readme ul{padding-left:1.1rem} .readme li{margin:.25rem 0}
+  /* ---- sections ---- */
+  section{margin:40px 0}
+  h2.sec{font-size:1.15rem;letter-spacing:-.01em;margin-bottom:4px}
+  .take{color:var(--dim);font-size:.9rem;margin-bottom:14px}
+  table{border-collapse:collapse;width:100%;font-size:.86rem;background:var(--card)}
+  th,td{text-align:left;padding:.5rem .65rem;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--faint)}
+  code{font-family:var(--fm);font-size:.85em;background:#f1f3f4;padding:.1em .35em;border-radius:4px}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:640px){.cards{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
+  .card.chosen{border-left:3px solid var(--accent)} .card.rejected{border-left:3px solid var(--line);color:var(--dim)}
+  .card b{display:block;margin-bottom:4px}
+  .timeline{list-style:none;padding:0}
+  .timeline li{position:relative;padding:0 0 18px 28px;border-left:1px solid var(--line);margin-left:6px}
+  .timeline li:last-child{border-left-color:transparent}
+  .timeline li::before{content:"";position:absolute;left:-5px;top:.4em;width:9px;height:9px;border-radius:50%;background:var(--accent)}
+  .timeline b{display:block}
+  .callout{background:var(--warn-soft);border-left:3px solid var(--warn);border-radius:6px;padding:12px 16px;margin:12px 0;font-size:.9rem}
+  .callout.stop{background:var(--stop-soft);border-left-color:var(--stop)}
+  details{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:10px 14px;margin:10px 0}
+  summary{cursor:pointer;font-weight:600;font-size:.9rem}
+  figcaption{font-size:.78rem;color:var(--dim);margin-top:8px}
+  figure{margin:16px 0;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+  .cov{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+  /* checklist (open questions) */
+  .check{list-style:none;padding:0;background:var(--card);border:1px solid var(--line);border-radius:var(--r)}
+  .check li{display:flex;gap:10px;align-items:flex-start;padding:11px 14px;border-bottom:1px solid var(--line);font-size:.9rem}
+  .check li:last-child{border-bottom:0}
+  .check li::before{content:"";flex:0 0 15px;height:15px;margin-top:3px;border:1.5px solid var(--faint);border-radius:4px}
+  .check li.done::before{background:var(--accent);border-color:var(--accent);content:"✓";color:#fff;font-size:11px;line-height:13px;text-align:center}
+  .check .meta{color:var(--dim);font-size:.78rem;display:block;margin-top:2px}
+  .check .blocks{color:var(--stop);font-weight:600}
+  /* worked data example */
+  .data{background:#0f1416;color:#e6edf3;border-radius:var(--r);padding:14px 16px;font:13px/1.6 var(--fm);overflow-x:auto;margin:10px 0}
+  .data .lab{display:block;color:#7fd6c4;font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px;font-family:var(--fd)}
+  .data pre{margin:0;white-space:pre-wrap}
+  /* mockup embed */
+  .mockframe{border:1px dashed var(--faint);border-radius:var(--r);padding:12px;background:#fff;overflow:hidden}
+  .mockframe .region{border:1px solid var(--line);border-radius:6px;overflow:hidden;transform-origin:top left}
+  /* review scorecard */
+  .score{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:6px 0;margin:10px 0}
+  .score .row{display:grid;grid-template-columns:12rem 4rem 1fr;gap:10px;align-items:center;padding:7px 16px;font-size:.86rem;border-bottom:1px solid var(--line)}
+  .score .row:last-child{border-bottom:0}
+  .score .bar{height:7px;border-radius:99px;background:#eef1f2;overflow:hidden}
+  .score .bar i{display:block;height:100%;background:var(--accent)}
+  .score .total{font-weight:700}
+  .verdict{display:inline-block;border-radius:99px;padding:.15em .8em;font-size:.72rem;font-weight:700;letter-spacing:.06em}
+  .verdict.ship{background:var(--accent-soft);color:var(--accent)}
+  .verdict.revise{background:var(--warn-soft);color:var(--warn)}
+  .verdict.block{background:var(--stop-soft);color:var(--stop)}
+  footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);font-size:.78rem;color:var(--dim);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
+  /* ---- render additions (v2): two-round scorecard, requirement details, figures ---- */
+  .score.two .row{grid-template-columns:minmax(11rem,1fr) 7rem 10rem}
+  .score .row.head span{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);font-weight:400}
+  details pre{font:12.5px/1.6 var(--fm);white-space:pre-wrap;margin:8px 0 2px;color:var(--ink)}
+  figure svg{display:block;width:100%;height:auto}
+  .take .chip{vertical-align:middle;margin-left:6px}
+  .lede{font-size:.92rem;color:var(--dim);margin-bottom:10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="bar">
+    <span><b>Spec Authoring System</b></span>
+    <span>v1.0</span><span>2026-11-10</span><span>Owner: Rob</span>
+    <span class="chip on">draft</span>
+    <span class="chip">depth: md_html</span>
+    <span class="chip">triage: jev 0.91</span>
+    <span class="chip">seams: 3</span>
+    <span class="chip">review: 23/30 REVISE</span>
+  </div>
+
+  <h1>Spec Authoring System</h1>
+  <p class="sub">How this machine decides what a spec needs, who is allowed to think, and who is only allowed to lay out pages.</p>
+
+  <div class="triad">
+    <div><h2>What this solves</h2><p>Specs had three part-owners and no lifecycle, so most of them carried no testable contract and the rest drifted between markdown and HTML.</p></div>
+    <div><h2>How it solves it</h2><p>One spine judges how much spec a request needs, keeps the reasoning on a capable model, and delegates only markup to a cheap one, with markdown as the single source of truth.</p></div>
+    <div><h2>How we prove it</h2><p>Four triage fixtures, one ID set compared across md, HTML and eval, and this document rendered through the very pipeline it describes.</p></div>
+  </div>
+
+  <div class="readme">
+    <h2>30-second read</h2>
+    <ul>
+      <li>Depth is judged per request in three values, not assumed: <code>none</code>, <code>md</code>, <code>md_html</code>.</li>
+      <li>Jev decides depth in ~200-480ms for about $0.00003; a heuristic takes over if it fails, and any fallback forces a human confirmation.</li>
+      <li>Judgment, research, and diagram semantics stay on the capable model. A written packet is the boundary; the renderer may only lay out.</li>
+      <li>Markdown is canonical. The HTML is a disposable view, and any fact that exists only in the HTML is a defect. <span class="chip on">R6</span></li>
+      <li>Four format rules close the comprehension gap: a checked question list, real data examples, embedded mockup regions, and a scored adversarial review before code.</li>
+    </ul>
+  </div>
+
+  <p class="cov"><span class="chip on">R1</span><span class="chip on">R2</span><span class="chip on">R3</span><span class="chip on">R4</span><span class="chip on">R5</span><span class="chip on">R6</span><span class="chip on">R7</span><span class="chip on">R8</span><span class="chip on">R9</span><span class="chip on">R10</span><span class="chip on">R11</span><span class="chip on">R12</span><span class="chip on">R13</span><span class="chip on">R14</span><span class="chip on">R15</span><span class="chip on">R16</span><span class="chip on">R17</span><span class="chip on">R18</span></p>
+
+  <!-- 1. Problem -->
+  <section>
+    <h2 class="sec">Problem</h2>
+    <p class="take">Three part-owners, no lifecycle, and a 13% requirement adoption rate were the measurable symptoms.</p>
+    <p>This machine writes specs constantly and had no single owner for them. Three skills each held a piece (<code>requirements</code> for syntax, <code>fidelity</code> for UI gates, <code>acceptance-eval</code> for close-out), one subagent (<code>architect</code>) wrote markdown nobody rendered, and a project-local skill defined the opposite rule about which format is canonical. The result was predictable: 6 of 46 spec files in the largest corpus carried a requirement list, 8 basenames existed as both <code>.md</code> and <code>.html</code>, and a hand-maintained tracker admitted a dozen rows of <code>needs-triage</code>.</p>
+    <p>The deeper problem is not volume. It is that a spec nobody can read, or a spec built on unverified assumptions, produces implementation that follows it. Garbage in, garbage out.</p>
+    <p>Four gaps survived the first draft of this document: open questions were prose instead of a checklist, data flows were described instead of shown, mockups lived outside the document that referenced them, and readiness was an opinion rather than a score.</p>
+  </section>
+
+  <!-- 2. Solution -->
+  <section>
+    <h2 class="sec">Solution</h2>
+    <p class="take">One spine, one canonical format, one scored review gate.</p>
+    <p>One spine (<code>spec-author</code>) judges how much spec is warranted before any file exists, keeps the reasoning on a capable model, and delegates only markup to a cheap one. A second skill (<code>spec-html</code>) owns what a readable artifact is. <code>requirements</code> supplies the contract and now binds each requirement to its proof. The canonical artifact is markdown; HTML is a view rendered from a render packet, so reasoning can never enter through the back door.</p>
+    <p>Depth is judged per request, in three values, because the two-value version failed in both directions: HTML was written for changes that needed a sentence, and architectural work stayed trapped in markdown nobody read.</p>
+    <p>Four format rules close the comprehension gap. Open questions are a checklist, so unresolved items cannot hide in a paragraph. Any spec involving data carries a worked example with real values. When mockups exist, the artifact embeds the region that demonstrates the requirement. And a spec is reviewed adversarially against six scored dimensions before it is rendered or implemented.</p>
+  </section>
+
+  <!-- 3. How it runs — Diagram 1 -->
+  <section>
+    <h2 class="sec">How it runs</h2>
+    <p class="take">Judgment happens above the line; only markup happens below it, and the packet is the only way through.</p>
+    <figure>
+      <svg viewBox="0 0 1040 510" role="img" aria-label="Pipeline: request through triage, reasoning, review and packet, down across the capability boundary to spec-render, then back to a self-check">
+        <defs><marker id="d1a" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+          <path d="M0 0 L9 4.5 L0 9 z" fill="#5b646d"/></marker></defs>
+        <g font-family="system-ui,sans-serif">
+          <!-- lanes -->
+          <text x="14" y="26" font-size="11" font-weight="700" fill="#0f7b6c">capable model — judgment</text>
+          <text x="14" y="372" font-size="11" font-weight="700" fill="#8b949c">cheap model — markup</text>
+          <!-- capability boundary -->
+          <line x1="0" y1="330" x2="1040" y2="330" stroke="#a33" stroke-width="1.5" stroke-dasharray="8 5"/>
+          <rect x="300" y="319" width="440" height="22" fill="#fcfcfb"/>
+          <text x="520" y="334" font-size="11" font-weight="700" fill="#a33" text-anchor="middle">capability boundary — below this line, no new facts may be authored</text>
+          <!-- nodes -->
+          <g fill="#fff" stroke="#c8ced3" stroke-width="1.2">
+            <rect x="15" y="70" width="110" height="40" rx="20"/>
+            <rect x="160" y="70" width="110" height="50" rx="8"/>
+            <rect x="310" y="12" width="90" height="36" rx="6"/>
+            <rect x="310" y="75" width="110" height="48" rx="8"/>
+            <rect x="310" y="145" width="110" height="48" rx="8"/>
+            <rect x="465" y="85" width="110" height="60" rx="4" stroke="#0f7b6c"/>
+            <rect x="620" y="85" width="110" height="50" rx="8"/>
+            <rect x="775" y="85" width="110" height="60" rx="4" stroke="#0f7b6c"/>
+            <rect x="465" y="214" width="110" height="48" rx="8"/>
+            <rect x="310" y="214" width="110" height="48" rx="8"/>
+            <rect x="140" y="214" width="110" height="48" rx="8"/>
+            <rect x="775" y="400" width="110" height="50" rx="8"/>
+            <rect x="610" y="400" width="110" height="60" rx="4" stroke="#0f7b6c"/>
+          </g>
+          <g fill="#14171a" font-size="13" text-anchor="middle">
+            <text x="70" y="95">request</text>
+            <text x="215" y="100">triage</text>
+            <text x="355" y="35" font-size="12">none</text>
+            <text x="365" y="104">reason</text>
+            <text x="365" y="174">reason2</text>
+            <text x="520" y="120">spec.md</text>
+            <text x="675" y="115">review</text>
+            <text x="830" y="120">packet.md</text>
+            <text x="520" y="243">check</text>
+            <text x="365" y="243">implement</text>
+            <text x="195" y="243">04-eval</text>
+            <text x="830" y="430">spec-render</text>
+            <text x="665" y="435">spec.html</text>
+          </g>
+          <!-- R9 badge next to spec-render -->
+          <rect x="893" y="407" width="26" height="16" rx="8" fill="#e8f4f1" stroke="#0f7b6c"/>
+          <text x="906" y="419" font-size="9" font-weight="700" fill="#0f7b6c" text-anchor="middle" font-family="system-ui,sans-serif">R9</text>
+          <!-- edges -->
+          <g fill="none" stroke="#5b646d" stroke-width="1.6" marker-end="url(#d1a)">
+            <path d="M127,90 H156"/>
+            <path d="M215,70 V32 H308"/>
+            <path d="M272,95 H306"/>
+            <path d="M274,110 L306,164"/>
+            <path d="M422,99 H463"/>
+            <path d="M422,167 L463,127"/>
+            <path d="M577,113 H618"/>
+            <path d="M675,83 V62 H365 V73" stroke-dasharray="5 4"/>
+            <path d="M732,112 H773"/>
+            <path d="M860,147 V396"/>
+            <path d="M773,430 H724"/>
+            <path d="M665,398 V285 H522 V266"/>
+            <path d="M577,238 H800 V149" stroke-dasharray="5 4"/>
+            <path d="M520,147 V205 H367 V212"/>
+            <path d="M308,238 H252"/>
+            <path d="M138,238 H90 V138 H463" stroke-dasharray="5 4"/>
+          </g>
+          <g fill="#5b646d" font-size="10" font-family="system-ui,sans-serif">
+            <text x="142" y="82" text-anchor="middle">Jev</text>
+            <text x="262" y="25" text-anchor="middle">2-3 sentences</text>
+            <text x="289" y="88" text-anchor="middle">md</text>
+            <text x="252" y="150">md_html</text>
+            <text x="520" y="56" text-anchor="middle">BLOCK / REVISE</text>
+            <text x="752" y="105" text-anchor="middle">packet</text>
+            <text x="870" y="352">no new facts</text>
+            <text x="594" y="279" text-anchor="middle">self-check</text>
+            <text x="688" y="231" text-anchor="middle">fix packet, re-render</text>
+            <text x="150" y="154">deviation → dated amend</text>
+          </g>
+        </g>
+      </svg>
+      <figcaption>Judgment happens above the line; only markup happens below it.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 4. Component map -->
+  <section>
+    <h2 class="sec">Component map</h2>
+    <p class="take">Every piece has one home and one owner.</p>
+    <p class="lede">The full component map — 15 rows.</p>
+    <table>
+      <tr><th>Piece</th><th>Path</th><th>Owns</th></tr>
+      <tr><td>Routing</td><td><code>~/.config/opencode/AGENTS.md</code></td><td>when a spec is triggered at all</td></tr>
+      <tr><td>Entry</td><td><code>~/.config/opencode/command/spec.md</code></td><td><code>/spec</code> → triage → skill</td></tr>
+      <tr><td>Judge</td><td><code>~/.config/opencode/scripts/spec-triage.mjs</code></td><td>depth, runtime, research flag, confidence; <code>--scope</code> for harness vs project</td></tr>
+      <tr><td>Judge fixtures</td><td><code>~/.config/opencode/scripts/spec-triage-fixtures.json</code></td><td>four expected verdicts; <code>--self-test</code> runs them</td></tr>
+      <tr><td>Judge ledger</td><td><code>~/.local/share/opencode/spec-triage.jsonl</code></td><td>one line per <code>--log</code> call, the proof for R3</td></tr>
+      <tr><td>Judge model</td><td><code>typesafe/jev-1.13</code> via OpenRouter decisions</td><td>the verdict itself</td></tr>
+      <tr><td>Spine</td><td><code>~/.config/opencode/skill/spec-author/SKILL.md</code></td><td>reasoning, md structure, delegation rules, ship checklist</td></tr>
+      <tr><td>Artifact protocol</td><td><code>~/.config/opencode/skill/spec-html/SKILL.md</code></td><td>triad, layout vocabulary, diagrams, data, mockups, scorecard, budgets</td></tr>
+      <tr><td>Contract</td><td><code>~/.config/opencode/skill/requirements/SKILL.md</code></td><td>R-IDs, check binding, NFR coverage</td></tr>
+      <tr><td>Review</td><td><code>~/.config/opencode/skill/spec-review/SKILL.md</code> + <code>critic</code></td><td>six-dimensional scorecard, SHIP/REVISE/BLOCK</td></tr>
+      <tr><td>Skill scope</td><td><code>~/.config/opencode/skill/skill-author/SKILL.md</code></td><td>scope triage before creating or promoting a skill</td></tr>
+      <tr><td>Renderer</td><td>agent <code>spec-render</code> (opencode.json)</td><td>HTML/CSS/SVG only</td></tr>
+      <tr><td>Starting point</td><td><code>~/.config/opencode/spec-templates/spec.md</code>, <code>spec.html</code></td><td>structure, chrome, checklist, data, mockup, scorecard blocks</td></tr>
+      <tr><td>Escaped defects</td><td><code>~/.config/opencode/skill/acceptance-eval/misses.md</code></td><td>check classes that previously slipped through</td></tr>
+      <tr><td>Proof</td><td><code>skill/acceptance-eval/SKILL.md</code> + <code>04-eval.html</code></td><td>verdict per R-ID</td></tr>
+    </table>
+  </section>
+
+  <!-- 5. Proof formats -->
+  <section>
+    <h2 class="sec">Proof formats</h2>
+    <p class="take">An unsigned review is a FAIL, not a PASS.</p>
+    <p class="lede">"Proof: review" is only honest when the review has a shape. These are the five accepted shapes:</p>
+    <table>
+      <tr><th>Method</th><th>What counts as evidence</th></tr>
+      <tr><td><code>command</code></td><td>the exact command plus expected output or exit code; the command must be re-runnable by someone else</td></tr>
+      <tr><td><code>test</code></td><td>test file path and test name, named after the R-ID</td></tr>
+      <tr><td><code>vision</code></td><td>screenshot path under <code>specs/&lt;slug&gt;/evidence/</code>, plus the one thing the reader should see</td></tr>
+      <tr><td><code>walkthrough</code></td><td>numbered steps and the artifact state after each</td></tr>
+      <tr><td><code>review</code></td><td>a checklist item in the md's Review section, signed with reviewer and date, citing the specific line or section inspected</td></tr>
+    </table>
+  </section>
+
+  <!-- 6. Render packet schema -->
+  <section>
+    <h2 class="sec">Render packet schema</h2>
+    <p class="take">A renderer cannot be verified against an unspecified input.</p>
+    <p class="lede">Always a file at <code>specs/&lt;slug&gt;/packet.md</code>. Fields, in this order:</p>
+    <div class="data"><pre>spec.md path · header facts · intro triad (3 verbatim sentences) · 30-second read (≤5 bullets)
+coverage IDs · diagrams[] {id, kind, caption, boundary, nodes, edges}
+data examples[] {label, direction, payload, caption}
+mockups[] {path|fragment, region, mapsTo[], caption}
+review {scores[], total, verdict, reviewer, date, findings[]}
+open questions[] {id, text, default, blocks, resolved?}
+layout plan · IDs to badge · language rules · output path</pre></div>
+  </section>
+
+  <!-- 7. Tuning constants -->
+  <section>
+    <h2 class="sec">Tuning constants</h2>
+    <p class="take">Every threshold has a stated reason, so it can be argued with.</p>
+    <table>
+      <tr><th>Constant</th><th>Value</th><th>Why</th></tr>
+      <tr><td>Confidence floor</td><td>0.6</td><td>observed band where Jev's depth answer flips between md and md_html on the same text</td></tr>
+      <tr><td>Jev timeout</td><td>5s</td><td>about 10× the observed p95 (480ms); beyond that the fallback is cheaper than waiting</td></tr>
+      <tr><td>Artifact size</td><td>~150 KB</td><td>keeps a double-click open instant and forces detail into the md</td></tr>
+      <tr><td>Review rounds</td><td>2</td><td>one to find gaps, one to confirm the fix; a third means the decision is wrong, not the wording</td></tr>
+      <tr><td>Scope promotion threshold</td><td>0.7</td><td>below this the judge is guessing, and a misfit harness skill costs more than a late promotion</td></tr>
+    </table>
+  </section>
+
+  <!-- 8. Skill dependencies — Diagram 2 -->
+  <section>
+    <h2 class="sec">Skill dependencies</h2>
+    <p class="take">Every arrow is a load or a write; no skill writes another skill's artifact.</p>
+    <figure>
+      <svg viewBox="0 0 1100 670" role="img" aria-label="Dependency map: entry, spine, review, artifacts, proof and memory layers, with thick arrows for writes and thin arrows for reads">
+        <defs><marker id="d2a" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+          <path d="M0 0 L9 4.5 L0 9 z" fill="#5b646d"/></marker></defs>
+        <g font-family="system-ui,sans-serif">
+          <!-- layer labels -->
+          <g fill="#8b949c" font-size="10" font-weight="700" letter-spacing="1">
+            <text x="40" y="34">ENTRY</text>
+            <text x="560" y="20">SPINE</text>
+            <text x="770" y="140">REVIEW</text>
+            <text x="345" y="352">ARTIFACTS</text>
+            <text x="350" y="460">PROOF</text>
+            <text x="40" y="460">MEMORY</text>
+          </g>
+          <!-- nodes -->
+          <g fill="#fff" stroke="#c8ced3" stroke-width="1.2">
+            <rect x="40" y="45" width="130" height="34" rx="8"/>
+            <rect x="40" y="100" width="130" height="34" rx="8"/>
+            <rect x="185" y="100" width="105" height="34" rx="8"/>
+            <rect x="350" y="65" width="140" height="40" rx="8"/>
+            <rect x="560" y="30" width="140" height="34" rx="8"/>
+            <rect x="560" y="95" width="140" height="34" rx="8"/>
+            <rect x="560" y="150" width="140" height="34" rx="8"/>
+            <rect x="560" y="205" width="140" height="34" rx="8"/>
+            <rect x="560" y="260" width="140" height="34" rx="8"/>
+            <rect x="770" y="150" width="110" height="34" rx="8"/>
+            <rect x="770" y="205" width="110" height="34" rx="8"/>
+            <rect x="350" y="360" width="130" height="46" rx="4" stroke="#0f7b6c"/>
+            <rect x="560" y="360" width="130" height="46" rx="4" stroke="#0f7b6c"/>
+            <rect x="860" y="360" width="130" height="46" rx="4" stroke="#0f7b6c"/>
+            <rect x="350" y="470" width="160" height="36" rx="8"/>
+            <rect x="350" y="545" width="160" height="36" rx="8"/>
+            <rect x="560" y="470" width="150" height="36" rx="8"/>
+            <rect x="40" y="470" width="130" height="34" rx="8"/>
+            <rect x="40" y="545" width="130" height="34" rx="8"/>
+            <rect x="770" y="470" width="180" height="36" rx="8"/>
+            <rect x="40" y="175" width="200" height="34" rx="8"/>
+            <rect x="40" y="235" width="200" height="34" rx="8"/>
+            <rect x="40" y="295" width="200" height="34" rx="8"/>
+          </g>
+          <g fill="#14171a" font-size="12" text-anchor="middle">
+            <text x="105" y="66">AGENTS.md</text>
+            <text x="105" y="121">/spec</text>
+            <text x="237" y="121">triage</text>
+            <text x="420" y="90" font-weight="600">spec-author</text>
+            <text x="630" y="51">requirements</text>
+            <text x="630" y="116">graft</text>
+            <text x="630" y="171">spec-review</text>
+            <text x="630" y="226">spec-html</text>
+            <text x="630" y="281">spec-render</text>
+            <text x="825" y="171">critic</text>
+            <text x="825" y="226">template</text>
+            <text x="415" y="388">spec.md</text>
+            <text x="625" y="388">packet.md</text>
+            <text x="925" y="388">spec.html</text>
+            <text x="430" y="493">acceptance-eval</text>
+            <text x="430" y="568">test-writing</text>
+            <text x="635" y="493">04-eval.html</text>
+            <text x="105" y="491">worklog</text>
+            <text x="105" y="566">misses.md</text>
+            <text x="860" y="493" font-size="11.5">harness-changelog.md</text>
+            <text x="140" y="196">skill-author</text>
+            <text x="140" y="256" font-size="11.5">spec-triage.mjs --scope</text>
+            <text x="140" y="316" font-size="11.5">harness home | project home</text>
+          </g>
+          <!-- thin edges: reads / loads -->
+          <g fill="none" stroke="#5b646d" stroke-width="1.4" marker-end="url(#d2a)">
+            <path d="M170,62 H310 V75 H348"/>
+            <path d="M170,117 H183"/>
+            <path d="M292,117 H340 V95 H348"/>
+            <path d="M490,74 L558,55"/>
+            <path d="M490,80 L558,112"/>
+            <path d="M490,85 L558,167"/>
+            <path d="M490,90 L558,222"/>
+            <path d="M490,95 L558,277"/>
+            <path d="M700,167 H768"/>
+            <path d="M650,358 V296"/>
+            <path d="M700,222 H768"/>
+            <path d="M470,470 V440 H755 V55 H702"/>
+            <path d="M350,563 H325 V38 H558"/>
+            <path d="M170,562 H250 V440 H430 V469"/>
+            <path d="M140,211 V232"/>
+            <path d="M140,271 V292"/>
+          </g>
+          <!-- thick edges: writes -->
+          <g fill="none" stroke="#0f7b6c" stroke-width="3.2" marker-end="url(#d2a)">
+            <path d="M558,180 H525 V340 H450 V358"/>
+            <path d="M420,105 V358"/>
+            <path d="M480,383 H558"/>
+            <path d="M700,277 H735 V383 H858"/>
+            <path d="M510,488 H558"/>
+            <path d="M600,506 V620 H105 V580"/>
+            <path d="M370,105 V330 H305 V487 H172"/>
+            <path d="M700,112 H1010 V488 H952"/>
+            <path d="M40,192 H20 V62 H38"/>
+          </g>
+          <text x="26" y="152" font-size="9.5" fill="#5b646d">routing row when it is a seat</text>
+          <text x="856" y="104" font-size="10" fill="#5b646d" text-anchor="middle">every skill change</text>
+          <!-- legend -->
+          <text x="40" y="655" font-size="11" fill="#5b646d">Thick arrow = writes. Thin = reads/loads.</text>
+          <!-- boundary -->
+          <rect x="860" y="545" width="215" height="70" rx="8" fill="none" stroke="#8b949c" stroke-width="1.2" stroke-dasharray="6 4"/>
+          <text x="872" y="567" font-size="11" font-weight="700" fill="#5b646d">outside this map:</text>
+          <text x="872" y="588" font-size="11" fill="#5b646d">impeccable, vision-loop, architect</text>
+        </g>
+      </svg>
+      <figcaption>Every arrow is a load or a write; no skill writes another skill's artifact.</figcaption>
+    </figure>
+    <p class="lede">What loads what, and who is allowed to write which artifact:</p>
+    <table>
+      <tr><th>From</th><th>To</th><th>Kind</th></tr>
+      <tr><td>AGENTS.md routing</td><td><code>spec-author</code></td><td>required entry</td></tr>
+      <tr><td><code>/spec</code> command</td><td><code>spec-triage.mjs</code> → <code>spec-author</code></td><td>required entry</td></tr>
+      <tr><td><code>spec-author</code></td><td><code>requirements</code></td><td>required for the contract</td></tr>
+      <tr><td><code>spec-author</code></td><td><code>graft</code></td><td>required when a <code>graft/</code> graph exists</td></tr>
+      <tr><td><code>spec-author</code></td><td><code>spec-html</code></td><td>only when depth is <code>md_html</code></td></tr>
+      <tr><td><code>spec-author</code></td><td><code>spec-review</code></td><td>required before render and before code</td></tr>
+      <tr><td><code>spec-review</code></td><td><code>critic</code></td><td>fresh-context adversarial pass</td></tr>
+      <tr><td><code>spec-review</code></td><td><code>spec.md</code></td><td>writes the scorecard and findings</td></tr>
+      <tr><td><code>skill-author</code></td><td><code>spec-triage.mjs --scope</code></td><td>decides harness vs project home</td></tr>
+      <tr><td><code>skill-author</code></td><td><code>AGENTS.md</code></td><td>routing row only when the skill is a seat</td></tr>
+      <tr><td><code>spec-author</code></td><td>agent <code>spec-render</code></td><td>only for markup; packet in, file out</td></tr>
+      <tr><td><code>spec-html</code></td><td><code>spec-templates/spec.html</code></td><td>copy, then delete unused blocks</td></tr>
+      <tr><td><code>fidelity</code></td><td><code>spec-author</code></td><td>UI builds: spec content comes from the spine, gates stay in fidelity</td></tr>
+      <tr><td><code>acceptance-eval</code></td><td><code>requirements</code></td><td>reads R-IDs; cannot eval without them</td></tr>
+      <tr><td><code>test-writing</code></td><td><code>requirements</code></td><td>locks <code>must</code> R-IDs into named tests</td></tr>
+      <tr><td><code>worklog</code></td><td><code>spec-author</code></td><td>spec path + depth recorded per task</td></tr>
+      <tr><td><code>self-improvement</code></td><td>harness-changelog</td><td>one entry per change to any of the above</td></tr>
+    </table>
+    <p>Not loaded by this system, and deliberately so: <code>impeccable</code> and <code>vision-loop</code> (design and visual verification, separate concerns), <code>architect</code> (a producer of specs, not a consumer of this protocol).</p>
+  </section>
+
+  <!-- 9. Artifacts inform skills — prose + Diagram 3 -->
+  <section>
+    <h2 class="sec">Artifacts inform skills</h2>
+    <p class="take">The loop back from artifacts to skills is the weak direction, and it is the one that keeps the system honest.</p>
+    <p>Two loops, and they are not symmetrical.</p>
+    <p><b>Skills → artifacts.</b> Routing decides whether a spec exists. Triage decides depth. <code>requirements</code> decides the shape of every promise. <code>spec-html</code> decides layout, diagram choice, and summarization. The template supplies the chrome. The packet decides what the renderer may touch.</p>
+    <p><b>Artifacts → skills.</b> This direction is what keeps the system honest, and it is currently the weaker one:</p>
+    <ul>
+      <li>A failed R in <code>04-eval.html</code> amends the md (dated note), which forces the HTML to be regenerated, which is a signal that the original decision was thin.</li>
+      <li>An escaped defect lands in <code>misses.md</code>, which <code>acceptance-eval</code> reads at preflight, which changes the next eval's checks.</li>
+      <li>A spec that triaged <code>md</code> but later needed an artifact is calibration evidence for Jev's thresholds.</li>
+      <li>Every change to the skills themselves gets one line in <code>harness-changelog.md</code>, which <code>self-improvement</code> measures later.</li>
+    </ul>
+    <p class="take" style="margin-top:22px">One loop corrects the spec; the other corrects the system.</p>
+    <figure>
+      <svg viewBox="0 0 900 545" role="img" aria-label="Feedback loop: spec.md to review to spec.html to 04-eval.html to misses.md to harness-changelog.md to skills and back, with a dashed inner loop from 04-eval.html to spec.md and a dashed outer loop from skills to spec.md">
+        <defs><marker id="d3a" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+          <path d="M0 0 L9 4.5 L0 9 z" fill="#5b646d"/></marker></defs>
+        <g font-family="system-ui,sans-serif">
+          <!-- boundary -->
+          <rect x="15" y="15" width="870" height="510" fill="none" stroke="#8b949c" stroke-width="1.2" stroke-dasharray="6 4"/>
+          <rect x="240" y="5" width="420" height="20" fill="#fcfcfb"/>
+          <text x="450" y="19" font-size="11" font-weight="700" fill="#5b646d" text-anchor="middle">all of this is review-enforced today; only triage is automatic</text>
+          <!-- nodes -->
+          <g fill="#fff" stroke="#c8ced3" stroke-width="1.2">
+            <rect x="385" y="78" width="130" height="44" rx="4" stroke="#0f7b6c"/>
+            <rect x="525" y="146" width="130" height="44" rx="8"/>
+            <rect x="555" y="298" width="140" height="44" rx="4" stroke="#0f7b6c"/>
+            <rect x="453" y="420" width="150" height="44" rx="8"/>
+            <rect x="307" y="420" width="130" height="44" rx="4" stroke="#0f7b6c"/>
+            <rect x="179" y="298" width="190" height="44" rx="8"/>
+            <rect x="254" y="146" width="110" height="44" rx="8"/>
+          </g>
+          <g fill="#14171a" font-size="12" text-anchor="middle">
+            <text x="450" y="105">spec.md</text>
+            <text x="590" y="173">review</text>
+            <text x="625" y="325">spec.html</text>
+            <text x="528" y="447">04-eval.html</text>
+            <text x="372" y="447">misses.md</text>
+            <text x="274" y="325" font-size="11.5">harness-changelog.md</text>
+            <text x="309" y="173">skills</text>
+          </g>
+          <!-- cycle edges -->
+          <g fill="none" stroke="#5b646d" stroke-width="1.6" marker-end="url(#d3a)">
+            <path d="M495,122 L545,146"/>
+            <path d="M595,190 L620,298"/>
+            <path d="M607,342 L545,420"/>
+            <path d="M453,442 H439"/>
+            <path d="M307,442 L294,344"/>
+            <path d="M279,298 V192"/>
+            <path d="M355,146 L404,124" stroke-dasharray="5 4"/>
+            <path d="M523,420 L455,124" stroke-dasharray="5 4"/>
+          </g>
+          <g fill="#5b646d" font-size="10.5">
+            <text x="533" y="107">critic, scored</text>
+            <text x="646" y="235">packet, render</text>
+            <text x="603" y="402">R-IDs verified</text>
+            <text x="445" y="486" text-anchor="middle">FAIL that should have been caught</text>
+            <text x="268" y="417" text-anchor="end">new check, one line</text>
+            <text x="240" y="235" text-anchor="end">measured change, one lever</text>
+            <text x="356" y="84" text-anchor="end">template, vocabulary, thresholds</text>
+            <text x="500" y="360" text-anchor="end">deviation → dated amend</text>
+          </g>
+          <g fill="#8b949c" font-size="10">
+            <text x="356" y="100" text-anchor="end">outer loop</text>
+            <text x="500" y="376" text-anchor="end">inner loop</text>
+          </g>
+        </g>
+      </svg>
+      <figcaption>One loop corrects the spec; the other corrects the system.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 10. Requirements -->
+  <section>
+    <h2 class="sec">Requirements</h2>
+    <p class="take">18 promises, 16 of them must, 2 should; each names its proof.</p>
+    <table>
+      <tr><th>ID</th><th>Promise</th><th>Proved by</th></tr>
+      <tr><td><span class="chip on">R1</span></td><td>Depth is judged, not assumed</td><td><code>command</code></td></tr>
+      <tr><td><span class="chip on">R2</span></td><td>Triage never blocks authoring</td><td><code>command</code></td></tr>
+      <tr><td><span class="chip on">R3</span></td><td>Ambiguous depth becomes a human decision</td><td><code>command</code></td></tr>
+      <tr><td><span class="chip on">R4</span></td><td>HTML only for structural work</td><td><code>command</code></td></tr>
+      <tr><td><span class="chip on">R5</span></td><td>Reasoning is not delegated down</td><td><code>review</code></td></tr>
+      <tr><td><span class="chip on">R6</span></td><td>Markdown is canonical, HTML is a view</td><td><code>review</code></td></tr>
+      <tr><td><span class="chip on">R7</span></td><td>Requirements are observable and bound</td><td><code>review</code></td></tr>
+      <tr><td><span class="chip on">R8</span></td><td>R-IDs stay stable across artifacts</td><td><code>review</code></td></tr>
+      <tr><td><span class="chip on">R9</span></td><td>The renderer invents nothing</td><td><code>review</code></td></tr>
+      <tr><td><span class="chip on">R10</span></td><td>The artifact stays cheap to open</td><td><code>command</code></td></tr>
+      <tr><td><span class="chip on">R11</span></td><td>The first viewport answers the triad</td><td><code>vision</code></td></tr>
+      <tr><td><span class="chip on">R12</span></td><td>The downstream loop closes</td><td><code>walkthrough</code></td></tr>
+      <tr><td><span class="chip on">R13</span></td><td>Open questions are a checklist</td><td><code>review</code></td></tr>
+      <tr><td><span class="chip on">R14</span></td><td>Data flows carry a worked example</td><td><code>review</code></td></tr>
+      <tr><td><span class="chip on">R15</span></td><td>Mockups are embedded, not cited</td><td><code>vision</code></td></tr>
+      <tr><td><span class="chip on">R16</span></td><td>Review is scored, not asserted</td><td><code>review</code></td></tr>
+      <tr><td><span class="chip on">R17</span></td><td>A runtime upgrade cannot be hidden by a "none" verdict</td><td><code>command</code></td></tr>
+      <tr><td><span class="chip on">R18</span></td><td>New skills and harness work get a scope verdict, defaulting to project</td><td><code>command</code></td></tr>
+    </table>
+    <details><summary>R1 [must] — Depth is judged, not assumed</summary><pre>When a spec request arrives through /spec, a spec-author trigger, or a direct triage call
+Then spec-triage.mjs returns exactly one of none|md|md_html, plus source, confidence, and any override
+Proof: command — <code>node ~/.config/opencode/scripts/spec-triage.mjs --self-test</code> → 4/4 fixtures, exit 0</pre></details>
+    <details><summary>R2 [must] — Triage never blocks authoring</summary><pre>When Jev is unauthenticated, times out at 5s, or returns an unusable answer
+Then the script exits 0 with source:"fallback", a heuristic depth, and an override note
+Proof: command — run with a bogus API key</pre></details>
+    <details><summary>R3 [must] — Ambiguous depth becomes a human decision</summary><pre>When triage reports source:"fallback", any override, or confidence below 0.6
+Then the agent asks via the question tool before creating a spec file, and every call is recorded with --log
+Proof: command — <code>~/.local/share/opencode/spec-triage.jsonl</code> holds one line per call (written by this spec's own run); /spec and spec-author both pass --log</pre></details>
+    <details><summary>R4 [must] — HTML only for structural work</summary><pre>When depth is none or md
+Then no HTML artifact is created
+If depth is md_html
+Then exactly one single-file artifact sits beside the md
+Proof: command — directory listing after each branch</pre></details>
+    <details><summary>R5 [must] — Reasoning is not delegated down</summary><pre>When any spec is authored
+Then problem, solution, decisions, seams, and diagram semantics are produced by the capable authoring model, and the renderer receives them read-only in a packet
+Proof: review — packet diff versus artifact</pre></details>
+    <details><summary>R6 [must] — Markdown is canonical, HTML is a view</summary><pre>Always
+Then every fact, number, path, section, and requirement in the artifact exists in the md
+Proof: review — section and claim comparison; any HTML-only fact is a defect</pre></details>
+    <details><summary>R7 [must] — Requirements are observable and bound</summary><pre>When the md is written
+Then each R has when/if/then, a priority, and a check row naming method and evidence target
+Proof: review — a requirement without a method is rejected before render</pre></details>
+    <details><summary>R8 [must] — R-IDs stay stable across artifacts</summary><pre>When rendering and when running acceptance-eval
+Then the same R-IDs, count, and meaning appear in md, html, and 04-eval
+Proof: review — ID set comparison</pre></details>
+    <details><summary>R9 [must] — The renderer invents nothing</summary><pre>When spec-render receives a packet
+Then it copies the template, fills only packet content, draws diagrams only from packet nodes and edges, and reports omissions instead of filling gaps
+Proof: review — rendered output versus packet, plus its own omission list</pre></details>
+    <details><summary>R10 [must] — The artifact stays cheap to open</summary><pre>When HTML is generated
+Then it is one file under ~150 KB, inline CSS and SVG, no external dependencies, opened by double-click
+Proof: command — file size; open in browser</pre></details>
+    <details><summary>R11 [should] — The first viewport answers the triad</summary><pre>When a reader opens the artifact
+Then the first screen states what it solves, how, and how it is proven, followed by a 30-second read
+Proof: vision — screenshot at 1280 and 390</pre></details>
+    <details><summary>R12 [should] — The downstream loop closes</summary><pre>When implementation completes
+Then acceptance-eval reports per-R verdicts in 04-eval.html, and any deviation amends the md with a dated note
+Proof: walkthrough — one real spec end to end (this document is the fixture)</pre></details>
+    <details><summary>R13 [must] — Open questions are a checklist</summary><pre>When a spec contains open questions
+Then they render as a checklist with one box per question, each carrying a proposed default and a blocks flag; resolved items are checked with the answer inline
+Proof: review — no prose-style question list survives in md or html</pre></details>
+    <details><summary>R14 [must] — Data flows carry a worked example</summary><pre>When a spec involves a data flow, payload, record, or state change
+Then it contains at least one example with actual values, labeled by direction (request/response/before/after/record)
+Proof: review — the example exists and its values match the code or a real run</pre></details>
+    <details><summary>R15 [must] — Mockups are embedded, not cited</summary><pre>When mockups exist for the work
+Then the artifact embeds the region that demonstrates the requirement, captioned with what it settles and the R-IDs it demonstrates
+Proof: vision — the artifact shows the region, and the caption names the IDs</pre></details>
+    <details><summary>R16 [must] — Review is scored, not asserted</summary><pre>When a spec is reviewed before implementation
+Then six dimensions (context completeness, requirement testability, readiness, implementation confidence, risk coverage, decision traceability) are scored 0-5 against the anchors in spec-review, with cited evidence, a total out of 30, and a SHIP / REVISE / BLOCK verdict; any dimension at 2 or below blocks SHIP
+Proof: review — scorecard present in md, signed with reviewer and date; verdict consistent with the scores</pre></details>
+    <details><summary>R17 [must] — A runtime upgrade cannot be hidden by a "none" verdict</summary><pre>When triage answers depth:none but runtime is cross_system or migration
+Then the script upgrades depth to md and records the reason in override
+Proof: command — <code>node ~/.config/opencode/scripts/spec-triage.mjs --simulate none,cross_system</code> → depth md with the upgrade override</pre></details>
+    <details><summary>R18 [must] — New skills and harness work get a scope verdict, defaulting to project</summary><pre>When a skill is created or a spec changes harness tooling
+Then <code>spec-triage.mjs --scope</code> returns harness or project with confidence, and anything not clearly harness (answer unclear, confidence below 0.7, or judge unavailable) resolves to project
+Proof: command — <code>--scope</code> on a cross-project description returns harness; a repo-specific or vague one returns project</pre></details>
+  </section>
+
+  <!-- 11. Data examples -->
+  <section>
+    <h2 class="sec">Data examples</h2>
+    <p class="take">The verdict is one of three values, carries its own evidence, and cannot be forced upward by framing.</p>
+    <div class="data"><span class="lab">TRIAGE RESULT · depth=md</span><pre>$ node ~/.config/opencode/scripts/spec-triage.mjs --json "Add a dark mode toggle ..."
+{
+  "depth": "md",
+  "runtime": "single_file",
+  "research": true,
+  "confidence": 0.91,
+  "why": "Jev: depth=md (94%, conf 0.91), runtime=single_file",
+  "source": "jev",
+  "cost": 0.000034104
+}</pre></div>
+    <figcaption>What this proves: the verdict is one of three values and names its own evidence.</figcaption>
+    <div class="data" style="margin-top:20px"><span class="lab">RUNTIME UPGRADE · depth none → md</span><pre>$ node ~/.config/opencode/scripts/spec-triage.mjs --simulate none,cross_system
+{"depth":"md","runtime":"cross_system","research":false,"confidence":null,
+ "why":"simulated","source":"simulate",
+ "override":"Runtime shape outranks the depth answer: upgraded none → md."}</pre></div>
+    <figcaption>What this proves: a structural runtime cannot be hidden behind a one-line framing.</figcaption>
+  </section>
+
+  <!-- 12. Mockups -->
+  <section>
+    <h2 class="sec">Mockups</h2>
+    <p class="take">A requirement that only applies when a mockup exists is satisfied by declaring there is none.</p>
+    <p>None exist for this document; R15 is unexercised here and says so. <span class="chip">R15</span></p>
+  </section>
+
+  <!-- 13. Decisions -->
+  <section>
+    <h2 class="sec">Decisions</h2>
+    <p class="take">Fifteen decisions, each with the alternative it beat and the cost it accepted.</p>
+    <div class="cards">
+      <div class="card chosen"><b>1. Triage is a standalone script, not a plugin hook.</b>Chose an explicit CLI over hooking the message path.</div>
+      <div class="card chosen"><b>2. Jev first, heuristic second.</b>Chose the calibrated judge over a keyword heuristic.</div>
+      <div class="card chosen"><b>3. Three depth values, not two.</b>Chose <code>none</code> as a first-class verdict.</div>
+      <div class="card chosen"><b>4. Capability split at a packet boundary.</b>Chose to keep reasoning on the capable model and hand only markup down.</div>
+      <div class="card chosen"><b>5. Markdown canonical, HTML rendered.</b>Chose one source of truth.</div>
+      <div class="card chosen"><b>6. Template as a starting point, not a generator.</b>Chose copy-then-edit over code generation.</div>
+      <div class="card chosen"><b>7. Renderer is a pinned subagent, not a CLI.</b>Chose agent <code>spec-render</code> on MiMo V2.6 Flash at temperature 0.1.</div>
+      <div class="card chosen"><b>8. No enforcement layer.</b>Chose routing rules over a gate that refuses writes.</div>
+      <div class="card chosen"><b>9. Open questions are a checklist, not a paragraph.</b>Chose checkbox syntax in both md and html.</div>
+      <div class="card chosen"><b>10. Show real data instead of describing it.</b>Chose worked examples with actual values over schema prose.</div>
+      <div class="card chosen"><b>11. Embed mockup regions.</b>Chose inline fragments over paths to mockup files.</div>
+      <div class="card chosen"><b>12. Score readiness on six dimensions.</b>Chose a rubric with a hard floor over a narrative verdict.</div>
+      <div class="card chosen"><b>13. Runtime shape outranks a "none" verdict.</b>Chose an automatic upgrade from <code>none</code> to <code>md</code> when triage reports <code>cross_system</code> or <code>migration</code>.</div>
+      <div class="card chosen"><b>14. Packet is always a file.</b>Chose <code>specs/&lt;slug&gt;/packet.md</code> over an inline prompt.</div>
+      <div class="card chosen"><b>15. Scope is judged, defaulting to project.</b>Chose a second judge question over a blanket "skills are global" rule.</div>
+    </div>
+  </section>
+
+  <!-- 14. Out of scope -->
+  <section>
+    <h2 class="sec">Out of scope</h2>
+    <p class="take">The refusals protect the spec from growing.</p>
+    <ul>
+      <li><b>Automated md↔html drift detection.</b> The old <code>spec-docs</code> skill had a heading-count check; this system relies on review. Refused for now because it needs a parser, not a paragraph.</li>
+      <li><b>Spec lifecycle and generated index.</b> Status transitions, supersession, and a generated <code>SPEC_TRACKER</code> are not built. The rot is named, not solved.</li>
+      <li><b>Enforcement.</b> No hook blocks a spec written without triage.</li>
+      <li><b>Registering <code>plugins/jev-shadow.ts</code>.</b> It exists and is dormant; per-message routing signals are a different decision from spec triage.</li>
+      <li><b>Deck / slides mode.</b> A presentation renderer is a separate artifact family.</li>
+      <li><b>Backend/API template variant.</b> <code>spec.html</code> is generic. An API-contract-first variant is not written.</li>
+      <li><b>Replacing <code>fidelity</code>'s UI gates.</b> Mockups remain the contract for visual work; this system only supplies their spec content.</li>
+    </ul>
+  </section>
+
+  <!-- 15. Open questions -->
+  <section>
+    <h2 class="sec">Open questions</h2>
+    <p class="take">All six are settled; the defaults were accepted and are now decisions.</p>
+    <p class="lede">All resolved 2026-11-10 by explicit decision; defaults accepted as written.</p>
+    <ul class="check">
+      <li class="done"><span>Q1 Should triage know about visual deliverables?<span class="meta">resolved: <b>no, depth judges spec complexity only</b></span></span></li>
+      <li class="done"><span>Q2 Should <code>md</code> depth also emit a one-screen HTML summary?<span class="meta">resolved: <b>no, that is how HTML crept in before</b></span></span></li>
+      <li class="done"><span>Q3 For harness work, do specs live in <code>~/.config/opencode/specs/</code> or the project?<span class="meta">resolved: <b>config repo for harness, project root for product</b></span></span></li>
+      <li class="done"><span>Q4 Should the render packet be a file or inline?<span class="meta">resolved: <b>always a file at <code>specs/&lt;slug&gt;/packet.md</code></b></span></span></li>
+      <li class="done"><span>Q5 Should triage be enforced by a pre-write hook?<span class="meta">resolved: <b>not yet, measure misuse for ~10 specs first</b></span></span></li>
+      <li class="done"><span>Q6 Should review scores gate implementation mechanically?<span class="meta">resolved: <b>advisory for <code>md</code>, blocking for <code>md_html</code></b></span></span></li>
+    </ul>
+  </section>
+
+  <!-- 16. Review -->
+  <section>
+    <h2 class="sec">Review</h2>
+    <p class="take">17/30 BLOCK became 23/30 REVISE after 17 findings were answered.</p>
+    <p class="lede">Round 1 — critic, fresh context, 2026-11-10. Verdict <b>BLOCK</b>. Findings F1-F13 answered below; round 2 re-scores only the dimensions that the fixes touched.</p>
+    <div class="score two">
+      <div class="row head"><span>Dimension</span><span>Round 1</span><span>Round 2</span></div>
+      <div class="row"><span>Context completeness</span><span>4/5</span><span>4/5</span></div>
+      <div class="row"><span>Requirement testability</span><span>2/5</span><span>3/5</span></div>
+      <div class="row"><span>Readiness</span><span>2/5</span><span>4/5</span></div>
+      <div class="row"><span>Implementation confidence</span><span>2/5</span><span>3/5</span></div>
+      <div class="row"><span>Risk coverage</span><span>3/5</span><span>4/5</span></div>
+      <div class="row"><span>Decision traceability</span><span>4/5</span><span>5/5</span></div>
+      <div class="row"><span class="total">Total</span><span class="total">17/30 <span class="verdict block">BLOCK</span></span><span class="total">23/30 <span class="verdict revise">REVISE</span> <span class="chip on">R16</span></span></div>
+    </div>
+    <p class="take">Reviewer: critic · 2026-11-10 · round 2. Round-1 findings F1-F13 and round-2 findings F14-F17 all fixed; no third pass, per the 2-round bound.</p>
+    <p class="take">Additive changes after the review loop (scope judgment, skill-author, six resolved questions) were not re-scored.</p>
+    <details>
+      <summary>Findings (F1-F17)</summary>
+      <ul>
+        <li>F1 blocker — Review said "not yet scored" while R16 required a score before render → <b>fixed</b> (this section).</li>
+        <li>F2 blocker — <code>review</code> proofs had no defined shape → <b>fixed</b> (Proof formats table; unsigned review is a FAIL).</li>
+        <li>F3 blocker — R3 cited a run log that did not exist → <b>fixed</b> (<code>--log</code> writes <code>spec-triage.jsonl</code>; R3 now names it).</li>
+        <li>F4 major — packet contract undefined, Q4 reopened it → <b>fixed</b> (Render packet schema; Q4 resolved to always-a-file).</li>
+        <li>F5 major — scorecard had no anchors → <b>fixed</b> (anchors added to <code>spec-review</code>; R16 cites them).</li>
+        <li>F6 major — the <code>none</code>→<code>md</code> runtime upgrade lived only in Risks → <b>fixed</b> (R17 + D13).</li>
+        <li>F7 major — review loop had no exit → <b>fixed</b> (max 2 rounds in Tuning constants and <code>spec-review</code>).</li>
+        <li>F8 major — <code>surface</code> returned but never consumed → <b>fixed</b> (removed from the judge contract and the script).</li>
+        <li>F9 major — <code>misses.md</code> missing from the component map → <b>fixed</b>.</li>
+        <li>F10 minor — mixed path roots → <b>fixed</b> (all paths absolute from <code>~/.config/opencode/</code>).</li>
+        <li>F11 minor — magic numbers → <b>fixed</b> (Tuning constants with a why each).</li>
+        <li>F12 minor — "Seams: 3" never enumerated → <b>fixed</b> (named in the header).</li>
+        <li>F13 minor — fixtures had no home or runner → <b>fixed</b> (<code>spec-triage-fixtures.json</code> + <code>--self-test</code>, 4/4 passing).</li>
+        <li>F14 major — R3's ledger was opt-in and no caller passed <code>--log</code> → <b>fixed</b> (<code>--log</code> is now mandatory in <code>/spec</code> step 1 and in <code>spec-author</code> step 0; the ledger file exists and was written by this spec's own triage run).</li>
+        <li>F15 major — R17's proof named a fixture that could not exercise the upgrade → <b>fixed</b> (deterministic <code>--simulate none,cross_system</code> path; R17 cites it).</li>
+        <li>F16 minor — <code>spec-review</code> contradicted itself on the round cap (1 vs 2) → <b>fixed</b> (single statement: 2 rounds, then escalate).</li>
+        <li>F17 minor — renderer identity conflicted: <code>/spec</code> said <code>medium</code>, the spec said <code>spec-render</code> → <b>fixed</b> (<code>spec-render</code> everywhere; <code>/spec</code> also mandates a written packet).</li>
+      </ul>
+    </details>
+  </section>
+
+  <!-- 17. Risks -->
+  <section>
+    <h2 class="sec">Risks</h2>
+    <p class="take">The three that matter: the renderer is unproven, scores can inflate, and scope promotion is manual.</p>
+    <div class="callout"><b>Renderer quality is unproven.</b> MiMo has never rendered a spec. If it produces weak layout, the fallback is <code>medium</code> after two attempts; if that fails, the seat is wrong, not the skill.</div>
+    <div class="callout"><b>Triage is calibrated on four samples.</b> Confidence 0.91 is the model's, not evidence. The real test is the next ten specs.</div>
+    <div class="callout"><b>"Reasoning stays up" is a prompt rule, not a mechanism.</b> A rushed agent can still delegate reasoning. R5 is checked by review.</div>
+    <div class="callout"><b>No drift check.</b> R6 is only as good as the reviewer.</div>
+    <div class="callout"><b>Depth can be gamed by framing.</b> A request phrased as "quick" may still be architectural; <code>runtime</code> upgrades <code>none</code>→<code>md</code>, but not <code>md</code>→<code>md_html</code>.</div>
+    <div class="callout stop"><b>Scores can inflate.</b> A reviewer that likes the author, or shares its context, will score 5s. The fresh-context rule and the cited-evidence requirement are the only defenses; neither is mechanized.</div>
+    <div class="callout stop"><b>The reviewer can be unavailable.</b> If <code>critic</code> cannot run (provider error, privacy block), the loop must not silently pass: the spec is marked <code>unreviewed</code> and cannot reach <code>md_html</code> render without the user's explicit word.</div>
+    <div class="callout"><b>Scope promotion is manual and forgettable.</b> A project skill that becomes useful everywhere will stay in one repo until someone re-runs <code>--scope</code> and moves it. Nothing detects reuse.</div>
+  </section>
+
+  <footer>
+    <span>Rendered view of <code>~/.config/opencode/specs/spec-authoring-system/spec.md</code> — edit the md, not this file.</span>
+  </footer>
+
+</div>
+</body>
+</html>
