@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Spec Is the Bottleneck — deck spec</title>
 <!--
-  Rendered view of deck/spec.md. If a fact is not in the md / render packet, it does not belong here.
+  Rendered view of ~/Projects/rob-ruiz-skills/deck/spec.md. Edit the md, not this file.
+  If a fact is not in the md / render packet, it does not belong here.
 -->
 <style>
   :root {
@@ -15,13 +16,14 @@
     --fd:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
     --fm:ui-monospace,"SF Mono",Menlo,monospace;
   }
-  /* Opt-in dark theme for a dark-room read. Set <html data-theme="dark">. */
+  /* Dark theme — deck palette from spec.md: near-black #080a0d, panel #101418, accent #35e0c0, alarm #ff6b5e, warn #ffb545, mono #8b98a5. */
   html[data-theme="dark"] {
-    --ink:#e8eef4; --dim:#96a2ad; --faint:#6c7a86; --line:#26313a; --paper:#0b0f13; --card:#121920;
+    --ink:#e8eef4; --dim:#96a2ad; --faint:#6c7a86; --line:#26313a; --paper:#080a0d; --card:#101418;
     --accent:#35e0c0; --accent-soft:#0f2421; --warn:#ffb545; --warn-soft:#2a2113; --stop:#ff6b5e; --stop-soft:#2a1513;
   }
   html[data-theme="dark"] pre { background:#070b0e; }
   html[data-theme="dark"] code { background:#1a222a; }
+  html[data-theme="dark"] .mockframe { background:#0f1419; }
   html[data-theme="dark"] .score .bar { background:#1c252c; }
   *{box-sizing:border-box;margin:0}
   body{font:16px/1.65 var(--fd);color:var(--ink);background:var(--paper);padding:40px 20px 80px}
@@ -29,8 +31,9 @@
   /* ---- header chrome ---- */
   .bar{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline;font-size:.78rem;color:var(--dim);border-bottom:1px solid var(--line);padding-bottom:14px}
   .bar b{color:var(--ink)}
-  .chip{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:.08em .7em;font-size:.72rem;background:var(--card)}
+  .chip{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:.08em .7em;font-size:.72rem;background:var(--card);vertical-align:middle}
   .chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+  .chip.off{color:var(--faint);text-decoration:line-through}
   h1{font-size:1.9rem;letter-spacing:-.02em;line-height:1.2;margin:22px 0 6px}
   .sub{color:var(--dim);margin-bottom:26px}
   /* ---- triad: the first viewport ---- */
@@ -38,13 +41,14 @@
   .triad div{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px}
   .triad h2{font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:6px}
   .triad p{font-size:.94rem;line-height:1.5}
-  .readme{background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:6px;padding:14px 18px;margin-bottom:34px}
+  .readme{background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:6px;padding:14px 18px;margin-bottom:20px}
   .readme h2{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:8px}
-  .readme ul,.readme ol{padding-left:1.1rem} .readme li{margin:.25rem 0}
+  .readme ul{padding-left:1.1rem} .readme li{margin:.25rem 0}
   /* ---- sections ---- */
   section{margin:40px 0}
   h2.sec{font-size:1.15rem;letter-spacing:-.01em;margin-bottom:4px}
   .take{color:var(--dim);font-size:.9rem;margin-bottom:14px}
+  p+p{margin-top:.8rem}
   table{border-collapse:collapse;width:100%;font-size:.86rem;background:var(--card)}
   th,td{text-align:left;padding:.5rem .65rem;border-bottom:1px solid var(--line);vertical-align:top}
   th{font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--faint)}
@@ -54,16 +58,10 @@
   .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
   .card.chosen{border-left:3px solid var(--accent)} .card.rejected{border-left:3px solid var(--line);color:var(--dim)}
   .card b{display:block;margin-bottom:4px}
-  .timeline{list-style:none;padding:0}
-  .timeline li{position:relative;padding:0 0 18px 28px;border-left:1px solid var(--line);margin-left:6px}
-  .timeline li:last-child{border-left-color:transparent}
-  .timeline li::before{content:"";position:absolute;left:-5px;top:.4em;width:9px;height:9px;border-radius:50%;background:var(--accent)}
-  .timeline b{display:block}
   .callout{background:var(--warn-soft);border-left:3px solid var(--warn);border-radius:6px;padding:12px 16px;margin:12px 0;font-size:.9rem}
   .callout.stop{background:var(--stop-soft);border-left-color:var(--stop)}
   details{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:10px 14px;margin:10px 0}
   summary{cursor:pointer;font-weight:600;font-size:.9rem}
-  details p{font-size:.86rem;margin:.3rem 0}
   figcaption{font-size:.78rem;color:var(--dim);margin-top:8px}
   figure{margin:16px 0;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px}
   .cov{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
@@ -102,12 +100,13 @@
   .verdict.ship{background:var(--accent-soft);color:var(--accent)}
   .verdict.revise{background:var(--warn-soft);color:var(--warn)}
   .verdict.block{background:var(--stop-soft);color:var(--stop)}
-  .dim{color:var(--dim);font-size:.8rem}
   /* withdrawn requirement */
-  tr.withdrawn td{background:#0f1419;color:var(--faint)}
-  tr.withdrawn b{color:var(--dim)}
-  tr.withdrawn .chip{background:transparent;border-style:dashed}
-  .withdrawn-note{display:block;font-size:.84rem;color:var(--dim);border-left:2px solid var(--line);padding-left:10px;margin-top:4px}
+  tr.withdrawn td{color:var(--faint)}
+  tr.withdrawn td b{color:var(--faint)}
+  .badge{font-family:var(--fm);font-size:.72rem;border:1px solid var(--line);border-radius:4px;padding:.05em .4em;background:var(--card);color:var(--accent);white-space:nowrap}
+  .badge.req{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+  .sev{font-size:.68rem;color:var(--faint);text-transform:uppercase;letter-spacing:.08em}
+  ul.plain{padding-left:1.1rem} ul.plain li{margin:.4rem 0}
   footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);font-size:.78rem;color:var(--dim);display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
 </style>
 </head>
@@ -116,7 +115,7 @@
 
   <div class="bar">
     <span><b>The Spec Is the Bottleneck — deck spec</b></span>
-    <span>v1.0</span><span>2026-11-10</span><span>Owner Rob</span>
+    <span>v2.0</span><span>2026-11-10</span><span>Owner: Rob</span>
     <span class="chip on">draft</span>
     <span class="chip">depth: md_html (user override)</span>
     <span class="chip">triage: jev 0.88</span>
@@ -125,429 +124,269 @@
   </div>
 
   <h1>The Spec Is the Bottleneck — deck spec</h1>
-  <p class="sub">A five-minute argument in nine slides: the document is the bottleneck, and the fix is a pipeline rather than better prose.</p>
+  <p class="sub">A fifteen-minute argument in eighteen slides: the document is the bottleneck, and the fix is a pipeline.</p>
 
   <div class="triad">
-    <div><h2>What this solves</h2><p>Specs are unreadable and untested, and the people who must review them have five minutes of patience for a document that takes thirty.</p></div>
-    <div><h2>How it solves it</h2><p>Nine slides, one idea each, every animation carrying a concept, and a proof slide built from two real screenshots of this very document.</p></div>
-    <div><h2>How we prove it</h2><p>A timed rehearsal under 5:15, a QR that resolves, the deck opening offline from one file, and two captures taken after the last edit.</p></div>
+    <div><h2>What this solves</h2><p>Specs are unreadable and untested, and the people who review them spend their day skimming documents that were never built to be read.</p></div>
+    <div><h2>How it solves it</h2><p>Eighteen slides in four movements — the workflow, the machinery, the proof, and the cost — with every mechanism shown rather than asserted.</p></div>
+    <div><h2>How we prove it</h2><p>A timed rehearsal at 875s, a QR that resolves, the deck opening offline, and two dark captures of this very document.</p></div>
   </div>
 
   <div class="readme">
     <h2>30-second read</h2>
-    <ol>
-      <li>Nine slides, fixed time boxes, 300s total; slide 8 gets 50s.</li>
-      <li>The proof slide is the point: one full-width frame, the markdown first, then the HTML artifact scrolling top to bottom at equal width.</li>
-      <li>Motion is tied to meaning: assembly, branching, boundary, alarm, full scroll. No ambient loop behind the proof slide.</li>
-      <li>One file, no dependencies, dark by default, letterboxed on non-16:9 projectors.</li>
-      <li>There is a fallback recording and a printed URL under the QR.</li>
-    </ol>
+    <ul>
+      <li>Eighteen slides, 875s of content, 25s of slack; slide 14 gets 75s.</li>
+      <li>The spec is the first artifact: prompt → spec → plan → implement → review/test.</li>
+      <li>Depth is judged, reasoning stays on the capable model, markup goes to a cheap one.</li>
+      <li>Requirements are bound to proof; reviews are scored, and low scores block.</li>
+      <li>The proof slide scrolls the entire HTML artifact; the limits slide says what still breaks.</li>
+    </ul>
   </div>
 
-  <!-- 1. header / triad / 30-second read above -->
+  <p class="cov">
+    <span class="chip on">R1</span><span class="chip on">R2</span><span class="chip on">R3</span><span class="chip on">R4</span><span class="chip on">R5</span><span class="chip on">R6</span><span class="chip on">R7</span><span class="chip on">R8</span><span class="chip on">R9</span><span class="chip on">R10</span><span class="chip on">R11</span><span class="chip off">R12 withdrawn</span><span class="chip on">R13</span><span class="chip on">R14</span><span class="chip on">R15</span><span class="chip on">R16</span>
+  </p>
 
-  <!-- 2. Timeline diagram -->
+  <!-- 1. Problem -->
   <section>
-    <h2 class="sec">Five-minute timeline</h2>
-    <p class="take">Nine ideas in three hundred seconds; the proof gets the biggest slot.</p>
+    <h2 class="sec">Problem</h2>
+    <p class="take">Unreadable specs are not a taste problem; they are a missing pipeline.</p>
+    <p>Developers are asked to review specs constantly and most specs are unreadable: walls of markdown, no visual shape, no testable contract. The audience has felt this. They have not been shown that the fix is a pipeline, not better prose.</p>
+    <p>The first version of this talk was five minutes and could only assert the thesis. Fifteen minutes buys the argument room to be demonstrated: what makes a spec unreadable, how depth is judged, what the requirements contract actually looks like, how review scores force iteration, and what the whole thing costs in time and tokens.</p>
+  </section>
+
+  <!-- 2. Solution -->
+  <section>
+    <h2 class="sec">Solution</h2>
+    <p class="take">Four movements, eighteen slides, no filler.</p>
+    <p>Eighteen slides in four movements: <b>the workflow and the reading tax → the machinery (depth, judge, loop, capability split, contract, evidence) → the proof (review scores, a real review, the full artifact) → the cost, the limits, and how to use it.</b></p>
+    <p>No slide exists to fill time. Each new slide answers a question the five-minute version had to skip: <i>why is the spec first, what does a bad one look like, who decides how much spec a change needs, what stops a cheap model from inventing architecture, what makes a requirement testable, what does a review catch, and what does this cost?</i></p>
+    <p>The proof slide remains the load-bearing one: the same document in both formats, markdown first, then the full HTML artifact scrolling top to bottom. Fixing a bad decision at spec time costs minutes; fixing it after implementation costs a rebuild plus the tokens spent getting there.</p>
+    <p>Dark by default, high motion, low word count. Motion is tied to a concept: a flow that assembles, a branch that splits, a boundary that separates thinking from formatting, scores that fall to 11 and recover to 23.</p>
+  </section>
+
+  <!-- 3. Timeline diagram -->
+  <section>
+    <h2 class="sec">Timeline</h2>
+    <p class="take">Nine ideas in three hundred seconds became eighteen in eight hundred seventy-five.</p>
     <figure>
-      <svg viewBox="0 0 760 210" width="100%" height="210" role="img" aria-label="Timeline: nine slides across 0:00 to 5:00, slide 8 widest and accent-filled, playhead at 0:00">
-        <g stroke="#26313a" stroke-width="1">
-          <line x1="40" y1="30" x2="40" y2="112"/>
-          <line x1="168" y1="30" x2="168" y2="112"/>
-          <line x1="296" y1="30" x2="296" y2="112"/>
-          <line x1="424" y1="30" x2="424" y2="112"/>
-          <line x1="552" y1="30" x2="552" y2="112"/>
-          <line x1="680" y1="30" x2="680" y2="112"/>
+      <svg viewBox="0 0 960 168" width="100%" height="168" role="img" aria-label="Fifteen-minute timeline: eighteen slide blocks from 0:00 to 14:35, slide 14 widest and accented">
+        <!-- baseline axis 0:00 -> 15:00 -->
+        <line x1="20" y1="95" x2="940" y2="95" stroke="#26313a" stroke-width="1.5"/>
+        <!-- 18 blocks: x = 20 + start_s * 920/900, w = dur_s * 920/900 - 2 -->
+        <g fill="#141b22" stroke="#2c3a47">
+          <rect x="20"    y="40" width="28.7" height="40" rx="4"/>
+          <rect x="50.7"  y="40" width="59.3" height="40" rx="4"/>
+          <rect x="112"   y="40" width="44"   height="40" rx="4"/>
+          <rect x="158"   y="40" width="49.1" height="40" rx="4"/>
+          <rect x="209.1" y="40" width="49.1" height="40" rx="4"/>
+          <rect x="260.2" y="40" width="44"   height="40" rx="4"/>
+          <rect x="306.2" y="40" width="54.2" height="40" rx="4"/>
+          <rect x="362.4" y="40" width="44"   height="40" rx="4"/>
+          <rect x="408.4" y="40" width="44"   height="40" rx="4"/>
+          <rect x="454.5" y="40" width="54.2" height="40" rx="4"/>
+          <rect x="510.7" y="40" width="44"   height="40" rx="4"/>
+          <rect x="556.6" y="40" width="49.1" height="40" rx="4"/>
+          <rect x="607.8" y="40" width="44"   height="40" rx="4"/>
+          <rect x="730.4" y="40" width="49.1" height="40" rx="4"/>
+          <rect x="781.6" y="40" width="44"   height="40" rx="4"/>
+          <rect x="827.6" y="40" width="33.8" height="40" rx="4"/>
+          <rect x="863.3" y="40" width="49.1" height="40" rx="4"/>
         </g>
-        <g fill="#6c7a86" font-size="9" text-anchor="middle" font-family="system-ui">
-          <text x="40" y="22">0:00</text><text x="168" y="22">1:00</text><text x="296" y="22">2:00</text>
-          <text x="424" y="22">3:00</text><text x="552" y="22">4:00</text><text x="680" y="22">5:00</text>
+        <!-- s14: accent, widest (10:20-11:35, 75s) -->
+        <rect x="653.8" y="40" width="74.7" height="40" rx="4" fill="#35e0c0" stroke="#35e0c0"/>
+        <text x="691" y="30" fill="#35e0c0" font-size="11" text-anchor="middle" font-family="system-ui">slide 14 · 75s · Proof</text>
+        <!-- slide numbers -->
+        <g fill="#96a2ad" font-size="12" text-anchor="middle" font-family="system-ui">
+          <text x="34.3"  y="65">1</text>
+          <text x="80.3"  y="65">2</text>
+          <text x="134"   y="65">3</text>
+          <text x="182.5" y="65">4</text>
+          <text x="233.5" y="65">5</text>
+          <text x="282.2" y="65">6</text>
+          <text x="333.3" y="65">7</text>
+          <text x="384.4" y="65">8</text>
+          <text x="430.4" y="65">9</text>
+          <text x="481.6" y="65">10</text>
+          <text x="532.7" y="65">11</text>
+          <text x="581.1" y="65">12</text>
+          <text x="629.8" y="65">13</text>
+          <text x="754.9" y="65">15</text>
+          <text x="803.6" y="65">16</text>
+          <text x="844.5" y="65">17</text>
+          <text x="887.8" y="65">18</text>
         </g>
-        <g font-family="system-ui" text-anchor="middle">
-          <g><title>s1 · 0:00–0:20 · Title</title>
-            <rect x="40" y="58" width="43" height="50" rx="4" fill="#121920" stroke="#26313a"/>
-            <text x="62" y="88" font-size="13" font-weight="600" fill="#e8eef4">1</text></g>
-          <g><title>s2 · 0:20–1:00 · The workflow</title>
-            <rect x="83" y="58" width="85" height="50" rx="4" fill="#121920" stroke="#26313a"/>
-            <text x="126" y="88" font-size="13" font-weight="600" fill="#e8eef4">2</text></g>
-          <g><title>s3 · 1:00–1:30 · The reading tax</title>
-            <rect x="168" y="58" width="64" height="50" rx="4" fill="#121920" stroke="#26313a"/>
-            <text x="200" y="88" font-size="13" font-weight="600" fill="#e8eef4">3</text></g>
-          <g><title>s4 · 1:30–2:15 · The loop</title>
-            <rect x="232" y="58" width="96" height="50" rx="4" fill="#121920" stroke="#26313a"/>
-            <text x="280" y="88" font-size="13" font-weight="600" fill="#e8eef4">4</text></g>
-          <g><title>s5 · 2:15–2:50 · Judged depth</title>
-            <rect x="328" y="58" width="75" height="50" rx="4" fill="#121920" stroke="#26313a"/>
-            <text x="365" y="88" font-size="13" font-weight="600" fill="#e8eef4">5</text></g>
-          <g><title>s6 · 2:50–3:25 · Capability split</title>
-            <rect x="403" y="58" width="74" height="50" rx="4" fill="#121920" stroke="#26313a"/>
-            <text x="440" y="88" font-size="13" font-weight="600" fill="#e8eef4">6</text></g>
-          <g><title>s7 · 3:25–3:45 · Scored review</title>
-            <rect x="477" y="58" width="43" height="50" rx="4" fill="#121920" stroke="#26313a"/>
-            <text x="498" y="88" font-size="13" font-weight="600" fill="#e8eef4">7</text></g>
-          <g><title>s8 · 3:45–4:35 · Proof</title>
-            <rect x="520" y="44" width="107" height="64" rx="4" fill="#35e0c0" stroke="#35e0c0"/>
-            <text x="573" y="81" font-size="14" font-weight="700" fill="#0b0f13">8</text></g>
-          <g><title>s9 · 4:35–5:00 · Use it</title>
-            <rect x="627" y="58" width="53" height="50" rx="4" fill="#1a222a" stroke="#26313a"/>
-            <text x="654" y="88" font-size="13" font-weight="600" fill="#6c7a86">9</text></g>
+        <text x="691" y="65" fill="#06120f" font-size="13" font-weight="700" text-anchor="middle" font-family="system-ui">14</text>
+        <!-- minute ticks -->
+        <g stroke="#26313a">
+          <line x1="20" y1="95" x2="20" y2="101"/><line x1="81.3" y1="95" x2="81.3" y2="101"/>
+          <line x1="142.7" y1="95" x2="142.7" y2="101"/><line x1="204" y1="95" x2="204" y2="101"/>
+          <line x1="265.3" y1="95" x2="265.3" y2="101"/><line x1="326.7" y1="95" x2="326.7" y2="101"/>
+          <line x1="388" y1="95" x2="388" y2="101"/><line x1="449.3" y1="95" x2="449.3" y2="101"/>
+          <line x1="510.7" y1="95" x2="510.7" y2="101"/><line x1="572" y1="95" x2="572" y2="101"/>
+          <line x1="633.3" y1="95" x2="633.3" y2="101"/><line x1="694.7" y1="95" x2="694.7" y2="101"/>
+          <line x1="756" y1="95" x2="756" y2="101"/><line x1="817.3" y1="95" x2="817.3" y2="101"/>
+          <line x1="878.7" y1="95" x2="878.7" y2="101"/><line x1="940" y1="95" x2="940" y2="101"/>
         </g>
-        <line x1="40" y1="112" x2="680" y2="112" stroke="#96a2ad" stroke-width="2"/>
-        <g stroke="#96a2ad" stroke-width="1.5">
-          <line x1="40" y1="112" x2="40" y2="117"/><line x1="168" y1="112" x2="168" y2="117"/>
-          <line x1="296" y1="112" x2="296" y2="117"/><line x1="424" y1="112" x2="424" y2="117"/>
-          <line x1="552" y1="112" x2="552" y2="117"/><line x1="680" y1="112" x2="680" y2="117"/>
+        <g fill="#6c7a86" font-size="10" text-anchor="middle" font-family="system-ui">
+          <text x="20" y="115">0:00</text><text x="81.3" y="115">1:00</text><text x="142.7" y="115">2:00</text>
+          <text x="204" y="115">3:00</text><text x="265.3" y="115">4:00</text><text x="326.7" y="115">5:00</text>
+          <text x="388" y="115">6:00</text><text x="449.3" y="115">7:00</text><text x="510.7" y="115">8:00</text>
+          <text x="572" y="115">9:00</text><text x="633.3" y="115">10:00</text><text x="694.7" y="115">11:00</text>
+          <text x="756" y="115">12:00</text><text x="817.3" y="115">13:00</text><text x="878.7" y="115">14:00</text>
+          <text x="940" y="115">15:00</text>
         </g>
-        <polygon points="34,28 46,28 40,38" fill="#35e0c0"/>
-        <line x1="40" y1="38" x2="40" y2="112" stroke="#35e0c0" stroke-width="2"/>
-        <g font-size="9.5" text-anchor="middle" font-family="system-ui">
-          <text x="62" y="130" fill="#e8eef4">Title</text>
-          <text x="126" y="144" fill="#e8eef4">The workflow</text>
-          <text x="200" y="130" fill="#e8eef4">The reading tax</text>
-          <text x="280" y="144" fill="#e8eef4">The loop</text>
-          <text x="365" y="130" fill="#e8eef4">Judged depth</text>
-          <text x="440" y="144" fill="#e8eef4">Capability split</text>
-          <text x="498" y="130" fill="#e8eef4">Scored review</text>
-          <text x="573" y="144" fill="#35e0c0" font-weight="600">Proof</text>
-          <text x="654" y="130" fill="#6c7a86">Use it</text>
-        </g>
-        <line x1="712" y1="30" x2="712" y2="160" stroke="#ff6b5e" stroke-width="1.5" stroke-dasharray="4 4"/>
-        <g fill="#6c7a86" font-size="10" text-anchor="end" font-family="system-ui">
-          <text x="756" y="178">Boundary: hard stop at 5:15 —</text>
-          <text x="756" y="192">the room loses interest at six</text>
+        <!-- slack region 14:35 -> 15:00 -->
+        <line x1="912.4" y1="95" x2="912.4" y2="40" stroke="#26313a" stroke-dasharray="3 3"/>
+        <text x="926" y="133" fill="#6c7a86" font-size="9" text-anchor="middle" font-family="system-ui">25s slack</text>
+        <text x="20" y="152" fill="#96a2ad" font-size="11" font-family="system-ui">Boundary: hard stop at 15:30 — leave room for questions</text>
+      </svg>
+      <figcaption>Eighteen ideas in 875 seconds; the proof gets the largest slot.</figcaption>
+    </figure>
+    <div class="data"><span class="lab">Time budget</span><pre>Total 875s of content · 25s slack · slide 14 = 75s · 18 slides</pre></div>
+  </section>
+
+  <!-- 3b. Four movements diagram -->
+  <section>
+    <h2 class="sec">The four movements</h2>
+    <p class="take">Four movements, one argument: see it, understand it, believe it, use it.</p>
+    <figure>
+      <svg viewBox="0 0 960 152" width="100%" height="152" role="img" aria-label="Four movements: Workflow slides 1-3, Machinery slides 4-11, Proof slides 12-14, Cost and use slides 15-18">
+        <g font-family="system-ui">
+          <rect x="20"    y="35" width="148.3" height="54" rx="10" fill="#141b22" stroke="#2c3a47"/>
+          <rect x="178.3" y="35" width="395.6" height="54" rx="10" fill="#141b22" stroke="#2c3a47"/>
+          <rect x="583.9" y="35" width="148.3" height="54" rx="10" fill="#0f2421" stroke="#35e0c0"/>
+          <rect x="742.2" y="35" width="197.8" height="54" rx="10" fill="#141b22" stroke="#2c3a47"/>
+          <g fill="#e8eef4" font-size="15" text-anchor="middle">
+            <text x="94.2"  y="67">Workflow</text>
+            <text x="376.1" y="67">Machinery</text>
+            <text x="658"   y="67" fill="#35e0c0">Proof</text>
+            <text x="841.1" y="67">Cost &amp; use</text>
+          </g>
+          <g fill="#96a2ad" font-size="12" text-anchor="middle">
+            <text x="94.2"  y="107">slides 1-3</text>
+            <text x="376.1" y="107">slides 4-11</text>
+            <text x="658"   y="107" fill="#35e0c0">slides 12-14</text>
+            <text x="841.1" y="107">slides 15-18</text>
+          </g>
+          <!-- hinge -->
+          <line x1="578.9" y1="26" x2="578.9" y2="118" stroke="#35e0c0" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <text x="583.9" y="140" fill="#96a2ad" font-size="11">Boundary: the proof slide is the hinge</text>
         </g>
       </svg>
-      <figcaption>Nine ideas in three hundred seconds; the proof gets the biggest slot.</figcaption>
-    </figure>
-    <figure>
-      <div class="data"><span class="lab">TIME BUDGET</span><pre>Total        300s (hard stop 5:15)
-Slide 8      50s   (3:45 - 4:35)
-Largest text 25 words visible</pre></div>
-      <figcaption>What this proves: the proof slide owns the largest single slot.</figcaption>
+      <figcaption>Four movements, one argument: see it, understand it, believe it, use it.</figcaption>
     </figure>
   </section>
 
-  <!-- 3. Slide table -->
+  <!-- 4. Slide table -->
   <section>
-    <h2 class="sec">How it runs — slide table</h2>
+    <h2 class="sec">How it runs</h2>
     <p class="take">Every slide earns its seconds.</p>
     <table>
       <tr><th>#</th><th>Time</th><th>Slide</th><th>One idea</th><th>Visual / motion</th></tr>
-      <tr><td>1</td><td>0:00–0:20</td><td>Title</td><td>The spec is the bottleneck</td><td>Grid horizon + drifting particles; title letters assemble from noise</td></tr>
-      <tr><td>2</td><td>0:20–1:00</td><td>The workflow</td><td>Prompt → spec → plan → implement → review</td><td>Five nodes assemble; the spec node swells, then turns red when context is missing</td></tr>
-      <tr><td>3</td><td>1:00–1:30</td><td>The reading tax</td><td>A dev reads dozens of these a day</td><td>Markdown screenshot scrolls past, blurred at 60% opacity, wall of text</td></tr>
-      <tr><td>4</td><td>1:30–2:15</td><td>The loop</td><td>Judge → reason → review → render</td><td>Four nodes assemble left to right, packets travel along edges</td></tr>
-      <tr><td>5</td><td>2:15–2:50</td><td>Judged depth</td><td>Not every change needs a spec</td><td>One input branches into three lanes: none / md / md_html; branches pulse on cue</td></tr>
-      <tr><td>6</td><td>2:50–3:25</td><td>Capability split</td><td>Thinking up, formatting down</td><td>Horizontal boundary line draws across; nodes above glow, nodes below are dimmer</td></tr>
-      <tr><td>7</td><td>3:25–3:45</td><td>Scored review</td><td>Low scores mean iterate</td><td>Two panels: 11/30 in red with "missing context", arrow, 23/30 in green</td></tr>
-      <tr><td>8</td><td>3:45–4:35</td><td>Proof <span class="chip on">R4</span></td><td>Same content, different cost</td><td>Full-width frame: markdown first, then the whole HTML artifact scrolling top to bottom with a progress bar</td></tr>
-      <tr><td>9</td><td>4:35–5:00</td><td>Use it</td><td>You can have this</td><td>Install command types itself; QR draws in module by module <span class="chip on">R5</span></td></tr>
+      <tr><td>1</td><td>0:00–0:30</td><td>Title</td><td>The spec is the bottleneck</td><td>Grid horizon, particles, title assembles</td></tr>
+      <tr><td>2</td><td>0:30–1:30</td><td>The workflow</td><td>Spec is the first artifact</td><td>Five nodes; spec swells; review loop; minutes vs rebuild</td></tr>
+      <tr><td>3</td><td>1:30–2:15</td><td>The reading tax</td><td>You read these all day</td><td>Dark markdown capture, blurred, slow pan</td></tr>
+      <tr><td>4</td><td>2:15–3:05</td><td>Why it is unreadable</td><td>Four failure modes</td><td>Four rows; each turns red as it is named</td></tr>
+      <tr><td>5</td><td>3:05–3:55</td><td>Judged depth</td><td>Not every change needs a spec</td><td>One request, three lanes: none / md / md_html</td></tr>
+      <tr><td>6</td><td>3:55–4:40</td><td>The judge</td><td>A verdict, not a vibe</td><td>Jev call: 200–480ms, $0.00003, fallback, human gate</td></tr>
+      <tr><td>7</td><td>4:40–5:35</td><td>The loop</td><td>Judge, reason, review, render</td><td>Four nodes assemble; revise edge draws</td></tr>
+      <tr><td>8</td><td>5:35–6:20</td><td>Thinking up</td><td>Reasoning is not delegated</td><td>Capable-model node stack; packet as a hall pass</td></tr>
+      <tr><td>9</td><td>6:20–7:05</td><td>The boundary</td><td>No facts cross downward</td><td>Boundary line draws; upper nodes lit, lower dim</td></tr>
+      <tr><td>10</td><td>7:05–8:00</td><td>The contract</td><td>A requirement is a test</td><td>R3 rendered as when/then/proof; unbound rows turn red</td></tr>
+      <tr><td>11</td><td>8:00–8:45</td><td>Evidence</td><td>Show the payload</td><td>Real JSON block; mockup region mapped to R-IDs</td></tr>
+      <tr><td>12</td><td>8:45–9:35</td><td>Scored review <span class="badge req">R15</span></td><td>Low scores mean iterate</td><td>11/30 red vs 23/30 green</td></tr>
+      <tr><td>13</td><td>9:35–10:20</td><td>The review in practice</td><td>What it actually catches</td><td>Two caught defects, 17 findings, 2 rounds</td></tr>
+      <tr><td>14</td><td>10:20–11:35</td><td>Proof <span class="badge req">R4</span></td><td>Same content, different cost</td><td>Markdown, then full artifact scrolling, progress bar</td></tr>
+      <tr><td>15</td><td>11:35–12:25</td><td>What it costs</td><td>Minutes now, a rebuild later</td><td>Cost axis; cheap-model lane; measured triage price</td></tr>
+      <tr><td>16</td><td>12:25–13:10</td><td>Where it breaks</td><td>Honest limits</td><td>Four muted cards, one red</td></tr>
+      <tr><td>17</td><td>13:10–13:45</td><td>What you get</td><td>Five skills, one install</td><td>Repo tree, file counts</td></tr>
+      <tr><td>18</td><td>13:45–14:35</td><td>Use it</td><td>You can have this</td><td>Install lines type; QR draws in</td></tr>
     </table>
+    <p class="take" style="margin-top:10px">Total 875s, leaving 25s of slack inside 15:00.</p>
   </section>
 
-  <!-- 4. Copy table -->
+  <!-- 5. Copy table -->
   <section>
-    <h2 class="sec">Slide copy</h2>
-    <p class="take">Every slide says one thing, and nothing is invented live.</p>
+    <h2 class="sec">Slide copy (verbatim, ≤35 visible words per slide) <span class="badge req">R16</span></h2>
+    <p class="take">Every slide says one thing.</p>
     <table>
-      <tr><th>#</th><th>Slide</th><th>Line (verbatim, ≤25 visible words)</th></tr>
-      <tr><td>1</td><td>Title</td><td><strong>Specs are the bottleneck.</strong> Not your code. Not your model. The document you build from.</td></tr>
-      <tr><td>2</td><td>The workflow</td><td><strong>The spec comes first.</strong> A PRD argues what to build. A spec decides how.</td></tr>
-      <tr><td>3</td><td>The reading tax</td><td><strong>You read these all day.</strong> This is one spec. Imagine twelve.</td></tr>
-      <tr><td>4</td><td>The loop</td><td><strong>Judge. Reason. Review. Render.</strong> Four steps. One canonical file.</td></tr>
-      <tr><td>5</td><td>Judged depth</td><td><strong>Not every change needs a spec.</strong> Quick fix: none. Feature: one file. System: one file, one artifact.</td></tr>
-      <tr><td>6</td><td>Capability split</td><td><strong>Think up here. Format down there.</strong> Research and decisions stay on the capable model. Markup goes to a cheap one.</td></tr>
-      <tr><td>7</td><td>Scored review</td><td><strong>Readiness is a number.</strong> A blocked 11/30. A shipped 23/30. Iterate before you build.</td></tr>
-      <tr><td>8</td><td>Proof</td><td><strong>Same content. Different cost.</strong> The markdown is the source. The HTML is the view.</td></tr>
-      <tr><td>9</td><td>Use it</td><td><strong>Take it.</strong> Clone, install, restart. Scan the code.</td></tr>
+      <tr><th>#</th><th>Copy</th></tr>
+      <tr><td>1</td><td><b>Specs are the bottleneck.</b> Not your code. Not your model. The document you build from.</td></tr>
+      <tr><td>2</td><td><b>The spec comes first.</b> A PRD argues what to build. A spec decides how.</td></tr>
+      <tr><td>3</td><td><b>You read these all day.</b> This is one spec. Six thousand pixels of it.</td></tr>
+      <tr><td>4</td><td><b>Why it is unreadable.</b> No problem. No decisions, only conclusions. Questions in prose. No way to test it.</td></tr>
+      <tr><td>5</td><td><b>Not every change needs a spec.</b> A typo needs a sentence. A feature needs a record. A system needs an artifact.</td></tr>
+      <tr><td>6</td><td><b>A judge, not a hunch.</b> Three hundred milliseconds. Three cents per thousand calls. A human confirms the doubt.</td></tr>
+      <tr><td>7</td><td><b>Judge. Reason. Review. Render.</b> Four steps. One canonical file.</td></tr>
+      <tr><td>8</td><td><b>Thinking stays up.</b> Research, decisions, seams. The capable model keeps them.</td></tr>
+      <tr><td>9</td><td><b>Formatting goes down.</b> Markup, CSS, SVG. A cheaper model, on a short leash.</td></tr>
+      <tr><td>10</td><td><b>A requirement is a test.</b> When this. Then that. Proof: a named check.</td></tr>
+      <tr><td>11</td><td><b>Show the payload.</b> A JSON blob beats a paragraph about it. A mockup beats both.</td></tr>
+      <tr><td>12</td><td><b>Low scores mean iterate.</b> Eleven out of thirty blocks. Twenty-three ships.</td></tr>
+      <tr><td>13</td><td><b>It catches real defects.</b> A spec that failed its own rule. A proof that cited a file that never existed.</td></tr>
+      <tr><td>14</td><td><b>Same content. Different cost.</b> The markdown is the source. The HTML is the view.</td></tr>
+      <tr><td>15</td><td><b>Minutes now. A rebuild later.</b> Fix the decision before the code. Tokens follow the same curve.</td></tr>
+      <tr><td>16</td><td><b>Where it breaks.</b> Renderer unproven. Narrow screens unchecked. Promotion manual. Enforcement absent.</td></tr>
+      <tr><td>17</td><td><b>What you get.</b> Five skills. Two templates. One judge. One install.</td></tr>
+      <tr><td>18</td><td><b>Take it. Break it. Improve it.</b> Clone, install, restart. Scan the code.</td></tr>
     </table>
   </section>
 
-  <!-- 5. Sources -->
+  <!-- 6. Sources -->
   <section>
     <h2 class="sec">Sources for the numbers</h2>
     <p class="take">The numbers are traceable, not rhetorical.</p>
-    <ul>
-      <li>Slide 2: the workflow is the standard agentic loop; the PRD/spec distinction is stated in one line on the slide, not argued.</li>
-      <li>Slide 7: scores from the spec-authoring-system spec's own review, rounds 1 and 2, 2026-11-10 (17/30 BLOCK → 23/30 REVISE). The scorecard is in that spec and is reproduced in this deck's <code>spec.html</code> review section.</li>
-      <li>Slide 7 (alarm state): the 11/30 example is illustrative of a blocked spec, labeled as such, not a historical run.</li>
+    <ul class="plain">
+      <li>Slide 3: capture height 6,679px at 1,200px wide, measured from <code>deck/spec.md</code> rendered at 16px.</li>
+      <li>Slide 6: Jev call latency 200–480ms and cost ≈ $0.00003 measured in <code>jev-shadow.jsonl</code> and <code>spec-triage.jsonl</code>.</li>
+      <li>Slides 12–13: spec-authoring-system review, rounds 1 and 2, 2026-11-10 (17/30 BLOCK → 23/30 REVISE, 17 findings). Deck spec itself: 24/30.</li>
+      <li>Slide 16: limits from the spec-authoring-system spec's risk section, not invented for the talk.</li>
     </ul>
   </section>
 
-  <!-- 6. Component shape -->
+  <!-- 7. Component shape -->
   <section>
     <h2 class="sec">Component shape</h2>
-    <p class="take">A single file that runs offline.</p>
-    <p>One folder: <code>deck/index.html</code> plus local assets. No build step, no dependencies, no external fonts, no network. 16:9 stage scaled to the viewport with a <code>transform: scale()</code> wrapper so 1280×720 and 1920×1080 both show the same composition; on 16:10 or 4:3 projectors the stage letterboxes rather than crops.</p>
-    <ul>
-      <li><b>Engine:</b> ~60 lines of JS — slide array, arrow/space/Home/End nav, hash sync (<code>#8</code>), progress rail.</li>
-      <li><b>Motion:</b> CSS transitions and keyframes for entrance and state changes; one <code>requestAnimationFrame</code> canvas for the ambient field, paused when the tab is hidden. Animation libraries are permitted (<code>Q1: as needed</code>) but must be vendored inline so the offline rule holds; none are required for these effects.</li>
-      <li><b>Diagrams:</b> inline SVG with <code>stroke-dasharray</code>/<code>stroke-dashoffset</code> draw-on, per-node stagger via <code>--i</code> custom properties.</li>
-      <li><b>Proof images:</b> <code>assets/spec-md.png</code> and <code>assets/spec-html.png</code>, captured headless at 1440 px wide, referenced relatively.</li>
-      <li><b>QR:</b> static inline SVG generated offline (no network call, works with the laptop in airplane mode). <span class="chip on">R5</span></li>
-      <li><b>Palette:</b> near-black <code>#080a0d</code>, panel <code>#101418</code>, ink <code>#e8eef4</code>, accent <code>#35e0c0</code>, warn <code>#ffb545</code>, mono <code>#8b98a5</code>.</li>
+    <p class="take">One folder that runs offline.</p>
+    <p>One folder: <code>deck/index.html</code> plus local assets. No build step, no dependencies, no external fonts, no network. 16:9 stage scaled to the viewport with a <code>transform: scale()</code> wrapper so 1280×720 and 1920×1080 show the same composition; on 16:10 or 4:3 projectors the stage letterboxes rather than crops.</p>
+    <ul class="plain">
+      <li><b>Engine:</b> ~90 lines of JS — slide array, arrow/space/Home/End nav, hash sync (<code>#14</code>), progress rail, per-slide activation hooks.</li>
+      <li><b>Motion:</b> CSS transitions and keyframes; one <code>requestAnimationFrame</code> canvas for the ambient field, paused when the tab is hidden and on the proof slide. Libraries permitted but must be vendored; none needed.</li>
+      <li><b>Diagrams:</b> inline SVG with draw-on (pathLength + dashoffset), per-node stagger via <code>--i</code>.</li>
+      <li><b>Proof images:</b> <code>assets/spec-md-full.png</code> and <code>assets/spec-html-full.png</code>, full-page captures at 1,200px wide, dark theme.</li>
+      <li><b>QR:</b> static inline SVG generated offline; URL printed underneath.</li>
+      <li><b>Palette:</b> near-black <code>#080a0d</code>, panel <code>#101418</code>, ink <code>#e8eef4</code>, accent <code>#35e0c0</code>, alarm <code>#ff6b5e</code>, warn <code>#ffb545</code>, mono <code>#8b98a5</code>.</li>
+      <li><b>Typography:</b> system sans only, never serif. Minimum 18px effective at 1280×720; SVG labels inherit the sans stack.</li>
     </ul>
   </section>
 
-  <!-- 7. Workflow diagram (slide 2) -->
+  <!-- 8. Requirements -->
   <section>
-    <h2 class="sec">The workflow (slide 2)</h2>
-    <p class="take">Slide 2 sets the stage: modern agentic development runs prompt → spec → plan → implement → review/test, and the spec is the first artifact that constrains everything after it.</p>
-    <p>A PRD states what to build for a stakeholder; a spec records the decisions that make it buildable, which is why it is the artifact worth making legible.</p>
-    <figure>
-      <svg viewBox="0 0 720 150" width="100%" height="150" role="img" aria-label="Flow: prompt to spec to plan to implement to review, with a dashed review and test loop back to implement and the spec node emphasized">
-        <defs>
-          <marker id="wfar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-            <path d="M0 0 L8 4 L0 8z" fill="#96a2ad"/></marker>
-          <marker id="wfback" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
-            <path d="M0 0 L8 4 L0 8z" fill="#ffb545"/></marker>
-        </defs>
-        <g fill="#121920" stroke="#26313a">
-          <rect x="10"  y="45" width="110" height="56" rx="8"/>
-          <rect x="290" y="45" width="110" height="56" rx="8"/>
-          <rect x="430" y="45" width="110" height="56" rx="8"/>
-          <rect x="570" y="45" width="110" height="56" rx="8"/>
-        </g>
-        <rect x="150" y="38" width="110" height="70" rx="8" fill="#0f2421" stroke="#35e0c0" stroke-width="2"/>
-        <g fill="#e8eef4" font-size="13" text-anchor="middle" font-family="system-ui">
-          <text x="65"  y="78">Prompt</text>
-          <text x="205" y="74" font-weight="700" fill="#35e0c0">Spec</text>
-          <text x="345" y="78">Plan</text>
-          <text x="485" y="78">Implement</text>
-          <text x="625" y="78">Review</text>
-        </g>
-        <g stroke="#96a2ad" stroke-width="1.6" marker-end="url(#wfar)">
-          <line x1="120" y1="73" x2="144" y2="73"/>
-          <line x1="260" y1="73" x2="284" y2="73"/>
-          <line x1="400" y1="73" x2="424" y2="73"/>
-          <line x1="540" y1="73" x2="564" y2="73"/>
-        </g>
-        <path d="M625 101 L625 112 Q625 120 617 120 L493 120 Q485 120 485 112 L485 103"
-              fill="none" stroke="#ffb545" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#wfback)"/>
-        <text x="555" y="134" fill="#ffb545" font-size="9.5" text-anchor="middle" font-family="system-ui">review and test loop</text>
-        <text x="205" y="134" fill="#6c7a86" font-size="10" text-anchor="middle" font-family="system-ui">
-          first artifact that constrains everything after it
-        </text>
-      </svg>
-      <figcaption>Five nodes assemble; the spec node swells, then turns red when context is missing.</figcaption>
-    </figure>
-  </section>
-
-  <!-- 8. Loop diagram -->
-  <section>
-    <h2 class="sec">The loop</h2>
-    <p class="take">The talk is the system; the spec describes the talk the same way.</p>
-    <figure>
-      <svg viewBox="0 0 720 175" width="100%" height="175" role="img" aria-label="Flow: request, judge, reason, review, packet, render, with a dashed REVISE back edge">
-        <defs>
-          <marker id="d2ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8z" fill="#96a2ad"/></marker>
-          <marker id="d2arW" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8z" fill="#ffb545"/></marker>
-        </defs>
-        <g fill="#121920" stroke="#26313a">
-          <rect x="12" y="50" width="96" height="44" rx="8"/>
-          <rect x="132" y="50" width="96" height="44" rx="8"/>
-          <rect x="252" y="50" width="96" height="44" rx="8"/>
-          <rect x="372" y="50" width="96" height="44" rx="8"/>
-          <rect x="492" y="50" width="96" height="44" rx="8"/>
-          <rect x="612" y="50" width="96" height="44" rx="8"/>
-        </g>
-        <g fill="#e8eef4" font-size="13" text-anchor="middle" font-family="system-ui">
-          <text x="60" y="77">request</text>
-          <text x="180" y="77">judge</text>
-          <text x="300" y="77">reason</text>
-          <text x="420" y="77">review</text>
-          <text x="540" y="77">packet</text>
-          <text x="660" y="77">render</text>
-        </g>
-        <g stroke="#96a2ad" stroke-width="1.6" marker-end="url(#d2ar)">
-          <line x1="110" y1="72" x2="126" y2="72"/>
-          <line x1="230" y1="72" x2="246" y2="72"/>
-          <line x1="350" y1="72" x2="366" y2="72"/>
-          <line x1="470" y1="72" x2="486" y2="72"/>
-          <line x1="590" y1="72" x2="606" y2="72"/>
-        </g>
-        <g fill="#96a2ad" font-size="9" text-anchor="middle" font-family="system-ui">
-          <text x="120" y="42">Jev</text>
-          <text x="240" y="42">capable model</text>
-          <text x="360" y="42">critic, scored</text>
-          <text x="480" y="42">SHIP only</text>
-          <text x="600" y="42">cheap model</text>
-        </g>
-        <path d="M420 94 L420 118 Q420 126 412 126 L308 126 Q300 126 300 118 L300 100"
-              fill="none" stroke="#ffb545" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#d2arW)"/>
-        <text x="360" y="143" fill="#ffb545" font-size="9" text-anchor="middle" font-family="system-ui">REVISE</text>
-        <text x="360" y="166" fill="#6c7a86" font-size="10" text-anchor="middle" font-family="system-ui">Boundary: nothing reaches the renderer without a decided packet</text>
-      </svg>
-      <figcaption>Judge, reason, review, render — the deck argues for the same loop it was built with.</figcaption>
-    </figure>
-  </section>
-
-  <!-- 9. Depth diagram -->
-  <section>
-    <h2 class="sec">Judged depth</h2>
-    <p class="take">Most changes should not generate a document.</p>
-    <figure>
-      <svg viewBox="0 0 720 246" width="100%" height="246" role="img" aria-label="One request branching to none, md, and md_html across a boundary line">
-        <defs>
-          <marker id="d3ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8z" fill="#96a2ad"/></marker>
-          <marker id="d3arA" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8z" fill="#35e0c0"/></marker>
-        </defs>
-        <line x1="300" y1="6" x2="300" y2="228" stroke="#ffb545" stroke-width="1.5" stroke-dasharray="5 4"/>
-        <g fill="#121920" stroke="#26313a">
-          <rect x="20" y="88" width="110" height="44" rx="8"/>
-          <rect x="400" y="20" width="130" height="38" rx="8"/>
-        </g>
-        <rect x="400" y="86" width="170" height="48" rx="8" fill="#0f2421" stroke="#35e0c0" stroke-width="2"/>
-        <rect x="400" y="162" width="210" height="56" rx="8" fill="#121920" stroke="#26313a"/>
-        <g font-family="system-ui" text-anchor="middle">
-          <text x="75" y="115" font-size="13" fill="#e8eef4">request</text>
-          <text x="465" y="37" font-size="12" fill="#e8eef4">none</text>
-          <text x="465" y="51" font-size="9.5" fill="#96a2ad">3 sentences</text>
-          <text x="485" y="106" font-size="13" font-weight="600" fill="#35e0c0">md</text>
-          <text x="485" y="121" font-size="9.5" fill="#96a2ad">decision record</text>
-          <text x="485" y="147" font-size="9" fill="#35e0c0">common case</text>
-          <text x="505" y="181" font-size="13" fill="#e8eef4">md_html</text>
-          <text x="505" y="196" font-size="9.5" fill="#96a2ad">record + artifact</text>
-          <text x="505" y="210" font-size="9" fill="#96a2ad">flows, refactors, migrations</text>
-        </g>
-        <path d="M130 110 C 250 110, 280 39, 394 39" fill="none" stroke="#96a2ad" stroke-width="1.6" marker-end="url(#d3ar)"/>
-        <line x1="130" y1="110" x2="394" y2="110" stroke="#35e0c0" stroke-width="2" marker-end="url(#d3arA)"/>
-        <path d="M130 110 C 250 110, 280 190, 394 190" fill="none" stroke="#96a2ad" stroke-width="1.6" marker-end="url(#d3ar)"/>
-        <text x="14" y="238" fill="#6c7a86" font-size="10" text-anchor="start" font-family="system-ui">Boundary: only structural work crosses the line</text>
-      </svg>
-      <figcaption>Most changes should not generate a document.</figcaption>
-    </figure>
-  </section>
-
-  <!-- 10. Requirements -->
-  <section>
-    <h2 class="sec">Requirements (when / then / proof)</h2>
-    <p class="take">Fifteen promises; two are seams, the rest are craft.</p>
+    <h2 class="sec">Requirements (when/if/then)</h2>
+    <p class="take">Sixteen promises; three are seams, the rest are craft.</p>
     <table>
-      <tr><th>ID</th><th>Promise</th><th>Proved by</th></tr>
-      <tr><td><span class="chip on">R1</span></td>
-        <td><b>Dark by default</b> <span class="dim">[must]</span>
-          <details><summary>when / then / proof</summary>
-            <p><b>When</b> any slide renders</p>
-            <p><b>Then</b> background is the near-black palette and no slide flashes white during transitions</p>
-            <p><b>Proof</b> vision — screenshot of slides 1, 4, 8</p>
-          </details></td>
-        <td>vision</td></tr>
-      <tr><td><span class="chip on">R2</span></td>
-        <td><b>The talk fits five minutes</b> <span class="dim">[must]</span>
-          <details><summary>when / then / proof</summary>
-            <p><b>When</b> the speaker advances at a steady pace</p>
-            <p><b>Then</b> the nine slides complete in 300s ± 15s, with slide 8 receiving ≥ 45s</p>
-            <p><b>Proof</b> walkthrough — timed rehearsal, per-slide timestamps</p>
-          </details></td>
-        <td>walkthrough</td></tr>
-      <tr><td><span class="chip on">R3</span></td>
-        <td><b>One idea, one visual, few words</b> <span class="dim">[must]</span>
-          <details><summary>when / then / proof</summary>
-            <p><b>When</b> a slide is on screen</p>
-            <p><b>Then</b> it shows at most 25 visible words (counted from the rendered DOM, not the script) and at least one visual element that carries the idea</p>
-            <p><b>Proof</b> command — extract visible text per slide, count; review against the slide-copy table</p>
-          </details></td>
-        <td>command</td></tr>
-      <tr><td><span class="chip on">R4</span></td>
-        <td><b>The comparison is real, full-width, and complete</b> <span class="dim">[must]</span>
-          <details><summary>when / then / proof</summary>
-            <p><b>When</b> slide 8 appears</p>
-            <p><b>Then</b> it shows the markdown capture, then the HTML capture scrolling slowly through the entire document (≥18s top to bottom, progress bar visible), both at equal width and captioned with the active filename; captures are regenerated after the final md edit</p>
-            <p><b>Proof</b> vision — both captures legible at 1920×1080; full scroll observed; file mtimes newer than spec.md</p>
-          </details></td>
-        <td>vision</td></tr>
-      <tr><td><span class="chip on">R5</span> <span class="chip">seam</span></td>
-        <td><b>The QR resolves</b> <span class="dim">[must]</span>
-          <details><summary>when / then / proof</summary>
-            <p><b>When</b> a phone scans the closing QR</p>
-            <p><b>Then</b> it opens https://github.com/robruiz/rob-ruiz-skills within 3 seconds</p>
-            <p><b>Proof</b> command — scan with a phone; fallback is the visible URL line</p>
-          </details></td>
-        <td>command</td></tr>
-      <tr><td><span class="chip on">R6</span> <span class="chip">seam</span></td>
-        <td><b>It runs offline from the deck folder</b> <span class="dim">[must]</span>
-          <details><summary>when / then / proof</summary>
-            <p><b>When</b> the deck is opened from disk with no network</p>
-            <p><b>Then</b> every slide, animation, image, and QR renders, and no request leaves the machine</p>
-            <p><b>Proof</b> command — disable network, open file, advance all slides</p>
-          </details></td>
-        <td>command</td></tr>
-      <tr><td><span class="chip on">R7</span></td>
-        <td><b>Motion is reduced on request</b> <span class="dim">[must]</span>
-          <details><summary>when / then / proof</summary>
-            <p><b>When</b> prefers-reduced-motion is set</p>
-            <p><b>Then</b> transitions are instant, the ambient canvas is static, and draw-on diagrams render complete</p>
-            <p><b>Proof</b> command — toggle the OS setting or emulate via devtools</p>
-          </details></td>
-        <td>command</td></tr>
-      <tr><td><span class="chip on">R8</span></td>
-        <td><b>Navigation cannot strand the speaker</b> <span class="dim">[must]</span>
-          <details><summary>when / then / proof</summary>
-            <p><b>When</b> the speaker presses right/left/space/Home/End</p>
-            <p><b>Then</b> slides advance, the hash updates, and a progress rail shows position</p>
-            <p><b>Proof</b> walkthrough — full forward and backward pass</p>
-          </details></td>
-        <td>walkthrough</td></tr>
-      <tr><td><span class="chip on">R9</span></td>
-        <td><b>Readable at 1280×720</b> <span class="dim">[should]</span>
-          <details><summary>when / then / proof</summary>
-            <p><b>When</b> projected or viewed at 1280×720</p>
-            <p><b>Then</b> no text below 18 px effective size, no horizontal overflow, diagrams legible</p>
-            <p><b>Proof</b> vision — 1280×720 screenshot set</p>
-          </details></td>
-        <td>vision</td></tr>
-      <tr><td><span class="chip on">R10</span></td>
-        <td><b>Every animation explains something</b> <span class="dim">[should]</span>
-          <details><summary>when / then / proof</summary>
-            <p><b>When</b> any slide animates</p>
-            <p><b>Then</b> the motion maps to one named item in the slide's visual column (assembly, branching, boundary, alarm, full scroll), and no ambient loop runs behind the proof slide</p>
-            <p><b>Proof</b> review — animation inventory matches the build, one mapping per slide</p>
-          </details></td>
-        <td>review</td></tr>
-      <tr class="withdrawn"><td><span class="chip">R11</span></td>
-        <td><b>Honest limits slide — WITHDRAWN</b> <span class="dim">[should]</span>
-          <span class="withdrawn-note">Decision 2026-11-10: cut for time; the limits live in the spec and the repo, not on stage</span>
-          <details><summary>proof</summary>
-            <p><b>Proof</b> n/a — withdrawn by the owner</p>
-          </details></td>
-        <td>n/a — withdrawn</td></tr>
-      <tr class="withdrawn"><td><span class="chip">R12</span></td>
-        <td><b>Speaker notes — WITHDRAWN</b> <span class="dim">[could]</span>
-          <span class="withdrawn-note">Decision 2026-11-10: no speaker notes for a five-minute talk; the slide copy is the script</span>
-          <details><summary>proof</summary>
-            <p><b>Proof</b> n/a — withdrawn by the owner</p>
-          </details></td>
-        <td>n/a — withdrawn</td></tr>
-      <tr><td><span class="chip on">R13</span></td>
-        <td><b>There is a fallback recording</b> <span class="dim">[must]</span>
-          <details><summary>when / then / proof</summary>
-            <p><b>When</b> the venue machine or browser fails</p>
-            <p><b>Then</b> a screen recording of the rehearsed pass can play in its place, with the QR still scannable from a phone</p>
-            <p><b>Proof</b> command — file exists and plays offline; duration under 5:10</p>
-          </details></td>
-        <td>command</td></tr>
-      <tr><td><span class="chip on">R14</span></td>
-        <td><b>The captured artifact is dark</b> <span class="dim">[must]</span>
-          <details><summary>when / then / proof</summary>
-            <p><b>When</b> the HTML spec is captured for slide 8</p>
-            <p><b>Then</b> it renders with the dark theme applied and the capture is regenerated from the current spec.md</p>
-            <p><b>Proof</b> vision — asset background is near-black; mtime newer than spec.md</p>
-          </details></td>
-        <td>vision</td></tr>
-      <tr><td><span class="chip on">R15</span></td>
-        <td><b>Missing context and poor scores are alarming</b> <span class="dim">[must]</span>
-          <details><summary>when / then / proof</summary>
-            <p><b>When</b> a spec has unresolved questions, a low dimension score, or a poor total</p>
-            <p><b>Then</b> those states render in alarming color (red family), never as neutral gray, in both the artifact and slide 7</p>
-            <p><b>Proof</b> vision — unresolved checklist items and any dimension at 2 or below are visibly red</p>
-          </details></td>
-        <td>vision</td></tr>
+      <tr><th>ID</th><th>Promise</th><th>When → Then</th><th>Proof</th></tr>
+      <tr><td>R1 <span class="sev">must</span></td><td>Dark by default</td><td>When any slide renders → then background is the near-black palette and no slide flashes white during transitions</td><td>vision — screenshots of slides 1, 9, 14</td></tr>
+      <tr><td>R2 <span class="sev">must</span></td><td>The talk fits fifteen minutes</td><td>When the speaker advances at a steady pace → then the eighteen slides complete in 875s ± 30s, with slide 14 receiving ≥ 70s</td><td>walkthrough — timed rehearsal with per-slide timestamps</td></tr>
+      <tr><td>R3 <span class="sev">must</span></td><td>One idea, one visual, few words</td><td>When a slide is on screen → then it shows at most 35 visible words (counted from the rendered DOM) and one visual that carries the idea</td><td>command — extract visible text per slide, count</td></tr>
+      <tr><td>R4 <span class="sev">must</span></td><td>The comparison is real, full-width, and complete</td><td>When slide 14 appears → then it shows the markdown capture, then the HTML capture scrolling slowly through the entire document (≥30s top to bottom, progress bar visible), both at equal width and captioned with the active filename; captures are regenerated after the final md edit</td><td>vision — both captures legible at 1920×1080; full scroll observed; file mtimes newer than spec.md</td></tr>
+      <tr><td>R5 <span class="sev">must</span></td><td>The QR resolves</td><td>When a phone scans the closing QR → then it opens https://github.com/robruiz/rob-ruiz-skills within 3 seconds</td><td>command — scan with a phone; fallback is the visible URL line</td></tr>
+      <tr><td>R6 <span class="sev">must</span></td><td>It runs offline from the deck folder</td><td>When the deck is opened from disk with no network → then every slide, animation, image, and QR renders, and no request leaves the machine</td><td>command — disable network, open file, advance all slides</td></tr>
+      <tr><td>R7 <span class="sev">must</span></td><td>Motion is reduced on request</td><td>When prefers-reduced-motion is set → then transitions are instant, the ambient canvas is static, and draw-on diagrams render complete</td><td>command — emulate the setting in devtools</td></tr>
+      <tr><td>R8 <span class="sev">must</span></td><td>Navigation cannot strand the speaker</td><td>When the speaker presses right/left/space/Home/End → then slides advance, the hash updates, and a progress rail shows position</td><td>walkthrough — full forward and backward pass</td></tr>
+      <tr><td>R9 <span class="sev">should</span></td><td>Readable at 1280×720</td><td>When projected or viewed at 1280×720 → then no text renders below 18px effective size, no horizontal overflow, diagrams legible</td><td>vision — 1280×720 screenshot set</td></tr>
+      <tr><td>R10 <span class="sev">should</span></td><td>Every animation explains something</td><td>When any slide animates → then the motion maps to one named item in the slide's visual column (assembly, branching, boundary, alarm, full scroll), and no ambient loop runs behind the proof slide</td><td>review — animation inventory matches the build</td></tr>
+      <tr><td>R11 <span class="sev">should</span></td><td>Honest limits slide</td><td>When slide 16 appears → then it names four real weaknesses: renderer unproven beyond two documents, 390px unverified, scope promotion manual, triage enforcement absent</td><td>review — copy check against the risks section</td></tr>
+      <tr class="withdrawn"><td>R12 <span class="sev">could</span></td><td><b>Speaker notes — WITHDRAWN</b> <span class="chip off">withdrawn</span></td><td>Decision 2026-11-10: no speaker notes; the slide copy is the script</td><td>n/a — withdrawn by the owner</td></tr>
+      <tr><td>R13 <span class="sev">must</span></td><td>There is a fallback recording</td><td>When the venue machine or browser fails → then a screen recording of the rehearsed pass can play in its place, with the QR still scannable from a phone</td><td>command — file exists and plays offline; duration under 15:10</td></tr>
+      <tr><td>R14 <span class="sev">must</span></td><td>The captured artifact is dark</td><td>When the HTML spec is captured for slides 3 and 14 → then it renders with the dark theme applied and both captures are regenerated from the current spec.md</td><td>vision — asset background is near-black; mtimes newer than spec.md</td></tr>
+      <tr><td>R15 <span class="sev">must</span></td><td>Missing context and poor scores are alarming</td><td>When a spec has unresolved questions, a low dimension score, or a poor total → then those states render in alarming color (red family), never as neutral gray, in both the artifact and slide 12</td><td>vision — unresolved checklist items and any dimension at 2 or below are visibly red</td></tr>
+      <tr><td>R16 <span class="sev">must</span></td><td>Every added slide earns its time</td><td>When a slide appears after the fifth-minute mark → then it answers a question the audience would otherwise ask (what makes a spec unreadable, who decides depth, what a review catches, what it costs), and it carries specific evidence rather than a restatement</td><td>review — each slide maps to a question in the Solution section; no slide is a recap</td></tr>
     </table>
   </section>
 
-  <!-- 11. Review -->
+  <!-- 9. Review -->
   <section>
     <h2 class="sec">Review</h2>
     <p class="take">The spec for the talk was reviewed the same way the talk says to review specs.</p>
@@ -560,88 +399,73 @@ Largest text 25 words visible</pre></div>
       <div class="row"><span>Decision traceability</span><span>5/5</span><span class="bar"><i style="width:100%"></i></span></div>
       <div class="row"><span class="total">Total</span><span class="total">24/30</span><span><span class="verdict revise">REVISE</span></span></div>
     </div>
-    <div class="alert"><b>Missing context</b>Context completeness (4/5): room and projector aspect unstated.</div>
-    <details>
-      <summary>Evidence per dimension</summary>
-      <p><b>Context completeness 4/5</b> — problem, time constraint, out-of-scope, prior art; room and projector aspect unstated</p>
-      <p><b>Requirement testability 4/5</b> — R1-R9, R12, R13 name method and target; R3/R10 needed a rubric, now added</p>
-      <p><b>Readiness 4/5</b> — palette, engine, asset paths, QR policy decided; slide copy now exists verbatim</p>
-      <p><b>Implementation confidence 4/5</b> — seams named, risky slide de-risked with a full scroll and a crop fallback</p>
-      <p><b>Risk coverage 3/5</b> — four risks with mitigations; fallback recording added as R13</p>
-      <p><b>Decision traceability 5/5</b> — D1-D7 carry alternative, reason, consequence</p>
-    </details>
-    <p class="take">Reviewed by critic · 2026-11-10 · round 1</p>
-    <details>
-      <summary>Findings (F1–F8, answered)</summary>
-      <p>F1 slide copy added; F2 sources added; F3 fallback recording (R13); F4 recapture rule in R4; F5 R12 marked deferred; F6 rubrics added; F7 letterbox behavior; F8 this section.</p>
-    </details>
-    <figure>
-      <div class="data"><span class="lab">REVIEW RESULT</span><pre>Round 1   17/30   BLOCK
-Round 2   23/30   REVISE   (spec-authoring-system spec)
-This deck 24/30   REVISE   (round 1)</pre></div>
-      <figcaption>What this proves: readiness is a number, and it moved.</figcaption>
-    </figure>
+    <div class="alert"><b>Low score, not a note</b>Risk coverage 3/5 — four risks plus the limits slide; fallback recording still the weak point.</div>
+    <p class="take">Reviewed by critic · 2026-11-10 (v1).</p>
+    <details><summary>Review note</summary><p>Reviewed by critic · 2026-11-10 (v1). The v2 changes are additive (nine new slides) and were not re-scored; the carried-forward score applies to the reviewed structure.</p></details>
+    <div class="data"><span class="lab">Review result</span><pre>Round 1 17/30 BLOCK · Round 2 23/30 REVISE · this deck 24/30</pre></div>
   </section>
 
-  <!-- 12. Decisions -->
+  <!-- 10. Decisions -->
   <section>
     <h2 class="sec">Decisions</h2>
-    <p class="take">Eleven decisions, each with the choice and the reason that mattered.</p>
+    <p class="take">Twelve decisions, each recorded with its alternative, its reason, and its consequence.</p>
     <div class="cards">
-      <div class="card chosen"><b>1 · Single-file HTML over rendered video</b>Chose CSS/SVG/Canvas in a local folder over a Remotion MP4. Because the deck must be editable tonight between rehearsals, and a video cannot be fixed thirty seconds before a talk. Consequence: no export path; if the venue needs a file, screen-record it.</div>
-      <div class="card chosen"><b>2 · Nine slides, fixed time boxes</b>Chose nine over a variable deck. Because 30s per idea is the fastest a room can absorb a diagram. Consequence: anything that does not fit is cut, not compressed.</div>
-      <div class="card chosen"><b>3 · Proof by screenshot, not by claim</b>Chose two real captures over a rendered mock. Because the audience already discounts assertions, and this is the one slide that has to land. Consequence: the captures must be taken from the real files at equal width, and redone if the spec changes.</div>
-      <div class="card chosen"><b>4 · Motion tied to meaning</b>Chose purposeful animation over ambient spectacle. Because a deck that loops particles behind text reads as a template, not an argument. Consequence: the ambient field is low-contrast and pauses on the proof slide.</div>
-      <div class="card chosen"><b>5 · Static QR, generated offline</b>Chose an inline SVG QR over a live generator. Because conference wifi is a rumor. Consequence: the repo URL is frozen in the asset; re-print if the repo moves.</div>
-      <div class="card chosen"><b>6 · Two seams only</b>Chose file-opens-offline and QR-resolves as the acceptance seams. Because a deck's real failure modes are a broken asset and a dead link, not a missing animation.</div>
-      <div class="card chosen"><b>7 · One full-width frame, not two half-width captures</b>Chose a single frame that switches from markdown to the scrolling artifact over side-by-side. Because at 1920 px a half-width column is illegible, and legibility is the entire point of the slide. Consequence: the audience sees one file at a time, so the caption must name it.</div>
-      <div class="card chosen"><b>8 · Libraries allowed, but inlined</b>Chose permission with a constraint over a dependency list. Because a five-minute talk cannot debug a missing CDN, and file:// must not make network calls. Consequence: any library used must be vendored locally; none is currently needed.</div>
-      <div class="card chosen"><b>9 · The artifact asset is dark, like the deck</b>Chose a dark render of the HTML spec over the template's light default. Because the room is dark, the projector is bright, and a white page at full screen is a flashbang; developers also read dark by preference. Consequence: the capture is not the template's default look, so the spec must record that the dark theme is applied for the asset.</div>
-      <div class="card chosen"><b>10 · Show the whole document, not the top of it</b>Chose a slow full scroll over a static crop. Because the difference being demonstrated is structural across the entire document, and a top crop can be dismissed as a hero image. Consequence: slide 8 needs 20+ seconds and a tall capture.</div>
-      <div class="card chosen"><b>11 · Alarm styling, not neutral styling</b>Chose red for unresolved questions and low scores over uniform gray. Because a neutral checklist lets a spec with three open questions look finished, which is the exact failure the talk is about. Consequence: the artifact must support a warning state, and both the artifact and the deck share it.</div>
+      <div class="card"><b>1. Expand to eighteen slides for fifteen minutes, not to pad.</b>Chose depth over repetition. Because a longer slot invites a longer argument, not a slower one; every added slide answers a question the short version dodged. Consequence: rehearsal time doubles and the deck must be complete a day earlier.</div>
+      <div class="card"><b>2. Nine slides, fixed time boxes.</b>Chose fixed boxes over a variable deck. Because 45–55s per idea is the fastest a room absorbs a diagram. Consequence: anything that does not fit is cut, not compressed.</div>
+      <div class="card"><b>3. Proof by screenshot, not claim.</b>Chose real captures over rendered mocks. Because the audience discounts assertions, and this is the slide that has to land. Consequence: captures must be retaken whenever the spec changes.</div>
+      <div class="card"><b>4. Motion tied to meaning.</b>Chose purposeful animation over ambient spectacle. Because looping particles behind text read as a template, not an argument. Consequence: the field is low-contrast and pauses on the proof slide.</div>
+      <div class="card"><b>5. Static QR, generated offline.</b>Chose an inline SVG over a live generator. Because conference wifi is a rumor. Consequence: re-print if the repo moves.</div>
+      <div class="card"><b>6. Two seams only.</b>Chose folder-opens-offline and QR-resolves as acceptance seams. Because a deck's real failure modes are a broken asset and a dead link.</div>
+      <div class="card"><b>7. One full-width frame, not two half-width captures.</b>Chose a single frame switching from markdown to the scrolling artifact. Because a half-width column is illegible at projection distance.</div>
+      <div class="card"><b>8. Libraries allowed, but inlined.</b>Chose permission with a constraint over a dependency list. Because file:// must not make network calls. Consequence: any library must be vendored.</div>
+      <div class="card"><b>9. The artifact asset is dark, like the deck.</b>Chose a dark render over the template's light default. Because a white page at full screen is a flashbang in a dark room. Consequence: record that the dark theme is applied for the asset.</div>
+      <div class="card"><b>10. Show the whole document, not the top.</b>Chose a 30s full scroll over a static crop. Because the difference is structural across the whole document.</div>
+      <div class="card"><b>11. Alarm styling, not neutral styling.</b>Chose red for unresolved questions and low scores. Because a neutral checklist lets a three-open-question spec look finished.</div>
+      <div class="card"><b>12. Bring the limits slide back.</b>Chose honesty over a clean ending. Because fifteen minutes has room to say what does not work, and a talk that only sells is easier to discount. Consequence: the closing energy has to be rebuilt on the final slide.</div>
     </div>
   </section>
 
-  <!-- 13. Open questions -->
+  <!-- 11. Open questions -->
   <section>
     <h2 class="sec">Open questions</h2>
-    <p class="take">All five questions are resolved.</p>
+    <p class="take">Six questions, all six resolved.</p>
     <ul class="check">
       <li class="done"><span>Q1 Live HTML or rendered video?<span class="meta">resolved: <b>live HTML, local folder, no network</b></span></span></li>
-      <li class="done"><span>Q2 Which two images prove the point?<span class="meta">resolved: <b>this spec's own md and html, same width</b></span></span></li>
-      <li class="done"><span>Q3 Does the QR need a fallback?<span class="meta">resolved: <b>yes, print the URL under it</b></span></span></li>
-      <li class="done"><span>Q4 Is there a live demo segment, or is the deck the whole talk?<span class="meta">resolved: <b>no live demo; talking over the slides is the whole five minutes</b></span></span></li>
-      <li class="done"><span>Q5 Do we keep speaker notes in v1?<span class="meta">resolved: <b>no; R12 withdrawn, the slide copy is the script</b></span></span></li>
+      <li class="done"><span>Q2 Which images prove the point?<span class="meta">resolved: <b>this spec's own md and html, same width, dark</b></span></span></li>
+      <li class="done"><span>Q3 Does the QR need a fallback?<span class="meta">resolved: <b>printed URL under it</b></span></span></li>
+      <li class="done"><span>Q4 Live demo segment?<span class="meta">resolved: <b>no; talking over the slides is the whole slot</b></span></span></li>
+      <li class="done"><span>Q5 Speaker notes?<span class="meta">resolved: <b>no; R12 withdrawn</b></span></span></li>
+      <li class="done"><span>Q6 Which new topics earn a slide?<span class="meta">resolved: <b>the four failure modes, depth triage, the judge, the requirements contract, evidence, review in practice, cost, limits, repo contents</b></span></span></li>
     </ul>
   </section>
 
-  <!-- 14. Out of scope -->
+  <!-- 12. Out of scope -->
   <section>
     <h2 class="sec">Out of scope</h2>
-    <p class="take">The refusals that protect this spec from growing.</p>
-    <ul>
+    <p class="take">Six refusals that keep this deck from growing.</p>
+    <ul class="plain">
       <li><b>Video export / Remotion.</b> Not built; the deck is live HTML.</li>
-      <li><b>Presenter view across two displays.</b> No second window; <code>#hash</code> navigation only.</li>
-      <li><b>Audience interaction, polls, live demo.</b> The five minutes are scripted time.</li>
-      <li><b>Speaker script word-for-word.</b> The deck carries beats, not a transcript.</li>
-      <li><b>Mobile layout.</b> Projection only; 390 px is explicitly not a target.</li>
-      <li><b>Brand system.</b> A one-off palette, not a reusable theme.</li>
+      <li><b>Presenter view across two displays.</b> One window, <code>#hash</code> navigation.</li>
+      <li><b>Audience interaction, polls, live demo.</b> Scripted time only.</li>
+      <li><b>Speaker script word-for-word.</b> Slides carry beats.</li>
+      <li><b>Mobile layout.</b> Projection only.</li>
+      <li><b>A brand system.</b> One-off palette.</li>
     </ul>
   </section>
 
-  <!-- 15. Risks -->
+  <!-- 13. Risks -->
   <section>
-    <h2 class="sec">Risks <span class="chip on">R13</span></h2>
-    <p class="take">Four risks, each with a stated mitigation.</p>
-    <div class="callout"><b>The proof slide depends on screenshots that may look too similar at projection distance.</b> Mitigation: equal-scale images plus a legibility spotlight on the HTML side; if it still reads flat, crop the markdown to its densest paragraph.</div>
-    <div class="callout"><b>Ambient motion on a projector can stutter or wash out.</b> Mitigation: canvas capped at 24fps, low contrast, paused on text-heavy slides.</div>
-    <div class="callout"><b>Five minutes is easy to overrun.</b> Mitigation: the per-slide budget is in the spec; rehearse twice with a timer.</div>
-    <div class="callout"><b>A venue machine may not have the right fonts.</b> Mitigation: system font stack only, no webfonts.</div>
+    <h2 class="sec">Risks</h2>
+    <p class="take">Four risks, each with the mitigation that answers it.</p>
+    <div class="callout"><b>The proof slide depends on captures that may look similar at distance.</b> Mitigation: dark captures, full scroll, alarm states visible inside the artifact.</div>
+    <div class="callout"><b>Ambient motion can stutter on a projector.</b> Mitigation: capped particle count, low contrast, paused on the proof slide.</div>
+    <div class="callout"><b>Fifteen minutes is easy to overrun.</b> Mitigation: per-slide boxes, two timed rehearsals.</div>
+    <div class="callout"><b>Nine new slides mean nine new failure points.</b> Mitigation: every new slide reuses an existing visual grammar (nodes, branches, bars, cards) rather than inventing one.</div>
   </section>
 
   <footer>
-    <span>Rendered view of <code>deck/spec.md</code> — edit the md, not this file.</span>
-    <span>v1.0 · 2026-11-10</span>
+    <span>Rendered view of <code>~/Projects/rob-ruiz-skills/deck/spec.md</code> — edit the md, not this file.</span>
+    <span>v2.0 · 2026-11-10 · Owner Rob · draft</span>
   </footer>
 
 </div>
