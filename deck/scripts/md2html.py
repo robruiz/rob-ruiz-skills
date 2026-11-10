@@ -71,14 +71,14 @@ def convert(md):
     return "\n".join(out)
 
 CSS = """
-:root{--ink:#1f2328;--dim:#59636e;--line:#d1d9e0;--bg:#fff;--code:#f6f8fa}
+:root{--ink:#e8eef4;--dim:#96a2ad;--line:#26313a;--bg:#0b0f13;--code:#121920}
 *{box-sizing:border-box;margin:0}
 body{background:var(--bg);color:var(--ink);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;padding:32px 40px 80px;max-width:980px;margin:0 auto}
-h1{font-size:1.9rem;line-height:1.25;margin:0 0 8px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+h1{font-size:1.9rem;line-height:1.25;margin:0 0 8px;padding-bottom:8px;border-bottom:1px solid var(--line);color:#fff}
 h2{font-size:1.25rem;margin:28px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--line)}
 h3{font-size:1.05rem;margin:20px 0 6px}
 p{margin:10px 0}
-a{color:#0969da}
+a{color:#35e0c0}
 code{background:var(--code);padding:.15em .35em;border-radius:4px;font:.86em ui-monospace,SFMono-Regular,Menlo,monospace}
 pre{background:var(--code);padding:14px 16px;border-radius:6px;overflow-x:auto;margin:12px 0}
 pre code{background:none;padding:0;font-size:.82rem;line-height:1.5}

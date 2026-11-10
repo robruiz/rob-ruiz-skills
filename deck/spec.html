@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,6 +15,14 @@
     --fd:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
     --fm:ui-monospace,"SF Mono",Menlo,monospace;
   }
+  /* Opt-in dark theme for a dark-room read. Set <html data-theme="dark">. */
+  html[data-theme="dark"] {
+    --ink:#e8eef4; --dim:#96a2ad; --faint:#6c7a86; --line:#26313a; --paper:#0b0f13; --card:#121920;
+    --accent:#35e0c0; --accent-soft:#0f2421; --warn:#ffb545; --warn-soft:#2a2113; --stop:#ff6b5e; --stop-soft:#2a1513;
+  }
+  html[data-theme="dark"] pre { background:#070b0e; }
+  html[data-theme="dark"] code { background:#1a222a; }
+  html[data-theme="dark"] .score .bar { background:#1c252c; }
   *{box-sizing:border-box;margin:0}
   body{font:16px/1.65 var(--fd);color:var(--ink);background:var(--paper);padding:40px 20px 80px}
   .wrap{max-width:var(--maxw);margin:0 auto}
@@ -64,6 +72,12 @@
   .check li{display:flex;gap:10px;align-items:flex-start;padding:11px 14px;border-bottom:1px solid var(--line);font-size:.9rem}
   .check li:last-child{border-bottom:0}
   .check li::before{content:"";flex:0 0 15px;height:15px;margin-top:3px;border:1.5px solid var(--faint);border-radius:4px}
+  /* unresolved questions are a warning, not a neutral state */
+  .check li:not(.done){background:var(--stop-soft)}
+  .check li:not(.done)::before{border:2px solid var(--stop);box-shadow:0 0 0 3px color-mix(in srgb,var(--stop) 18%, transparent)}
+  .check li:not(.done) .blocks{color:var(--stop)}
+  .alert{background:var(--stop-soft);border:1px solid var(--stop);border-left:4px solid var(--stop);border-radius:8px;padding:14px 16px;margin:14px 0;font-size:.92rem}
+  .alert b{color:var(--stop);text-transform:uppercase;letter-spacing:.06em;font-size:.72rem;display:block;margin-bottom:4px}
   .check li.done::before{background:var(--accent);border-color:var(--accent);content:"✓";color:#fff;font-size:11px;line-height:13px;text-align:center}
   .check .meta{color:var(--dim);font-size:.78rem;display:block;margin-top:2px}
   .check .blocks{color:var(--stop);font-weight:600}
@@ -77,6 +91,12 @@
   .score .row:last-child{border-bottom:0}
   .score .bar{height:7px;border-radius:99px;background:#eef1f2;overflow:hidden}
   .score .bar i{display:block;height:100%;background:var(--accent)}
+  .score .bar i.low{background:var(--stop)}
+  .score .row.low{background:var(--stop-soft)}
+  .score .row.low span:first-child{color:var(--stop);font-weight:600}
+  .score .bar i.mid{background:var(--warn)}
+  .score .row.mid{background:var(--warn-soft)}
+  .score .row.mid span:first-child{color:var(--warn);font-weight:600}
   .score .total{font-weight:700}
   .verdict{display:inline-block;border-radius:99px;padding:.15em .8em;font-size:.72rem;font-weight:700;letter-spacing:.06em}
   .verdict.ship{background:var(--accent-soft);color:var(--accent)}
@@ -84,7 +104,7 @@
   .verdict.block{background:var(--stop-soft);color:var(--stop)}
   .dim{color:var(--dim);font-size:.8rem}
   /* withdrawn requirement */
-  tr.withdrawn td{background:#f6f7f8;color:var(--faint)}
+  tr.withdrawn td{background:#0f1419;color:var(--faint)}
   tr.withdrawn b{color:var(--dim)}
   tr.withdrawn .chip{background:transparent;border-style:dashed}
   .withdrawn-note{display:block;font-size:.84rem;color:var(--dim);border-left:2px solid var(--line);padding-left:10px;margin-top:4px}
@@ -105,20 +125,20 @@
   </div>
 
   <h1>The Spec Is the Bottleneck — deck spec</h1>
-  <p class="sub">A five-minute argument in ten slides: the document is the bottleneck, and the fix is a pipeline rather than better prose.</p>
+  <p class="sub">A five-minute argument in nine slides: the document is the bottleneck, and the fix is a pipeline rather than better prose.</p>
 
   <div class="triad">
     <div><h2>What this solves</h2><p>Specs are unreadable and untested, and the people who must review them have five minutes of patience for a document that takes thirty.</p></div>
-    <div><h2>How it solves it</h2><p>Ten slides, one idea each, every animation carrying a concept, and a proof slide built from two real screenshots of this very document.</p></div>
+    <div><h2>How it solves it</h2><p>Nine slides, one idea each, every animation carrying a concept, and a proof slide built from two real screenshots of this very document.</p></div>
     <div><h2>How we prove it</h2><p>A timed rehearsal under 5:15, a QR that resolves, the deck opening offline from one file, and two captures taken after the last edit.</p></div>
   </div>
 
   <div class="readme">
     <h2>30-second read</h2>
     <ol>
-      <li>Ten slides, fixed time boxes, 300s total; slide 8 gets 45s.</li>
-      <li>The proof slide is the point: one full-width frame, markdown wipes into the HTML twin at equal scale.</li>
-      <li>Motion is tied to meaning: assembly, branching, boundary, score, wipe. No ambient loop behind the proof or limits slides.</li>
+      <li>Nine slides, fixed time boxes, 300s total; slide 8 gets 50s.</li>
+      <li>The proof slide is the point: one full-width frame, the markdown first, then the HTML artifact scrolling top to bottom at equal width.</li>
+      <li>Motion is tied to meaning: assembly, branching, boundary, alarm, full scroll. No ambient loop behind the proof slide.</li>
       <li>One file, no dependencies, dark by default, letterboxed on non-16:9 projectors.</li>
       <li>There is a fallback recording and a printed URL under the QR.</li>
     </ol>
@@ -129,10 +149,10 @@
   <!-- 2. Timeline diagram -->
   <section>
     <h2 class="sec">Five-minute timeline</h2>
-    <p class="take">Ten ideas in three hundred seconds; the proof gets the biggest slot.</p>
+    <p class="take">Nine ideas in three hundred seconds; the proof gets the biggest slot.</p>
     <figure>
-      <svg viewBox="0 0 760 210" width="100%" height="210" role="img" aria-label="Timeline: ten slides across 0:00 to 5:00, slide 8 widest and accent-filled, playhead at 0:00">
-        <g stroke="#e2e5e8" stroke-width="1">
+      <svg viewBox="0 0 760 210" width="100%" height="210" role="img" aria-label="Timeline: nine slides across 0:00 to 5:00, slide 8 widest and accent-filled, playhead at 0:00">
+        <g stroke="#26313a" stroke-width="1">
           <line x1="40" y1="30" x2="40" y2="112"/>
           <line x1="168" y1="30" x2="168" y2="112"/>
           <line x1="296" y1="30" x2="296" y2="112"/>
@@ -140,73 +160,69 @@
           <line x1="552" y1="30" x2="552" y2="112"/>
           <line x1="680" y1="30" x2="680" y2="112"/>
         </g>
-        <g fill="#8b949c" font-size="9" text-anchor="middle" font-family="system-ui">
+        <g fill="#6c7a86" font-size="9" text-anchor="middle" font-family="system-ui">
           <text x="40" y="22">0:00</text><text x="168" y="22">1:00</text><text x="296" y="22">2:00</text>
           <text x="424" y="22">3:00</text><text x="552" y="22">4:00</text><text x="680" y="22">5:00</text>
         </g>
         <g font-family="system-ui" text-anchor="middle">
           <g><title>s1 · 0:00–0:20 · Title</title>
-            <rect x="40" y="58" width="43" height="50" rx="4" fill="#fff" stroke="#c8ced3"/>
-            <text x="62" y="88" font-size="13" font-weight="600" fill="#14171a">1</text></g>
-          <g><title>s2 · 0:20–1:00 · The cost</title>
-            <rect x="83" y="58" width="85" height="50" rx="4" fill="#fff" stroke="#c8ced3"/>
-            <text x="126" y="88" font-size="13" font-weight="600" fill="#14171a">2</text></g>
+            <rect x="40" y="58" width="43" height="50" rx="4" fill="#121920" stroke="#26313a"/>
+            <text x="62" y="88" font-size="13" font-weight="600" fill="#e8eef4">1</text></g>
+          <g><title>s2 · 0:20–1:00 · The workflow</title>
+            <rect x="83" y="58" width="85" height="50" rx="4" fill="#121920" stroke="#26313a"/>
+            <text x="126" y="88" font-size="13" font-weight="600" fill="#e8eef4">2</text></g>
           <g><title>s3 · 1:00–1:30 · The reading tax</title>
-            <rect x="168" y="58" width="64" height="50" rx="4" fill="#fff" stroke="#c8ced3"/>
-            <text x="200" y="88" font-size="13" font-weight="600" fill="#14171a">3</text></g>
+            <rect x="168" y="58" width="64" height="50" rx="4" fill="#121920" stroke="#26313a"/>
+            <text x="200" y="88" font-size="13" font-weight="600" fill="#e8eef4">3</text></g>
           <g><title>s4 · 1:30–2:15 · The loop</title>
-            <rect x="232" y="58" width="96" height="50" rx="4" fill="#fff" stroke="#c8ced3"/>
-            <text x="280" y="88" font-size="13" font-weight="600" fill="#14171a">4</text></g>
+            <rect x="232" y="58" width="96" height="50" rx="4" fill="#121920" stroke="#26313a"/>
+            <text x="280" y="88" font-size="13" font-weight="600" fill="#e8eef4">4</text></g>
           <g><title>s5 · 2:15–2:50 · Judged depth</title>
-            <rect x="328" y="58" width="75" height="50" rx="4" fill="#fff" stroke="#c8ced3"/>
-            <text x="365" y="88" font-size="13" font-weight="600" fill="#14171a">5</text></g>
+            <rect x="328" y="58" width="75" height="50" rx="4" fill="#121920" stroke="#26313a"/>
+            <text x="365" y="88" font-size="13" font-weight="600" fill="#e8eef4">5</text></g>
           <g><title>s6 · 2:50–3:25 · Capability split</title>
-            <rect x="403" y="58" width="74" height="50" rx="4" fill="#fff" stroke="#c8ced3"/>
-            <text x="440" y="88" font-size="13" font-weight="600" fill="#14171a">6</text></g>
-          <g><title>s7 · 3:25–3:40 · Scored review</title>
-            <rect x="477" y="58" width="32" height="50" rx="4" fill="#fff" stroke="#c8ced3"/>
-            <text x="493" y="88" font-size="13" font-weight="600" fill="#14171a">7</text></g>
-          <g><title>s8 · 3:40–4:25 · Proof</title>
-            <rect x="509" y="44" width="96" height="64" rx="4" fill="#0f7b6c" stroke="#0f7b6c"/>
-            <text x="557" y="81" font-size="14" font-weight="700" fill="#fff">8</text></g>
-          <g><title>s9 · 4:25–4:40 · Honest limits</title>
-            <rect x="605" y="58" width="32" height="50" rx="4" fill="#f1f3f4" stroke="#dfe3e6"/>
-            <text x="621" y="88" font-size="13" font-weight="600" fill="#8b949c">9</text></g>
-          <g><title>s10 · 4:40–5:00 · Use it</title>
-            <rect x="637" y="58" width="43" height="50" rx="4" fill="#f1f3f4" stroke="#dfe3e6"/>
-            <text x="658" y="88" font-size="13" font-weight="600" fill="#8b949c">10</text></g>
+            <rect x="403" y="58" width="74" height="50" rx="4" fill="#121920" stroke="#26313a"/>
+            <text x="440" y="88" font-size="13" font-weight="600" fill="#e8eef4">6</text></g>
+          <g><title>s7 · 3:25–3:45 · Scored review</title>
+            <rect x="477" y="58" width="43" height="50" rx="4" fill="#121920" stroke="#26313a"/>
+            <text x="498" y="88" font-size="13" font-weight="600" fill="#e8eef4">7</text></g>
+          <g><title>s8 · 3:45–4:35 · Proof</title>
+            <rect x="520" y="44" width="107" height="64" rx="4" fill="#35e0c0" stroke="#35e0c0"/>
+            <text x="573" y="81" font-size="14" font-weight="700" fill="#0b0f13">8</text></g>
+          <g><title>s9 · 4:35–5:00 · Use it</title>
+            <rect x="627" y="58" width="53" height="50" rx="4" fill="#1a222a" stroke="#26313a"/>
+            <text x="654" y="88" font-size="13" font-weight="600" fill="#6c7a86">9</text></g>
         </g>
-        <line x1="40" y1="112" x2="680" y2="112" stroke="#5b646d" stroke-width="2"/>
-        <g stroke="#5b646d" stroke-width="1.5">
+        <line x1="40" y1="112" x2="680" y2="112" stroke="#96a2ad" stroke-width="2"/>
+        <g stroke="#96a2ad" stroke-width="1.5">
           <line x1="40" y1="112" x2="40" y2="117"/><line x1="168" y1="112" x2="168" y2="117"/>
           <line x1="296" y1="112" x2="296" y2="117"/><line x1="424" y1="112" x2="424" y2="117"/>
           <line x1="552" y1="112" x2="552" y2="117"/><line x1="680" y1="112" x2="680" y2="117"/>
         </g>
-        <polygon points="34,28 46,28 40,38" fill="#0f7b6c"/>
-        <line x1="40" y1="38" x2="40" y2="112" stroke="#0f7b6c" stroke-width="2"/>
+        <polygon points="34,28 46,28 40,38" fill="#35e0c0"/>
+        <line x1="40" y1="38" x2="40" y2="112" stroke="#35e0c0" stroke-width="2"/>
         <g font-size="9.5" text-anchor="middle" font-family="system-ui">
-          <text x="62" y="130" fill="#14171a">Title</text>
-          <text x="126" y="144" fill="#14171a">The cost</text>
-          <text x="200" y="130" fill="#14171a">The reading tax</text>
-          <text x="280" y="144" fill="#14171a">The loop</text>
-          <text x="365" y="130" fill="#14171a">Judged depth</text>
-          <text x="440" y="144" fill="#14171a">Capability split</text>
-          <text x="493" y="130" fill="#14171a">Scored review</text>
-          <text x="557" y="144" fill="#0f7b6c" font-weight="600">Proof</text>
-          <text x="621" y="130" fill="#8b949c">Honest limits</text>
-          <text x="658" y="144" fill="#8b949c">Use it</text>
+          <text x="62" y="130" fill="#e8eef4">Title</text>
+          <text x="126" y="144" fill="#e8eef4">The workflow</text>
+          <text x="200" y="130" fill="#e8eef4">The reading tax</text>
+          <text x="280" y="144" fill="#e8eef4">The loop</text>
+          <text x="365" y="130" fill="#e8eef4">Judged depth</text>
+          <text x="440" y="144" fill="#e8eef4">Capability split</text>
+          <text x="498" y="130" fill="#e8eef4">Scored review</text>
+          <text x="573" y="144" fill="#35e0c0" font-weight="600">Proof</text>
+          <text x="654" y="130" fill="#6c7a86">Use it</text>
         </g>
-        <line x1="712" y1="30" x2="712" y2="160" stroke="#a33" stroke-width="1.5" stroke-dasharray="4 4"/>
-        <g fill="#8b949c" font-size="10" text-anchor="end" font-family="system-ui">
+        <line x1="712" y1="30" x2="712" y2="160" stroke="#ff6b5e" stroke-width="1.5" stroke-dasharray="4 4"/>
+        <g fill="#6c7a86" font-size="10" text-anchor="end" font-family="system-ui">
           <text x="756" y="178">Boundary: hard stop at 5:15 —</text>
           <text x="756" y="192">the room loses interest at six</text>
         </g>
       </svg>
-      <figcaption>Ten ideas in three hundred seconds; the proof gets the biggest slot.</figcaption>
+      <figcaption>Nine ideas in three hundred seconds; the proof gets the biggest slot.</figcaption>
     </figure>
     <figure>
       <div class="data"><span class="lab">TIME BUDGET</span><pre>Total        300s (hard stop 5:15)
-Slide 8      45s   (3:40 - 4:25)
+Slide 8      50s   (3:45 - 4:35)
 Largest text 25 words visible</pre></div>
       <figcaption>What this proves: the proof slide owns the largest single slot.</figcaption>
     </figure>
@@ -219,15 +235,14 @@ Largest text 25 words visible</pre></div>
     <table>
       <tr><th>#</th><th>Time</th><th>Slide</th><th>One idea</th><th>Visual / motion</th></tr>
       <tr><td>1</td><td>0:00–0:20</td><td>Title</td><td>The spec is the bottleneck</td><td>Grid horizon + drifting particles; title letters assemble from noise</td></tr>
-      <tr><td>2</td><td>0:20–1:00</td><td>The cost</td><td>Three part-owners, no lifecycle</td><td>Three orbit rings overlapping; numbers count up: 6/46, 8 duplicates, 12 untriaged</td></tr>
+      <tr><td>2</td><td>0:20–1:00</td><td>The workflow</td><td>Prompt → spec → plan → implement → review</td><td>Five nodes assemble; the spec node swells, then turns red when context is missing</td></tr>
       <tr><td>3</td><td>1:00–1:30</td><td>The reading tax</td><td>A dev reads dozens of these a day</td><td>Markdown screenshot scrolls past, blurred at 60% opacity, wall of text</td></tr>
       <tr><td>4</td><td>1:30–2:15</td><td>The loop</td><td>Judge → reason → review → render</td><td>Four nodes assemble left to right, packets travel along edges</td></tr>
       <tr><td>5</td><td>2:15–2:50</td><td>Judged depth</td><td>Not every change needs a spec</td><td>One input branches into three lanes: none / md / md_html; branches pulse on cue</td></tr>
       <tr><td>6</td><td>2:50–3:25</td><td>Capability split</td><td>Thinking up, formatting down</td><td>Horizontal boundary line draws across; nodes above glow, nodes below are dimmer</td></tr>
-      <tr><td>7</td><td>3:25–3:40</td><td>Scored review</td><td>Readiness is a number</td><td>Six bars fill; total lands 17/30 red, then 23/30 green</td></tr>
-      <tr><td>8</td><td>3:40–4:25</td><td>Proof <span class="chip on">R4</span></td><td>Same content, different cost</td><td>One full-width frame: real md screenshot wipes into the HTML twin; caption names the active file</td></tr>
-      <tr><td>9</td><td>4:25–4:40</td><td>Honest limits</td><td>Where it is still weak</td><td>Three muted cards, no animation beyond a slow fade</td></tr>
-      <tr><td>10</td><td>4:40–5:00</td><td>Use it</td><td>You can have this</td><td>Install command types itself; QR draws in module by module <span class="chip on">R5</span></td></tr>
+      <tr><td>7</td><td>3:25–3:45</td><td>Scored review</td><td>Low scores mean iterate</td><td>Two panels: 11/30 in red with "missing context", arrow, 23/30 in green</td></tr>
+      <tr><td>8</td><td>3:45–4:35</td><td>Proof <span class="chip on">R4</span></td><td>Same content, different cost</td><td>Full-width frame: markdown first, then the whole HTML artifact scrolling top to bottom with a progress bar</td></tr>
+      <tr><td>9</td><td>4:35–5:00</td><td>Use it</td><td>You can have this</td><td>Install command types itself; QR draws in module by module <span class="chip on">R5</span></td></tr>
     </table>
   </section>
 
@@ -238,15 +253,14 @@ Largest text 25 words visible</pre></div>
     <table>
       <tr><th>#</th><th>Slide</th><th>Line (verbatim, ≤25 visible words)</th></tr>
       <tr><td>1</td><td>Title</td><td><strong>Specs are the bottleneck.</strong> Not your code. Not your model. The document you build from.</td></tr>
-      <tr><td>2</td><td>The cost</td><td><strong>Three owners. No lifecycle.</strong> Forty-six specs. Six with a testable contract. Eight duplicates. Twelve nobody triaged.</td></tr>
+      <tr><td>2</td><td>The workflow</td><td><strong>The spec comes first.</strong> A PRD argues what to build. A spec decides how.</td></tr>
       <tr><td>3</td><td>The reading tax</td><td><strong>You read these all day.</strong> This is one spec. Imagine twelve.</td></tr>
       <tr><td>4</td><td>The loop</td><td><strong>Judge. Reason. Review. Render.</strong> Four steps. One canonical file.</td></tr>
       <tr><td>5</td><td>Judged depth</td><td><strong>Not every change needs a spec.</strong> Quick fix: none. Feature: one file. System: one file, one artifact.</td></tr>
       <tr><td>6</td><td>Capability split</td><td><strong>Think up here. Format down there.</strong> Research and decisions stay on the capable model. Markup goes to a cheap one.</td></tr>
-      <tr><td>7</td><td>Scored review</td><td><strong>Readiness is a number.</strong> Six dimensions. Seventeen out of thirty. Blocked. Twenty-three. Shipped.</td></tr>
+      <tr><td>7</td><td>Scored review</td><td><strong>Readiness is a number.</strong> A blocked 11/30. A shipped 23/30. Iterate before you build.</td></tr>
       <tr><td>8</td><td>Proof</td><td><strong>Same content. Different cost.</strong> The markdown is the source. The HTML is the view.</td></tr>
-      <tr><td>9</td><td>Honest limits</td><td><strong>Where it still breaks.</strong> Renderer unproven. Small screens unchecked. Promotion manual.</td></tr>
-      <tr><td>10</td><td>Use it</td><td><strong>Take it.</strong> Clone, install, restart. Scan the code.</td></tr>
+      <tr><td>9</td><td>Use it</td><td><strong>Take it.</strong> Clone, install, restart. Scan the code.</td></tr>
     </table>
   </section>
 
@@ -255,8 +269,9 @@ Largest text 25 words visible</pre></div>
     <h2 class="sec">Sources for the numbers</h2>
     <p class="take">The numbers are traceable, not rhetorical.</p>
     <ul>
-      <li>Slide 2: counts from <code>docs/specs</code> in the WP Rig Pro repository, 2026-11-09 (46 files, 6 with requirement syntax, 8 md/html basename pairs, 12 <code>needs-triage</code> rows in the tracker).</li>
+      <li>Slide 2: the workflow is the standard agentic loop; the PRD/spec distinction is stated in one line on the slide, not argued.</li>
       <li>Slide 7: scores from the spec-authoring-system spec's own review, rounds 1 and 2, 2026-11-10 (17/30 BLOCK → 23/30 REVISE). The scorecard is in that spec and is reproduced in this deck's <code>spec.html</code> review section.</li>
+      <li>Slide 7 (alarm state): the 11/30 example is illustrative of a blocked spec, labeled as such, not a historical run.</li>
     </ul>
   </section>
 
@@ -264,7 +279,7 @@ Largest text 25 words visible</pre></div>
   <section>
     <h2 class="sec">Component shape</h2>
     <p class="take">A single file that runs offline.</p>
-    <p>One file: <code>deck/index.html</code>. No build step, no dependencies, no external fonts or images. 16:9 stage scaled to the viewport with a <code>transform: scale()</code> wrapper so 1280×720 and 1920×1080 both show the same composition; on 16:10 or 4:3 projectors the stage letterboxes rather than crops.</p>
+    <p>One folder: <code>deck/index.html</code> plus local assets. No build step, no dependencies, no external fonts, no network. 16:9 stage scaled to the viewport with a <code>transform: scale()</code> wrapper so 1280×720 and 1920×1080 both show the same composition; on 16:10 or 4:3 projectors the stage letterboxes rather than crops.</p>
     <ul>
       <li><b>Engine:</b> ~60 lines of JS — slide array, arrow/space/Home/End nav, hash sync (<code>#8</code>), progress rail.</li>
       <li><b>Motion:</b> CSS transitions and keyframes for entrance and state changes; one <code>requestAnimationFrame</code> canvas for the ambient field, paused when the tab is hidden. Animation libraries are permitted (<code>Q1: as needed</code>) but must be vendored inline so the offline rule holds; none are required for these effects.</li>
@@ -275,17 +290,61 @@ Largest text 25 words visible</pre></div>
     </ul>
   </section>
 
-  <!-- 7. Loop diagram -->
+  <!-- 7. Workflow diagram (slide 2) -->
+  <section>
+    <h2 class="sec">The workflow (slide 2)</h2>
+    <p class="take">Slide 2 sets the stage: modern agentic development runs prompt → spec → plan → implement → review/test, and the spec is the first artifact that constrains everything after it.</p>
+    <p>A PRD states what to build for a stakeholder; a spec records the decisions that make it buildable, which is why it is the artifact worth making legible.</p>
+    <figure>
+      <svg viewBox="0 0 720 150" width="100%" height="150" role="img" aria-label="Flow: prompt to spec to plan to implement to review, with a dashed review and test loop back to implement and the spec node emphasized">
+        <defs>
+          <marker id="wfar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0 0 L8 4 L0 8z" fill="#96a2ad"/></marker>
+          <marker id="wfback" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0 0 L8 4 L0 8z" fill="#ffb545"/></marker>
+        </defs>
+        <g fill="#121920" stroke="#26313a">
+          <rect x="10"  y="45" width="110" height="56" rx="8"/>
+          <rect x="290" y="45" width="110" height="56" rx="8"/>
+          <rect x="430" y="45" width="110" height="56" rx="8"/>
+          <rect x="570" y="45" width="110" height="56" rx="8"/>
+        </g>
+        <rect x="150" y="38" width="110" height="70" rx="8" fill="#0f2421" stroke="#35e0c0" stroke-width="2"/>
+        <g fill="#e8eef4" font-size="13" text-anchor="middle" font-family="system-ui">
+          <text x="65"  y="78">Prompt</text>
+          <text x="205" y="74" font-weight="700" fill="#35e0c0">Spec</text>
+          <text x="345" y="78">Plan</text>
+          <text x="485" y="78">Implement</text>
+          <text x="625" y="78">Review</text>
+        </g>
+        <g stroke="#96a2ad" stroke-width="1.6" marker-end="url(#wfar)">
+          <line x1="120" y1="73" x2="144" y2="73"/>
+          <line x1="260" y1="73" x2="284" y2="73"/>
+          <line x1="400" y1="73" x2="424" y2="73"/>
+          <line x1="540" y1="73" x2="564" y2="73"/>
+        </g>
+        <path d="M625 101 L625 112 Q625 120 617 120 L493 120 Q485 120 485 112 L485 103"
+              fill="none" stroke="#ffb545" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#wfback)"/>
+        <text x="555" y="134" fill="#ffb545" font-size="9.5" text-anchor="middle" font-family="system-ui">review and test loop</text>
+        <text x="205" y="134" fill="#6c7a86" font-size="10" text-anchor="middle" font-family="system-ui">
+          first artifact that constrains everything after it
+        </text>
+      </svg>
+      <figcaption>Five nodes assemble; the spec node swells, then turns red when context is missing.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 8. Loop diagram -->
   <section>
     <h2 class="sec">The loop</h2>
     <p class="take">The talk is the system; the spec describes the talk the same way.</p>
     <figure>
       <svg viewBox="0 0 720 175" width="100%" height="175" role="img" aria-label="Flow: request, judge, reason, review, packet, render, with a dashed REVISE back edge">
         <defs>
-          <marker id="d2ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8z" fill="#5b646d"/></marker>
-          <marker id="d2arW" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8z" fill="#8a5b00"/></marker>
+          <marker id="d2ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8z" fill="#96a2ad"/></marker>
+          <marker id="d2arW" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8z" fill="#ffb545"/></marker>
         </defs>
-        <g fill="#fff" stroke="#c8ced3">
+        <g fill="#121920" stroke="#26313a">
           <rect x="12" y="50" width="96" height="44" rx="8"/>
           <rect x="132" y="50" width="96" height="44" rx="8"/>
           <rect x="252" y="50" width="96" height="44" rx="8"/>
@@ -293,7 +352,7 @@ Largest text 25 words visible</pre></div>
           <rect x="492" y="50" width="96" height="44" rx="8"/>
           <rect x="612" y="50" width="96" height="44" rx="8"/>
         </g>
-        <g fill="#14171a" font-size="13" text-anchor="middle" font-family="system-ui">
+        <g fill="#e8eef4" font-size="13" text-anchor="middle" font-family="system-ui">
           <text x="60" y="77">request</text>
           <text x="180" y="77">judge</text>
           <text x="300" y="77">reason</text>
@@ -301,14 +360,14 @@ Largest text 25 words visible</pre></div>
           <text x="540" y="77">packet</text>
           <text x="660" y="77">render</text>
         </g>
-        <g stroke="#5b646d" stroke-width="1.6" marker-end="url(#d2ar)">
+        <g stroke="#96a2ad" stroke-width="1.6" marker-end="url(#d2ar)">
           <line x1="110" y1="72" x2="126" y2="72"/>
           <line x1="230" y1="72" x2="246" y2="72"/>
           <line x1="350" y1="72" x2="366" y2="72"/>
           <line x1="470" y1="72" x2="486" y2="72"/>
           <line x1="590" y1="72" x2="606" y2="72"/>
         </g>
-        <g fill="#5b646d" font-size="9" text-anchor="middle" font-family="system-ui">
+        <g fill="#96a2ad" font-size="9" text-anchor="middle" font-family="system-ui">
           <text x="120" y="42">Jev</text>
           <text x="240" y="42">capable model</text>
           <text x="360" y="42">critic, scored</text>
@@ -316,55 +375,55 @@ Largest text 25 words visible</pre></div>
           <text x="600" y="42">cheap model</text>
         </g>
         <path d="M420 94 L420 118 Q420 126 412 126 L308 126 Q300 126 300 118 L300 100"
-              fill="none" stroke="#8a5b00" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#d2arW)"/>
-        <text x="360" y="143" fill="#8a5b00" font-size="9" text-anchor="middle" font-family="system-ui">REVISE</text>
-        <text x="360" y="166" fill="#8b949c" font-size="10" text-anchor="middle" font-family="system-ui">Boundary: nothing reaches the renderer without a decided packet</text>
+              fill="none" stroke="#ffb545" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#d2arW)"/>
+        <text x="360" y="143" fill="#ffb545" font-size="9" text-anchor="middle" font-family="system-ui">REVISE</text>
+        <text x="360" y="166" fill="#6c7a86" font-size="10" text-anchor="middle" font-family="system-ui">Boundary: nothing reaches the renderer without a decided packet</text>
       </svg>
       <figcaption>Judge, reason, review, render — the deck argues for the same loop it was built with.</figcaption>
     </figure>
   </section>
 
-  <!-- 8. Depth diagram -->
+  <!-- 9. Depth diagram -->
   <section>
     <h2 class="sec">Judged depth</h2>
     <p class="take">Most changes should not generate a document.</p>
     <figure>
       <svg viewBox="0 0 720 246" width="100%" height="246" role="img" aria-label="One request branching to none, md, and md_html across a boundary line">
         <defs>
-          <marker id="d3ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8z" fill="#5b646d"/></marker>
-          <marker id="d3arA" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8z" fill="#0f7b6c"/></marker>
+          <marker id="d3ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8z" fill="#96a2ad"/></marker>
+          <marker id="d3arA" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8z" fill="#35e0c0"/></marker>
         </defs>
-        <line x1="300" y1="6" x2="300" y2="228" stroke="#8a5b00" stroke-width="1.5" stroke-dasharray="5 4"/>
-        <g fill="#fff" stroke="#c8ced3">
+        <line x1="300" y1="6" x2="300" y2="228" stroke="#ffb545" stroke-width="1.5" stroke-dasharray="5 4"/>
+        <g fill="#121920" stroke="#26313a">
           <rect x="20" y="88" width="110" height="44" rx="8"/>
           <rect x="400" y="20" width="130" height="38" rx="8"/>
         </g>
-        <rect x="400" y="86" width="170" height="48" rx="8" fill="#e8f4f1" stroke="#0f7b6c" stroke-width="2"/>
-        <rect x="400" y="162" width="210" height="56" rx="8" fill="#fff" stroke="#c8ced3"/>
+        <rect x="400" y="86" width="170" height="48" rx="8" fill="#0f2421" stroke="#35e0c0" stroke-width="2"/>
+        <rect x="400" y="162" width="210" height="56" rx="8" fill="#121920" stroke="#26313a"/>
         <g font-family="system-ui" text-anchor="middle">
-          <text x="75" y="115" font-size="13" fill="#14171a">request</text>
-          <text x="465" y="37" font-size="12" fill="#14171a">none</text>
-          <text x="465" y="51" font-size="9.5" fill="#5b646d">3 sentences</text>
-          <text x="485" y="106" font-size="13" font-weight="600" fill="#0f7b6c">md</text>
-          <text x="485" y="121" font-size="9.5" fill="#5b646d">decision record</text>
-          <text x="485" y="147" font-size="9" fill="#0f7b6c">common case</text>
-          <text x="505" y="181" font-size="13" fill="#14171a">md_html</text>
-          <text x="505" y="196" font-size="9.5" fill="#5b646d">record + artifact</text>
-          <text x="505" y="210" font-size="9" fill="#5b646d">flows, refactors, migrations</text>
+          <text x="75" y="115" font-size="13" fill="#e8eef4">request</text>
+          <text x="465" y="37" font-size="12" fill="#e8eef4">none</text>
+          <text x="465" y="51" font-size="9.5" fill="#96a2ad">3 sentences</text>
+          <text x="485" y="106" font-size="13" font-weight="600" fill="#35e0c0">md</text>
+          <text x="485" y="121" font-size="9.5" fill="#96a2ad">decision record</text>
+          <text x="485" y="147" font-size="9" fill="#35e0c0">common case</text>
+          <text x="505" y="181" font-size="13" fill="#e8eef4">md_html</text>
+          <text x="505" y="196" font-size="9.5" fill="#96a2ad">record + artifact</text>
+          <text x="505" y="210" font-size="9" fill="#96a2ad">flows, refactors, migrations</text>
         </g>
-        <path d="M130 110 C 250 110, 280 39, 394 39" fill="none" stroke="#5b646d" stroke-width="1.6" marker-end="url(#d3ar)"/>
-        <line x1="130" y1="110" x2="394" y2="110" stroke="#0f7b6c" stroke-width="2" marker-end="url(#d3arA)"/>
-        <path d="M130 110 C 250 110, 280 190, 394 190" fill="none" stroke="#5b646d" stroke-width="1.6" marker-end="url(#d3ar)"/>
-        <text x="14" y="238" fill="#8b949c" font-size="10" text-anchor="start" font-family="system-ui">Boundary: only structural work crosses the line</text>
+        <path d="M130 110 C 250 110, 280 39, 394 39" fill="none" stroke="#96a2ad" stroke-width="1.6" marker-end="url(#d3ar)"/>
+        <line x1="130" y1="110" x2="394" y2="110" stroke="#35e0c0" stroke-width="2" marker-end="url(#d3arA)"/>
+        <path d="M130 110 C 250 110, 280 190, 394 190" fill="none" stroke="#96a2ad" stroke-width="1.6" marker-end="url(#d3ar)"/>
+        <text x="14" y="238" fill="#6c7a86" font-size="10" text-anchor="start" font-family="system-ui">Boundary: only structural work crosses the line</text>
       </svg>
       <figcaption>Most changes should not generate a document.</figcaption>
     </figure>
   </section>
 
-  <!-- 9. Requirements -->
+  <!-- 10. Requirements -->
   <section>
     <h2 class="sec">Requirements (when / then / proof)</h2>
-    <p class="take">Thirteen promises; two are seams, the rest are craft.</p>
+    <p class="take">Fifteen promises; two are seams, the rest are craft.</p>
     <table>
       <tr><th>ID</th><th>Promise</th><th>Proved by</th></tr>
       <tr><td><span class="chip on">R1</span></td>
@@ -379,7 +438,7 @@ Largest text 25 words visible</pre></div>
         <td><b>The talk fits five minutes</b> <span class="dim">[must]</span>
           <details><summary>when / then / proof</summary>
             <p><b>When</b> the speaker advances at a steady pace</p>
-            <p><b>Then</b> the ten slides complete in 300s ± 15s, with slide 8 receiving ≥ 40s</p>
+            <p><b>Then</b> the nine slides complete in 300s ± 15s, with slide 8 receiving ≥ 45s</p>
             <p><b>Proof</b> walkthrough — timed rehearsal, per-slide timestamps</p>
           </details></td>
         <td>walkthrough</td></tr>
@@ -392,11 +451,11 @@ Largest text 25 words visible</pre></div>
           </details></td>
         <td>command</td></tr>
       <tr><td><span class="chip on">R4</span></td>
-        <td><b>The comparison is real and full-width</b> <span class="dim">[must]</span>
+        <td><b>The comparison is real, full-width, and complete</b> <span class="dim">[must]</span>
           <details><summary>when / then / proof</summary>
             <p><b>When</b> slide 8 appears</p>
-            <p><b>Then</b> it shows actual screenshots of this spec's markdown and HTML in one full-width frame at equal scale, wiping from one to the other, captioned with the active filename; captures are regenerated after the final md edit</p>
-            <p><b>Proof</b> vision — both images legible at 1920×1080; file mtimes newer than spec.md</p>
+            <p><b>Then</b> it shows the markdown capture, then the HTML capture scrolling slowly through the entire document (≥18s top to bottom, progress bar visible), both at equal width and captioned with the active filename; captures are regenerated after the final md edit</p>
+            <p><b>Proof</b> vision — both captures legible at 1920×1080; full scroll observed; file mtimes newer than spec.md</p>
           </details></td>
         <td>vision</td></tr>
       <tr><td><span class="chip on">R5</span> <span class="chip">seam</span></td>
@@ -408,10 +467,10 @@ Largest text 25 words visible</pre></div>
           </details></td>
         <td>command</td></tr>
       <tr><td><span class="chip on">R6</span> <span class="chip">seam</span></td>
-        <td><b>It runs offline from one file</b> <span class="dim">[must]</span>
+        <td><b>It runs offline from the deck folder</b> <span class="dim">[must]</span>
           <details><summary>when / then / proof</summary>
             <p><b>When</b> the deck is opened from disk with no network</p>
-            <p><b>Then</b> every slide, animation, image, and QR renders</p>
+            <p><b>Then</b> every slide, animation, image, and QR renders, and no request leaves the machine</p>
             <p><b>Proof</b> command — disable network, open file, advance all slides</p>
           </details></td>
         <td>command</td></tr>
@@ -443,18 +502,17 @@ Largest text 25 words visible</pre></div>
         <td><b>Every animation explains something</b> <span class="dim">[should]</span>
           <details><summary>when / then / proof</summary>
             <p><b>When</b> any slide animates</p>
-            <p><b>Then</b> the motion maps to one named item in the slide's visual column (assembly, branching, boundary, score, wipe), and no ambient loop runs behind the proof or limits slides</p>
+            <p><b>Then</b> the motion maps to one named item in the slide's visual column (assembly, branching, boundary, alarm, full scroll), and no ambient loop runs behind the proof slide</p>
             <p><b>Proof</b> review — animation inventory matches the build, one mapping per slide</p>
           </details></td>
         <td>review</td></tr>
-      <tr><td><span class="chip on">R11</span></td>
-        <td><b>Honest limits slide</b> <span class="dim">[should]</span>
-          <details><summary>when / then / proof</summary>
-            <p><b>When</b> slide 9 appears</p>
-            <p><b>Then</b> it names three real weaknesses: renderer unproven beyond this document, 390 px unverified, scope promotion manual</p>
-            <p><b>Proof</b> review — copy check</p>
+      <tr class="withdrawn"><td><span class="chip">R11</span></td>
+        <td><b>Honest limits slide — WITHDRAWN</b> <span class="dim">[should]</span>
+          <span class="withdrawn-note">Decision 2026-11-10: cut for time; the limits live in the spec and the repo, not on stage</span>
+          <details><summary>proof</summary>
+            <p><b>Proof</b> n/a — withdrawn by the owner</p>
           </details></td>
-        <td>review</td></tr>
+        <td>n/a — withdrawn</td></tr>
       <tr class="withdrawn"><td><span class="chip">R12</span></td>
         <td><b>Speaker notes — WITHDRAWN</b> <span class="dim">[could]</span>
           <span class="withdrawn-note">Decision 2026-11-10: no speaker notes for a five-minute talk; the slide copy is the script</span>
@@ -470,23 +528,48 @@ Largest text 25 words visible</pre></div>
             <p><b>Proof</b> command — file exists and plays offline; duration under 5:10</p>
           </details></td>
         <td>command</td></tr>
+      <tr><td><span class="chip on">R14</span></td>
+        <td><b>The captured artifact is dark</b> <span class="dim">[must]</span>
+          <details><summary>when / then / proof</summary>
+            <p><b>When</b> the HTML spec is captured for slide 8</p>
+            <p><b>Then</b> it renders with the dark theme applied and the capture is regenerated from the current spec.md</p>
+            <p><b>Proof</b> vision — asset background is near-black; mtime newer than spec.md</p>
+          </details></td>
+        <td>vision</td></tr>
+      <tr><td><span class="chip on">R15</span></td>
+        <td><b>Missing context and poor scores are alarming</b> <span class="dim">[must]</span>
+          <details><summary>when / then / proof</summary>
+            <p><b>When</b> a spec has unresolved questions, a low dimension score, or a poor total</p>
+            <p><b>Then</b> those states render in alarming color (red family), never as neutral gray, in both the artifact and slide 7</p>
+            <p><b>Proof</b> vision — unresolved checklist items and any dimension at 2 or below are visibly red</p>
+          </details></td>
+        <td>vision</td></tr>
     </table>
   </section>
 
-  <!-- 10. Review -->
+  <!-- 11. Review -->
   <section>
     <h2 class="sec">Review</h2>
     <p class="take">The spec for the talk was reviewed the same way the talk says to review specs.</p>
-    <table>
-      <tr><th>Dimension</th><th>Score</th><th>Evidence</th></tr>
-      <tr><td>Context completeness</td><td>4/5</td><td>problem, time constraint, out-of-scope, prior art; room and projector aspect unstated</td></tr>
-      <tr><td>Requirement testability</td><td>4/5</td><td>R1-R9, R12, R13 name method and target; R3/R10 needed a rubric, now added</td></tr>
-      <tr><td>Readiness</td><td>4/5</td><td>palette, engine, asset paths, QR policy decided; slide copy now exists verbatim</td></tr>
-      <tr><td>Implementation confidence</td><td>4/5</td><td>seams named, risky slide de-risked with a wipe and a crop fallback</td></tr>
-      <tr><td>Risk coverage</td><td>3/5</td><td>four risks with mitigations; fallback recording added as R13</td></tr>
-      <tr><td>Decision traceability</td><td>5/5</td><td>D1-D7 carry alternative, reason, consequence</td></tr>
-      <tr><td><b>Total</b></td><td><b>24/30</b></td><td><span class="verdict revise">REVISE</span></td></tr>
-    </table>
+    <div class="score">
+      <div class="row"><span>Context completeness</span><span>4/5</span><span class="bar"><i style="width:80%"></i></span></div>
+      <div class="row"><span>Requirement testability</span><span>4/5</span><span class="bar"><i style="width:80%"></i></span></div>
+      <div class="row"><span>Readiness</span><span>4/5</span><span class="bar"><i style="width:80%"></i></span></div>
+      <div class="row"><span>Implementation confidence</span><span>4/5</span><span class="bar"><i style="width:80%"></i></span></div>
+      <div class="row mid"><span>Risk coverage</span><span>3/5</span><span class="bar"><i class="mid" style="width:60%"></i></span></div>
+      <div class="row"><span>Decision traceability</span><span>5/5</span><span class="bar"><i style="width:100%"></i></span></div>
+      <div class="row"><span class="total">Total</span><span class="total">24/30</span><span><span class="verdict revise">REVISE</span></span></div>
+    </div>
+    <div class="alert"><b>Missing context</b>Context completeness (4/5): room and projector aspect unstated.</div>
+    <details>
+      <summary>Evidence per dimension</summary>
+      <p><b>Context completeness 4/5</b> — problem, time constraint, out-of-scope, prior art; room and projector aspect unstated</p>
+      <p><b>Requirement testability 4/5</b> — R1-R9, R12, R13 name method and target; R3/R10 needed a rubric, now added</p>
+      <p><b>Readiness 4/5</b> — palette, engine, asset paths, QR policy decided; slide copy now exists verbatim</p>
+      <p><b>Implementation confidence 4/5</b> — seams named, risky slide de-risked with a full scroll and a crop fallback</p>
+      <p><b>Risk coverage 3/5</b> — four risks with mitigations; fallback recording added as R13</p>
+      <p><b>Decision traceability 5/5</b> — D1-D7 carry alternative, reason, consequence</p>
+    </details>
     <p class="take">Reviewed by critic · 2026-11-10 · round 1</p>
     <details>
       <summary>Findings (F1–F8, answered)</summary>
@@ -500,28 +583,31 @@ This deck 24/30   REVISE   (round 1)</pre></div>
     </figure>
   </section>
 
-  <!-- 11. Decisions -->
+  <!-- 12. Decisions -->
   <section>
     <h2 class="sec">Decisions</h2>
-    <p class="take">Eight decisions, each carrying an alternative, a reason, and a consequence.</p>
+    <p class="take">Eleven decisions, each with the choice and the reason that mattered.</p>
     <div class="cards">
-      <div class="card chosen"><b>1 · Single-file HTML over rendered video</b>Chose CSS/SVG/Canvas in one file over a Remotion MP4. Because the deck must be editable tonight between rehearsals, and a video cannot be fixed thirty seconds before a talk. Consequence: no export path; if the venue needs a file, screen-record it.</div>
-      <div class="card chosen"><b>2 · Ten slides, fixed time boxes</b>Chose ten over a variable deck. Because 30s per idea is the fastest a room can absorb a diagram. Consequence: anything that does not fit is cut, not compressed.</div>
+      <div class="card chosen"><b>1 · Single-file HTML over rendered video</b>Chose CSS/SVG/Canvas in a local folder over a Remotion MP4. Because the deck must be editable tonight between rehearsals, and a video cannot be fixed thirty seconds before a talk. Consequence: no export path; if the venue needs a file, screen-record it.</div>
+      <div class="card chosen"><b>2 · Nine slides, fixed time boxes</b>Chose nine over a variable deck. Because 30s per idea is the fastest a room can absorb a diagram. Consequence: anything that does not fit is cut, not compressed.</div>
       <div class="card chosen"><b>3 · Proof by screenshot, not by claim</b>Chose two real captures over a rendered mock. Because the audience already discounts assertions, and this is the one slide that has to land. Consequence: the captures must be taken from the real files at equal width, and redone if the spec changes.</div>
-      <div class="card chosen"><b>4 · Motion tied to meaning</b>Chose purposeful animation over ambient spectacle. Because a deck that loops particles behind text reads as a template, not an argument. Consequence: the ambient field is low-contrast and pauses on the proof and limits slides.</div>
+      <div class="card chosen"><b>4 · Motion tied to meaning</b>Chose purposeful animation over ambient spectacle. Because a deck that loops particles behind text reads as a template, not an argument. Consequence: the ambient field is low-contrast and pauses on the proof slide.</div>
       <div class="card chosen"><b>5 · Static QR, generated offline</b>Chose an inline SVG QR over a live generator. Because conference wifi is a rumor. Consequence: the repo URL is frozen in the asset; re-print if the repo moves.</div>
       <div class="card chosen"><b>6 · Two seams only</b>Chose file-opens-offline and QR-resolves as the acceptance seams. Because a deck's real failure modes are a broken asset and a dead link, not a missing animation.</div>
-      <div class="card chosen"><b>7 · One full-width frame, not two half-width captures</b>Chose a wipe over side-by-side. Because at 1920 px a half-width markdown column is illegible, and legibility is the entire point of the slide. Consequence: the audience sees one file at a time, so the caption must name it.</div>
-      <div class="card chosen"><b>8 · Libraries allowed, but inlined</b>Chose permission with a constraint over a dependency list. Because a five-minute talk cannot debug a missing CDN, and a single file is the seam. Consequence: any library used must be vendored into the file; none is currently needed.</div>
+      <div class="card chosen"><b>7 · One full-width frame, not two half-width captures</b>Chose a single frame that switches from markdown to the scrolling artifact over side-by-side. Because at 1920 px a half-width column is illegible, and legibility is the entire point of the slide. Consequence: the audience sees one file at a time, so the caption must name it.</div>
+      <div class="card chosen"><b>8 · Libraries allowed, but inlined</b>Chose permission with a constraint over a dependency list. Because a five-minute talk cannot debug a missing CDN, and file:// must not make network calls. Consequence: any library used must be vendored locally; none is currently needed.</div>
+      <div class="card chosen"><b>9 · The artifact asset is dark, like the deck</b>Chose a dark render of the HTML spec over the template's light default. Because the room is dark, the projector is bright, and a white page at full screen is a flashbang; developers also read dark by preference. Consequence: the capture is not the template's default look, so the spec must record that the dark theme is applied for the asset.</div>
+      <div class="card chosen"><b>10 · Show the whole document, not the top of it</b>Chose a slow full scroll over a static crop. Because the difference being demonstrated is structural across the entire document, and a top crop can be dismissed as a hero image. Consequence: slide 8 needs 20+ seconds and a tall capture.</div>
+      <div class="card chosen"><b>11 · Alarm styling, not neutral styling</b>Chose red for unresolved questions and low scores over uniform gray. Because a neutral checklist lets a spec with three open questions look finished, which is the exact failure the talk is about. Consequence: the artifact must support a warning state, and both the artifact and the deck share it.</div>
     </div>
   </section>
 
-  <!-- 12. Open questions -->
+  <!-- 13. Open questions -->
   <section>
     <h2 class="sec">Open questions</h2>
     <p class="take">All five questions are resolved.</p>
     <ul class="check">
-      <li class="done"><span>Q1 Live HTML or rendered video?<span class="meta">resolved: <b>live HTML, single file</b></span></span></li>
+      <li class="done"><span>Q1 Live HTML or rendered video?<span class="meta">resolved: <b>live HTML, local folder, no network</b></span></span></li>
       <li class="done"><span>Q2 Which two images prove the point?<span class="meta">resolved: <b>this spec's own md and html, same width</b></span></span></li>
       <li class="done"><span>Q3 Does the QR need a fallback?<span class="meta">resolved: <b>yes, print the URL under it</b></span></span></li>
       <li class="done"><span>Q4 Is there a live demo segment, or is the deck the whole talk?<span class="meta">resolved: <b>no live demo; talking over the slides is the whole five minutes</b></span></span></li>
@@ -529,7 +615,7 @@ This deck 24/30   REVISE   (round 1)</pre></div>
     </ul>
   </section>
 
-  <!-- 13. Out of scope -->
+  <!-- 14. Out of scope -->
   <section>
     <h2 class="sec">Out of scope</h2>
     <p class="take">The refusals that protect this spec from growing.</p>
@@ -538,12 +624,12 @@ This deck 24/30   REVISE   (round 1)</pre></div>
       <li><b>Presenter view across two displays.</b> No second window; <code>#hash</code> navigation only.</li>
       <li><b>Audience interaction, polls, live demo.</b> The five minutes are scripted time.</li>
       <li><b>Speaker script word-for-word.</b> The deck carries beats, not a transcript.</li>
-      <li><b>Mobile layout.</b> Projection only; 390 px is explicitly not a target (and is named on the limits slide).</li>
+      <li><b>Mobile layout.</b> Projection only; 390 px is explicitly not a target.</li>
       <li><b>Brand system.</b> A one-off palette, not a reusable theme.</li>
     </ul>
   </section>
 
-  <!-- 14. Risks -->
+  <!-- 15. Risks -->
   <section>
     <h2 class="sec">Risks <span class="chip on">R13</span></h2>
     <p class="take">Four risks, each with a stated mitigation.</p>
