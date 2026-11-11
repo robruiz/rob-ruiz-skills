@@ -124,27 +124,27 @@
   </div>
 
   <h1>The Spec Is the Bottleneck — deck spec</h1>
-  <p class="sub">A fifteen-minute argument in eighteen slides: the document is the bottleneck, and the fix is a pipeline.</p>
+  <p class="sub">A fifteen-minute argument in seventeen slides: the document is the bottleneck, and the fix is a pipeline.</p>
 
   <div class="triad">
     <div><h2>What this solves</h2><p>Specs are unreadable and untested, and the people who review them spend their day skimming documents that were never built to be read.</p></div>
-    <div><h2>How it solves it</h2><p>Eighteen slides in four movements — the workflow, the machinery, the proof, and the cost — with every mechanism shown rather than asserted.</p></div>
-    <div><h2>How we prove it</h2><p>A timed rehearsal at 875s, a QR that resolves, the deck opening offline, and two dark captures of this very document.</p></div>
+    <div><h2>How it solves it</h2><p>Seventeen slides in four movements — the workflow, the machinery, the proof, and the cost — with every mechanism shown rather than asserted.</p></div>
+    <div><h2>How we prove it</h2><p>A timed rehearsal at 855s, a QR that resolves, the deck opening offline, and two dark captures of this very document.</p></div>
   </div>
 
   <div class="readme">
     <h2>30-second read</h2>
     <ul>
-      <li>Eighteen slides, 875s of content, 25s of slack; slide 14 gets 75s.</li>
+      <li>Seventeen slides, 855s of content, 45s of slack; slide 14 gets 90s.</li>
       <li>The spec is the first artifact: prompt → spec → plan → implement → review/test.</li>
       <li>Depth is judged, reasoning stays on the capable model, markup goes to a cheap one.</li>
       <li>Requirements are bound to proof; reviews are scored, and low scores block.</li>
-      <li>The proof slide scrolls the entire HTML artifact; the limits slide says what still breaks.</li>
+      <li>The proof slide scrolls the entire HTML artifact; the cost slide closes the argument.</li>
     </ul>
   </div>
 
   <p class="cov">
-    <span class="chip on">R1</span><span class="chip on">R2</span><span class="chip on">R3</span><span class="chip on">R4</span><span class="chip on">R5</span><span class="chip on">R6</span><span class="chip on">R7</span><span class="chip on">R8</span><span class="chip on">R9</span><span class="chip on">R10</span><span class="chip on">R11</span><span class="chip off">R12 withdrawn</span><span class="chip on">R13</span><span class="chip on">R14</span><span class="chip on">R15</span><span class="chip on">R16</span>
+    <span class="chip on">R1</span><span class="chip on">R2</span><span class="chip on">R3</span><span class="chip on">R4</span><span class="chip on">R5</span><span class="chip on">R6</span><span class="chip on">R7</span><span class="chip on">R8</span><span class="chip on">R9</span><span class="chip on">R10</span><span class="chip off">R11 withdrawn</span><span class="chip off">R12 withdrawn</span><span class="chip on">R13</span><span class="chip on">R14</span><span class="chip on">R15</span><span class="chip on">R16</span>
   </p>
 
   <!-- 1. Problem -->
@@ -152,14 +152,14 @@
     <h2 class="sec">Problem</h2>
     <p class="take">Unreadable specs are not a taste problem; they are a missing pipeline.</p>
     <p>Developers are asked to review specs constantly and most specs are unreadable: walls of markdown, no visual shape, no testable contract. The audience has felt this. They have not been shown that the fix is a pipeline, not better prose.</p>
-    <p>The first version of this talk was five minutes and could only assert the thesis. Fifteen minutes buys the argument room to be demonstrated: what makes a spec unreadable, how depth is judged, what the requirements contract actually looks like, how review scores force iteration, and what the whole thing costs in time and tokens.</p>
+    <p>The first version of this talk was five minutes and could only assert the thesis. Fifteen minutes buys the argument room to be demonstrated: what a wall of text does to a reader, how depth is judged, what the requirements contract actually looks like, how review scores force iteration, and what the whole thing costs in time and tokens.</p>
   </section>
 
   <!-- 2. Solution -->
   <section>
     <h2 class="sec">Solution</h2>
-    <p class="take">Four movements, eighteen slides, no filler.</p>
-    <p>Eighteen slides in four movements: <b>the workflow and the reading tax → the machinery (depth, judge, loop, capability split, contract, evidence) → the proof (review scores, a real review, the full artifact) → the cost, the limits, and how to use it.</b></p>
+    <p class="take">Four movements, seventeen slides, no filler.</p>
+    <p>Seventeen slides in four movements: <b>the workflow and the reading tax → the machinery (depth, judge, loop, capability split, contract, evidence) → the proof (review scores, a real review, the full artifact) → the cost and how to use it.</b></p>
     <p>No slide exists to fill time. Each new slide answers a question the five-minute version had to skip: <i>why is the spec first, what does a bad one look like, who decides how much spec a change needs, what stops a cheap model from inventing architecture, what makes a requirement testable, what does a review catch, and what does this cost?</i></p>
     <p>The proof slide remains the load-bearing one: the same document in both formats, markdown first, then the full HTML artifact scrolling top to bottom. Fixing a bad decision at spec time costs minutes; fixing it after implementation costs a rebuild plus the tokens spent getting there.</p>
     <p>Dark by default, high motion, low word count. Motion is tied to a concept: a flow that assembles, a branch that splits, a boundary that separates thinking from formatting, scores that fall to 11 and recover to 23.</p>
@@ -168,12 +168,12 @@
   <!-- 3. Timeline diagram -->
   <section>
     <h2 class="sec">Timeline</h2>
-    <p class="take">Nine ideas in three hundred seconds became eighteen in eight hundred seventy-five.</p>
+    <p class="take">Nine ideas in three hundred seconds became seventeen in eight hundred fifty-five.</p>
     <figure>
-      <svg viewBox="0 0 960 168" width="100%" height="168" role="img" aria-label="Fifteen-minute timeline: eighteen slide blocks from 0:00 to 14:35, slide 14 widest and accented">
+      <svg viewBox="0 0 960 168" width="100%" height="168" role="img" aria-label="Fifteen-minute timeline: seventeen slide blocks from 0:00 to 14:15, slide 14 widest and accented">
         <!-- baseline axis 0:00 -> 15:00 -->
         <line x1="20" y1="95" x2="940" y2="95" stroke="#26313a" stroke-width="1.5"/>
-        <!-- 18 blocks: x = 20 + start_s * 920/900, w = dur_s * 920/900 - 2 -->
+        <!-- 17 blocks: x = 20 + start_s * 920/900, w = dur_s * 920/900 - 2 -->
         <g fill="#141b22" stroke="#2c3a47">
           <rect x="20"    y="40" width="28.7" height="40" rx="4"/>
           <rect x="50.7"  y="40" width="59.3" height="40" rx="4"/>
@@ -188,14 +188,13 @@
           <rect x="510.7" y="40" width="44"   height="40" rx="4"/>
           <rect x="556.6" y="40" width="49.1" height="40" rx="4"/>
           <rect x="607.8" y="40" width="44"   height="40" rx="4"/>
-          <rect x="730.4" y="40" width="49.1" height="40" rx="4"/>
-          <rect x="781.6" y="40" width="44"   height="40" rx="4"/>
-          <rect x="827.6" y="40" width="33.8" height="40" rx="4"/>
-          <rect x="863.3" y="40" width="49.1" height="40" rx="4"/>
+          <rect x="745.8" y="40" width="54.2" height="40" rx="4"/>
+          <rect x="802"   y="40" width="33.8" height="40" rx="4"/>
+          <rect x="837.8" y="40" width="54.2" height="40" rx="4"/>
         </g>
-        <!-- s14: accent, widest (10:20-11:35, 75s) -->
-        <rect x="653.8" y="40" width="74.7" height="40" rx="4" fill="#35e0c0" stroke="#35e0c0"/>
-        <text x="691" y="30" fill="#35e0c0" font-size="11" text-anchor="middle" font-family="system-ui">slide 14 · 75s · Proof</text>
+        <!-- s14: accent, widest (10:20-11:50, 90s) -->
+        <rect x="653.8" y="40" width="90" height="40" rx="4" fill="#35e0c0" stroke="#35e0c0"/>
+        <text x="698.8" y="30" fill="#35e0c0" font-size="11" text-anchor="middle" font-family="system-ui">slide 14 · 90s · Proof</text>
         <!-- slide numbers -->
         <g fill="#96a2ad" font-size="12" text-anchor="middle" font-family="system-ui">
           <text x="34.3"  y="65">1</text>
@@ -211,12 +210,11 @@
           <text x="532.7" y="65">11</text>
           <text x="581.1" y="65">12</text>
           <text x="629.8" y="65">13</text>
-          <text x="754.9" y="65">15</text>
-          <text x="803.6" y="65">16</text>
-          <text x="844.5" y="65">17</text>
-          <text x="887.8" y="65">18</text>
+          <text x="772.9" y="65">15</text>
+          <text x="818.9" y="65">16</text>
+          <text x="864.9" y="65">17</text>
         </g>
-        <text x="691" y="65" fill="#06120f" font-size="13" font-weight="700" text-anchor="middle" font-family="system-ui">14</text>
+        <text x="698.8" y="65" fill="#06120f" font-size="13" font-weight="700" text-anchor="middle" font-family="system-ui">14</text>
         <!-- minute ticks -->
         <g stroke="#26313a">
           <line x1="20" y1="95" x2="20" y2="101"/><line x1="81.3" y1="95" x2="81.3" y2="101"/>
@@ -236,14 +234,14 @@
           <text x="756" y="115">12:00</text><text x="817.3" y="115">13:00</text><text x="878.7" y="115">14:00</text>
           <text x="940" y="115">15:00</text>
         </g>
-        <!-- slack region 14:35 -> 15:00 -->
-        <line x1="912.4" y1="95" x2="912.4" y2="40" stroke="#26313a" stroke-dasharray="3 3"/>
-        <text x="926" y="133" fill="#6c7a86" font-size="9" text-anchor="middle" font-family="system-ui">25s slack</text>
+        <!-- slack region 14:15 -> 15:00 -->
+        <line x1="894" y1="95" x2="894" y2="40" stroke="#26313a" stroke-dasharray="3 3"/>
+        <text x="916" y="133" fill="#6c7a86" font-size="9" text-anchor="middle" font-family="system-ui">45s slack</text>
         <text x="20" y="152" fill="#96a2ad" font-size="11" font-family="system-ui">Boundary: hard stop at 15:30 — leave room for questions</text>
       </svg>
-      <figcaption>Eighteen ideas in 875 seconds; the proof gets the largest slot.</figcaption>
+      <figcaption>Seventeen ideas in 855 seconds; the proof gets the largest slot.</figcaption>
     </figure>
-    <div class="data"><span class="lab">Time budget</span><pre>Total 875s of content · 25s slack · slide 14 = 75s · 18 slides</pre></div>
+    <div class="data"><span class="lab">Time budget</span><pre>Total 855s of content · 45s slack · slide 14 = 90s · 17 slides</pre></div>
   </section>
 
   <!-- 3b. Four movements diagram -->
@@ -251,27 +249,27 @@
     <h2 class="sec">The four movements</h2>
     <p class="take">Four movements, one argument: see it, understand it, believe it, use it.</p>
     <figure>
-      <svg viewBox="0 0 960 152" width="100%" height="152" role="img" aria-label="Four movements: Workflow slides 1-3, Machinery slides 4-11, Proof slides 12-14, Cost and use slides 15-18">
+      <svg viewBox="0 0 960 152" width="100%" height="152" role="img" aria-label="Four movements: Workflow slides 1-3, Machinery slides 4-11, Proof slides 12-14, Cost and use slides 15-17">
         <g font-family="system-ui">
-          <rect x="20"    y="35" width="148.3" height="54" rx="10" fill="#141b22" stroke="#2c3a47"/>
-          <rect x="178.3" y="35" width="395.6" height="54" rx="10" fill="#141b22" stroke="#2c3a47"/>
-          <rect x="583.9" y="35" width="148.3" height="54" rx="10" fill="#0f2421" stroke="#35e0c0"/>
-          <rect x="742.2" y="35" width="197.8" height="54" rx="10" fill="#141b22" stroke="#2c3a47"/>
+          <rect x="20"    y="35" width="157.1" height="54" rx="10" fill="#141b22" stroke="#2c3a47"/>
+          <rect x="187.1" y="35" width="418.8" height="54" rx="10" fill="#141b22" stroke="#2c3a47"/>
+          <rect x="615.9" y="35" width="157.1" height="54" rx="10" fill="#0f2421" stroke="#35e0c0"/>
+          <rect x="783"   y="35" width="157"   height="54" rx="10" fill="#141b22" stroke="#2c3a47"/>
           <g fill="#e8eef4" font-size="15" text-anchor="middle">
-            <text x="94.2"  y="67">Workflow</text>
-            <text x="376.1" y="67">Machinery</text>
-            <text x="658"   y="67" fill="#35e0c0">Proof</text>
-            <text x="841.1" y="67">Cost &amp; use</text>
+            <text x="98.6"  y="67">Workflow</text>
+            <text x="396.5" y="67">Machinery</text>
+            <text x="694.5" y="67" fill="#35e0c0">Proof</text>
+            <text x="861.5" y="67">Cost &amp; use</text>
           </g>
           <g fill="#96a2ad" font-size="12" text-anchor="middle">
-            <text x="94.2"  y="107">slides 1-3</text>
-            <text x="376.1" y="107">slides 4-11</text>
-            <text x="658"   y="107" fill="#35e0c0">slides 12-14</text>
-            <text x="841.1" y="107">slides 15-18</text>
+            <text x="98.6"  y="107">slides 1-3</text>
+            <text x="396.5" y="107">slides 4-11</text>
+            <text x="694.5" y="107" fill="#35e0c0">slides 12-14</text>
+            <text x="861.5" y="107">slides 15-17</text>
           </g>
           <!-- hinge -->
-          <line x1="578.9" y1="26" x2="578.9" y2="118" stroke="#35e0c0" stroke-width="1.5" stroke-dasharray="5 4"/>
-          <text x="583.9" y="140" fill="#96a2ad" font-size="11">Boundary: the proof slide is the hinge</text>
+          <line x1="778" y1="26" x2="778" y2="118" stroke="#35e0c0" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <text x="783" y="140" fill="#96a2ad" font-size="11">Boundary: the proof slide is the hinge</text>
         </g>
       </svg>
       <figcaption>Four movements, one argument: see it, understand it, believe it, use it.</figcaption>
@@ -287,7 +285,7 @@
       <tr><td>1</td><td>0:00–0:30</td><td>Title</td><td>The spec is the bottleneck</td><td>Grid horizon, particles, title assembles</td></tr>
       <tr><td>2</td><td>0:30–1:30</td><td>The workflow</td><td>Spec is the first artifact</td><td>Five nodes; spec swells; review loop; minutes vs rebuild</td></tr>
       <tr><td>3</td><td>1:30–2:15</td><td>The reading tax</td><td>You read these all day</td><td>Dark markdown capture, blurred, slow pan</td></tr>
-      <tr><td>4</td><td>2:15–3:05</td><td>Why it is unreadable</td><td>Four failure modes</td><td>Four rows; each turns red as it is named</td></tr>
+      <tr><td>4</td><td>2:15–3:05</td><td>Autopilot</td><td>What a wall of text does to a reader</td><td>Four rows, each landing harder than the last; the final row in alarm red</td></tr>
       <tr><td>5</td><td>3:05–3:55</td><td>Judged depth</td><td>Not every change needs a spec</td><td>One request, three lanes: none / md / md_html</td></tr>
       <tr><td>6</td><td>3:55–4:40</td><td>The judge</td><td>A verdict, not a vibe</td><td>Jev call: 200–480ms, $0.00003, fallback, human gate</td></tr>
       <tr><td>7</td><td>4:40–5:35</td><td>The loop</td><td>Judge, reason, review, render</td><td>Four nodes assemble; revise edge draws</td></tr>
@@ -297,13 +295,12 @@
       <tr><td>11</td><td>8:00–8:45</td><td>Evidence</td><td>Show the payload</td><td>Real JSON block; mockup region mapped to R-IDs</td></tr>
       <tr><td>12</td><td>8:45–9:35</td><td>Scored review <span class="badge req">R15</span></td><td>Low scores mean iterate</td><td>11/30 red vs 23/30 green</td></tr>
       <tr><td>13</td><td>9:35–10:20</td><td>The review in practice</td><td>What it actually catches</td><td>Two caught defects, 17 findings, 2 rounds</td></tr>
-      <tr><td>14</td><td>10:20–11:35</td><td>Proof <span class="badge req">R4</span></td><td>Same content, different cost</td><td>Markdown, then full artifact scrolling, progress bar</td></tr>
-      <tr><td>15</td><td>11:35–12:25</td><td>What it costs</td><td>Minutes now, a rebuild later</td><td>Cost axis; cheap-model lane; measured triage price</td></tr>
-      <tr><td>16</td><td>12:25–13:10</td><td>Where it breaks</td><td>Honest limits</td><td>Four muted cards, one red</td></tr>
-      <tr><td>17</td><td>13:10–13:45</td><td>What you get</td><td>Five skills, one install</td><td>Repo tree, file counts</td></tr>
-      <tr><td>18</td><td>13:45–14:35</td><td>Use it</td><td>You can have this</td><td>Install lines type; QR draws in</td></tr>
+      <tr><td>14</td><td>10:20–11:50</td><td>Proof <span class="badge req">R4</span></td><td>Same content, different cost</td><td>Markdown, then full artifact scrolling, progress bar</td></tr>
+      <tr><td>15</td><td>11:50–12:45</td><td>What it costs</td><td>Minutes now, a rebuild later</td><td>Cost axis; cheap-model lane; measured triage price</td></tr>
+      <tr><td>16</td><td>12:45–13:20</td><td>What you get</td><td>Five skills, one install</td><td>Repo tree, file counts</td></tr>
+      <tr><td>17</td><td>13:20–14:15</td><td>Use it</td><td>You can have this</td><td>Install lines type; QR draws in</td></tr>
     </table>
-    <p class="take" style="margin-top:10px">Total 875s, leaving 25s of slack inside 15:00.</p>
+    <p class="take" style="margin-top:10px">Total 855s, leaving 45s of slack inside 15:00.</p>
   </section>
 
   <!-- 5. Copy table -->
@@ -315,7 +312,7 @@
       <tr><td>1</td><td><b>Specs are the bottleneck.</b> Not your code. Not your model. The document you build from.</td></tr>
       <tr><td>2</td><td><b>The spec comes first.</b> A PRD argues what to build. A spec decides how.</td></tr>
       <tr><td>3</td><td><b>You read these all day.</b> This is one spec. Six thousand pixels of it.</td></tr>
-      <tr><td>4</td><td><b>Why it is unreadable.</b> No problem. No decisions, only conclusions. Questions in prose. No way to test it.</td></tr>
+      <tr><td>4</td><td><b>It puts you on autopilot.</b> The eyes glaze. You skim, then say you read it. You finish unable to state the decision.</td></tr>
       <tr><td>5</td><td><b>Not every change needs a spec.</b> A typo needs a sentence. A feature needs a record. A system needs an artifact.</td></tr>
       <tr><td>6</td><td><b>A judge, not a hunch.</b> Three hundred milliseconds. Three cents per thousand calls. A human confirms the doubt.</td></tr>
       <tr><td>7</td><td><b>Judge. Reason. Review. Render.</b> Four steps. One canonical file.</td></tr>
@@ -327,9 +324,8 @@
       <tr><td>13</td><td><b>It catches real defects.</b> A spec that failed its own rule. A proof that cited a file that never existed.</td></tr>
       <tr><td>14</td><td><b>Same content. Different cost.</b> The markdown is the source. The HTML is the view.</td></tr>
       <tr><td>15</td><td><b>Minutes now. A rebuild later.</b> Fix the decision before the code. Tokens follow the same curve.</td></tr>
-      <tr><td>16</td><td><b>Where it breaks.</b> Renderer unproven. Narrow screens unchecked. Promotion manual. Enforcement absent.</td></tr>
-      <tr><td>17</td><td><b>What you get.</b> Five skills. Two templates. One judge. One install.</td></tr>
-      <tr><td>18</td><td><b>Take it. Break it. Improve it.</b> Clone, install, restart. Scan the code.</td></tr>
+      <tr><td>16</td><td><b>What you get.</b> Five skills. Two templates. One judge. One install.</td></tr>
+      <tr><td>17</td><td><b>Take it. Break it. Improve it.</b> Clone, install, restart. Scan the code.</td></tr>
     </table>
   </section>
 
@@ -341,7 +337,6 @@
       <li>Slide 3: capture height 6,679px at 1,200px wide, measured from <code>deck/spec.md</code> rendered at 16px.</li>
       <li>Slide 6: Jev call latency 200–480ms and cost ≈ $0.00003 measured in <code>jev-shadow.jsonl</code> and <code>spec-triage.jsonl</code>.</li>
       <li>Slides 12–13: spec-authoring-system review, rounds 1 and 2, 2026-11-10 (17/30 BLOCK → 23/30 REVISE, 17 findings). Deck spec itself: 24/30.</li>
-      <li>Slide 16: limits from the spec-authoring-system spec's risk section, not invented for the talk.</li>
     </ul>
   </section>
 
@@ -368,7 +363,7 @@
     <table>
       <tr><th>ID</th><th>Promise</th><th>When → Then</th><th>Proof</th></tr>
       <tr><td>R1 <span class="sev">must</span></td><td>Dark by default</td><td>When any slide renders → then background is the near-black palette and no slide flashes white during transitions</td><td>vision — screenshots of slides 1, 9, 14</td></tr>
-      <tr><td>R2 <span class="sev">must</span></td><td>The talk fits fifteen minutes</td><td>When the speaker advances at a steady pace → then the eighteen slides complete in 875s ± 30s, with slide 14 receiving ≥ 70s</td><td>walkthrough — timed rehearsal with per-slide timestamps</td></tr>
+      <tr><td>R2 <span class="sev">must</span></td><td>The talk fits fifteen minutes</td><td>When the speaker advances at a steady pace → then the seventeen slides complete in 855s ± 30s, with slide 14 receiving ≥ 80s</td><td>walkthrough — timed rehearsal with per-slide timestamps</td></tr>
       <tr><td>R3 <span class="sev">must</span></td><td>One idea, one visual, few words</td><td>When a slide is on screen → then it shows at most 35 visible words (counted from the rendered DOM) and one visual that carries the idea</td><td>command — extract visible text per slide, count</td></tr>
       <tr><td>R4 <span class="sev">must</span></td><td>The comparison is real, full-width, and complete</td><td>When slide 14 appears → then it shows the markdown capture, then the HTML capture scrolling slowly through the entire document (≥30s top to bottom, progress bar visible), both at equal width and captioned with the active filename; captures are regenerated after the final md edit</td><td>vision — both captures legible at 1920×1080; full scroll observed; file mtimes newer than spec.md</td></tr>
       <tr><td>R5 <span class="sev">must</span></td><td>The QR resolves</td><td>When a phone scans the closing QR → then it opens https://github.com/robruiz/rob-ruiz-skills within 3 seconds</td><td>command — scan with a phone; fallback is the visible URL line</td></tr>
@@ -377,12 +372,12 @@
       <tr><td>R8 <span class="sev">must</span></td><td>Navigation cannot strand the speaker</td><td>When the speaker presses right/left/space/Home/End → then slides advance, the hash updates, and a progress rail shows position</td><td>walkthrough — full forward and backward pass</td></tr>
       <tr><td>R9 <span class="sev">should</span></td><td>Readable at 1280×720</td><td>When projected or viewed at 1280×720 → then no text renders below 18px effective size, no horizontal overflow, diagrams legible</td><td>vision — 1280×720 screenshot set</td></tr>
       <tr><td>R10 <span class="sev">should</span></td><td>Every animation explains something</td><td>When any slide animates → then the motion maps to one named item in the slide's visual column (assembly, branching, boundary, alarm, full scroll), and no ambient loop runs behind the proof slide</td><td>review — animation inventory matches the build</td></tr>
-      <tr><td>R11 <span class="sev">should</span></td><td>Honest limits slide</td><td>When slide 16 appears → then it names four real weaknesses: renderer unproven beyond two documents, 390px unverified, scope promotion manual, triage enforcement absent</td><td>review — copy check against the risks section</td></tr>
+      <tr class="withdrawn"><td>R11 <span class="sev">should</span></td><td><b>Honest limits slide — WITHDRAWN</b> <span class="chip off">withdrawn</span></td><td>Decision 2026-11-10: cut again for flow; the limits stay in the spec and the repo</td><td>n/a — withdrawn by the owner</td></tr>
       <tr class="withdrawn"><td>R12 <span class="sev">could</span></td><td><b>Speaker notes — WITHDRAWN</b> <span class="chip off">withdrawn</span></td><td>Decision 2026-11-10: no speaker notes; the slide copy is the script</td><td>n/a — withdrawn by the owner</td></tr>
       <tr><td>R13 <span class="sev">must</span></td><td>There is a fallback recording</td><td>When the venue machine or browser fails → then a screen recording of the rehearsed pass can play in its place, with the QR still scannable from a phone</td><td>command — file exists and plays offline; duration under 15:10</td></tr>
       <tr><td>R14 <span class="sev">must</span></td><td>The captured artifact is dark</td><td>When the HTML spec is captured for slides 3 and 14 → then it renders with the dark theme applied and both captures are regenerated from the current spec.md</td><td>vision — asset background is near-black; mtimes newer than spec.md</td></tr>
       <tr><td>R15 <span class="sev">must</span></td><td>Missing context and poor scores are alarming</td><td>When a spec has unresolved questions, a low dimension score, or a poor total → then those states render in alarming color (red family), never as neutral gray, in both the artifact and slide 12</td><td>vision — unresolved checklist items and any dimension at 2 or below are visibly red</td></tr>
-      <tr><td>R16 <span class="sev">must</span></td><td>Every added slide earns its time</td><td>When a slide appears after the fifth-minute mark → then it answers a question the audience would otherwise ask (what makes a spec unreadable, who decides depth, what a review catches, what it costs), and it carries specific evidence rather than a restatement</td><td>review — each slide maps to a question in the Solution section; no slide is a recap</td></tr>
+      <tr><td>R16 <span class="sev">must</span></td><td>Every added slide earns its time</td><td>When a slide appears after the fifth-minute mark → then it answers a question the audience would otherwise ask (what a wall of text does to a reader, who decides depth, what a review catches, what it costs), and it carries specific evidence rather than a restatement</td><td>review — each slide maps to a question in the Solution section; no slide is a recap</td></tr>
     </table>
   </section>
 
@@ -399,7 +394,8 @@
       <div class="row"><span>Decision traceability</span><span>5/5</span><span class="bar"><i style="width:100%"></i></span></div>
       <div class="row"><span class="total">Total</span><span class="total">24/30</span><span><span class="verdict revise">REVISE</span></span></div>
     </div>
-    <div class="alert"><b>Low score, not a note</b>Risk coverage 3/5 — four risks plus the limits slide; fallback recording still the weak point.</div>
+    <div class="alert"><b>Low score, not a note</b>Risk coverage 3/5 — four risks with mitigations; fallback recording still the weak point.</div>
+    <p class="take">Readiness 4/5 — 17 rows with time boxes, copy, assets, palette, engine sized.</p>
     <p class="take">Reviewed by critic · 2026-11-10 (v1).</p>
     <details><summary>Review note</summary><p>Reviewed by critic · 2026-11-10 (v1). The v2 changes are additive (nine new slides) and were not re-scored; the carried-forward score applies to the reviewed structure.</p></details>
     <div class="data"><span class="lab">Review result</span><pre>Round 1 17/30 BLOCK · Round 2 23/30 REVISE · this deck 24/30</pre></div>
@@ -410,7 +406,7 @@
     <h2 class="sec">Decisions</h2>
     <p class="take">Twelve decisions, each recorded with its alternative, its reason, and its consequence.</p>
     <div class="cards">
-      <div class="card"><b>1. Expand to eighteen slides for fifteen minutes, not to pad.</b>Chose depth over repetition. Because a longer slot invites a longer argument, not a slower one; every added slide answers a question the short version dodged. Consequence: rehearsal time doubles and the deck must be complete a day earlier.</div>
+      <div class="card"><b>1. Expand to seventeen slides for fifteen minutes, not to pad.</b>Chose depth over repetition. Because a longer slot invites a longer argument, not a slower one; every added slide answers a question the short version dodged. Consequence: rehearsal time doubles and the deck must be complete a day earlier.</div>
       <div class="card"><b>2. Nine slides, fixed time boxes.</b>Chose fixed boxes over a variable deck. Because 45–55s per idea is the fastest a room absorbs a diagram. Consequence: anything that does not fit is cut, not compressed.</div>
       <div class="card"><b>3. Proof by screenshot, not claim.</b>Chose real captures over rendered mocks. Because the audience discounts assertions, and this is the slide that has to land. Consequence: captures must be retaken whenever the spec changes.</div>
       <div class="card"><b>4. Motion tied to meaning.</b>Chose purposeful animation over ambient spectacle. Because looping particles behind text read as a template, not an argument. Consequence: the field is low-contrast and pauses on the proof slide.</div>
@@ -421,7 +417,7 @@
       <div class="card"><b>9. The artifact asset is dark, like the deck.</b>Chose a dark render over the template's light default. Because a white page at full screen is a flashbang in a dark room. Consequence: record that the dark theme is applied for the asset.</div>
       <div class="card"><b>10. Show the whole document, not the top.</b>Chose a 30s full scroll over a static crop. Because the difference is structural across the whole document.</div>
       <div class="card"><b>11. Alarm styling, not neutral styling.</b>Chose red for unresolved questions and low scores. Because a neutral checklist lets a three-open-question spec look finished.</div>
-      <div class="card"><b>12. Bring the limits slide back.</b>Chose honesty over a clean ending. Because fifteen minutes has room to say what does not work, and a talk that only sells is easier to discount. Consequence: the closing energy has to be rebuilt on the final slide.</div>
+      <div class="card"><b>12. The limits slide was cut, twice.</b>First for five-minute time, then again for flow after the fifteen-minute expansion. Because the risks live in the spec and the repo, and the talk is stronger ending on the call to action. Consequence: the honesty lives in the document, not on stage.</div>
     </div>
   </section>
 
@@ -435,7 +431,7 @@
       <li class="done"><span>Q3 Does the QR need a fallback?<span class="meta">resolved: <b>printed URL under it</b></span></span></li>
       <li class="done"><span>Q4 Live demo segment?<span class="meta">resolved: <b>no; talking over the slides is the whole slot</b></span></span></li>
       <li class="done"><span>Q5 Speaker notes?<span class="meta">resolved: <b>no; R12 withdrawn</b></span></span></li>
-      <li class="done"><span>Q6 Which new topics earn a slide?<span class="meta">resolved: <b>the four failure modes, depth triage, the judge, the requirements contract, evidence, review in practice, cost, limits, repo contents</b></span></span></li>
+      <li class="done"><span>Q6 Which new topics earn a slide?<span class="meta">resolved: <b>the four failure modes, depth triage, the judge, the requirements contract, evidence, review in practice, cost, repo contents</b></span></span></li>
     </ul>
   </section>
 

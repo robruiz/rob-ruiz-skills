@@ -25,7 +25,7 @@ Hard rule: md is the only source. Do not add facts or slides.
 2. The spec is the first artifact: prompt → spec → plan → implement → review/test.
 3. Depth is judged, reasoning stays on the capable model, markup goes to a cheap one.
 4. Requirements are bound to proof; reviews are scored, and low scores block.
-5. The proof slide scrolls the entire HTML artifact; the limits slide says what still breaks.
+5. The proof slide scrolls the entire HTML artifact; the cost slide closes the argument.
 
 ## Sections, in this order
 
