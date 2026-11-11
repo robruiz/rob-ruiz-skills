@@ -32,11 +32,11 @@ Rules:
 
 ## Step 1 — Reason with a capable model, before any prose
 
-This step must not be delegated to a cheap tier. `fast` is read-only and cannot own decisions; `medium`/`heavy` opinions are for critique, not authorship of the reasoning.
+This step must not be delegated to a cheaper model. Its opinions are for critique, not authorship of the reasoning.
 
 Do, in this order:
 
-1. **Ground it.** Read the real code, conventions, and adjacent modules. If the repo has `graft/`, use `graft_map` / `graft_find_code` instead of grep. Read prior specs in the area so you do not duplicate or contradict.
+1. **Ground it.** Read the real code, conventions, and adjacent modules. If the repo provides a code graph or index, use it instead of grep. Read prior specs in the area so you do not duplicate or contradict.
 2. **Collect evidence for every claim a decision rests on.** External library behavior, current file shape, existing pattern, prior attempt. Unverified claims become **open questions**, never assertions.
 3. **Name the seams before the prose.** Where will this be tested? Prefer existing seams; use the highest one; the ideal count is one. Write them down and confirm with the user when they are not obvious. TDD and review both key off these later.
 4. **Decide, then record.** Opinions formed while writing belong in open questions, not silently in the decisions list.
@@ -101,7 +101,7 @@ Hard rules:
 
 ## Step 2.5 — Adversarial review before anything is rendered
 
-Load `spec-review` and send the md to the `critic` subagent with no session context. It scores six dimensions and returns SHIP / REVISE / BLOCK. Record the scorecard under `## Review` in the md.
+Load `spec-review` and send the md to a fresh-context reviewer subagent with no session context. It scores six dimensions and returns SHIP / REVISE / BLOCK. Record the scorecard under `## Review` in the md.
 
 - **BLOCK** → do not render, do not implement. Return to Step 1; the reasoning is thin.
 - **REVISE** → fix the named gaps in the md, re-score the changed parts only.
@@ -117,9 +117,9 @@ Only when depth is `md_html`. The rule is fixed:
 | Work | Who |
 |---|---|
 | Research, framing, decisions, requirement list, seam choice, diagram semantics | **You** (capable model). Never delegated down. |
-| HTML/CSS/SVG implementation from your content and diagram spec | **`spec-render` subagent** (MiMo V2.6 Flash — cheap, token-heavy, dev-only). Escalate to `medium` only if two render attempts come back broken. |
+| HTML/CSS/SVG implementation from your content and diagram spec | **a cheap-model render subagent** (markup/layout only). Escalate to a more capable model only if two render attempts come back broken. |
 
-Emit a render packet, then delegate with `subagent(agent: "spec-render")`:
+Emit a render packet, then hand it to the cheap render subagent:
 
 ```
 Render packet
@@ -155,9 +155,9 @@ Then review the result yourself against `spec-html`'s self-check list. Fix conte
 - [ ] Out of scope contains at least one real refusal.
 - [ ] 3-sentence read-back: a human can say what this solves, how, and how it is proven.
 - [ ] If HTML exists: headings match the md, no facts exist only in the HTML, `spec-html` self-check passed.
-- [ ] Worklog line: spec path, depth, verdict.
+- [ ] Progress-note line: spec path, depth, verdict.
 
-## Anti-patterns (each one has bitten this machine)
+## Anti-patterns (each one has bitten a real project)
 
 - Writing HTML for a 20-line change because the template is fun. Triage exists for this.
 - A capable model writing 900 lines of CSS. Delegate the markup; spend the tokens on the reasoning.

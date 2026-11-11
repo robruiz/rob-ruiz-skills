@@ -81,7 +81,7 @@ Checklist. Unchecked = unresolved, checked = answered inline.
 | Decision traceability | `<n>/5` | `<...>` |
 | **Total** | `<n>/30` | Verdict: `<SHIP|REVISE|BLOCK>` |
 
-Reviewed by: `<critic>` · `<date>` · round `<n>`
+Reviewed by: `<reviewer>` · `<date>` · round `<n>`
 Findings: `F1 <severity> <finding>` → `<fixed|dismissed (reason)>`
 
 ## Risks

@@ -7,12 +7,12 @@ description: Use when a spec, brief, or plan is drafted and needs adversarial re
 
 A spec that has not been attacked is a draft. This review is the cheapest place to find out that a fresh session cannot build from the document, and it produces numbers rather than "looks good".
 
-Run before implementation, not after. `acceptance-eval` proves the build; this proves the document.
+Run before implementation, not after. The close-out acceptance check proves the build; this proves the document.
 
 ## Who reviews
 
-- Delegate to the `critic` subagent with the spec md and nothing else — no session memory, no conversation history. That is the point: if the critic needs chat context, the spec is incomplete.
-- For a high-stakes spec (`security`, data loss, migrations, publish/push, trust boundaries), run `critic` and then `advisor` on the same document. Two independent passes, scores recorded separately.
+- Delegate to a fresh-context reviewer subagent with the spec md and nothing else — no session memory, no conversation history. That is the point: if the reviewer needs chat context, the spec is incomplete.
+- For a high-stakes spec (`security`, data loss, migrations, publish/push, trust boundaries), run the reviewer and then a second independent reviewer (for example a senior-advisor agent) on the same document. Two independent passes, scores recorded separately.
 - Never score your own draft in the same context that wrote it. A primary-thread review is allowed only for `md` depth, low stakes, and must say so.
 
 ## The rubric (six dimensions, 0-5 each)
@@ -54,8 +54,8 @@ A single dimension at ≤2 blocks SHIP regardless of total. That rule exists bec
 ## Loop bound
 
 - Maximum 2 review rounds per spec. Round 2 re-scores only the sections named in findings.
-- A second BLOCK stops the loop: escalate to `advisor` or the user, and do not render or implement.
-- If `critic` cannot run (provider error, privacy block), mark the spec `unreviewed`, say so in the md, and require the user's explicit word before any `md_html` render. Never self-certify to end the loop.
+- A second BLOCK stops the loop: escalate to a second reviewer or the user, and do not render or implement.
+- If the reviewer cannot run (provider error, privacy block), mark the spec `unreviewed`, say so in the md, and require the user's explicit word before any `md_html` render. Never self-certify to end the loop.
 
 ## Output — the scorecard
 
@@ -74,7 +74,7 @@ Append to the spec md, immediately after the requirements section:
 | Decision traceability | 4/5 | `<alternatives present for D1-D6>` |
 | **Total** | **22/30** | Verdict: **REVISE** |
 
-Reviewed by: critic · 2026-01-01 · round 1
+Reviewed by: `<reviewer>` · 2026-01-01 · round 1
 Findings: F1 `<severity>` `<finding>` → fixed / dismissed (`<reason>`)
 ```
 
@@ -89,6 +89,6 @@ Then re-render the HTML so the scorecard appears in the artifact.
 
 ## What this review must never do
 
-- Score generously to end the loop. A blocked spec caught here costs minutes; the same gap caught in `acceptance-eval` costs a rebuild.
+- Score generously to end the loop. A blocked spec caught here costs minutes; the same gap caught in the close-out acceptance check costs a rebuild.
 - Review the implementation instead of the document.
 - Add sections to the spec itself. It reports gaps; the author fixes them.

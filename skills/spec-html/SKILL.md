@@ -75,7 +75,7 @@ When the spec has been reviewed (`spec-review`), render the scorecard near the t
 
 - Every requirement gets an `R<n>` chip, on the diagram or section that satisfies it.
 - A "Coverage" strip near the top: chips for all R-IDs, lit where the artifact has evidence, hollow where it does not.
-- This is the bridge to `acceptance-eval`: the same IDs, same meaning, no renumbering.
+- This is the bridge to the close-out acceptance check: the same IDs, same meaning, no renumbering.
 
 ## Chrome (consistent across every spec artifact)
 
