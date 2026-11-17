@@ -61,3 +61,5 @@ Caller gets: approved artifact path, final score + gap list, and the readout (de
 - Gap-list theater: writing gaps to justify a pre-chosen score.
 - Silently diverging from the approved prototype during implementation.
 - Skimming past step 3 for "obvious" builds — the loop is where the reasoning happens.
+- Closing a dimensional gap with another render — vision estimates drift at pixel level; close against the model's measured coordinates and only re-render for visual questions.
+- Deferring mid-loop human feedback to the formal pause — fold it into the next refinement round; a correction caught early is the prototype doing its job.
